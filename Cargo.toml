@@ -3,7 +3,7 @@ name = "permscan"
 version = "1.0.0"
 edition = "2018"
 [dependencies]
-structopt = { version = "0.3", default-features = false }
-regex = "1"
-itertools = "0.10.2"
-array_tool = "1.0.0"
+structopt = { version = "0.3.26", default-features = false }
+regex = "1.5.5"
+itertools = "0.10.3"
+array_tool = "1.0.3"
