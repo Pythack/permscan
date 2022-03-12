@@ -34,9 +34,7 @@ fn main() {
             Some(owner) => owner.replace(":", " "),
         };
         let retext = String::from(r"[drwxt\-]{10}[ 0-9]* ") + &*owner + r" (.|\n)*";
-        println!("{}", retext);
-        let re = Regex::new(&regex::escape(&retext)).unwrap();
-        println!("{}", re);
+        let re = Regex::new(&retext).unwrap();
         for line in lines.skip(1) {
             let line = String::from(line);
             if re.is_match(&line) {
