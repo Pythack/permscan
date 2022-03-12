@@ -1,2 +1,6 @@
 /target
 permscan
+
+.DS_Store
+.vscode
+.markdownlintignore
