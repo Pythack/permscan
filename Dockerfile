@@ -5,8 +5,8 @@ FROM rust:1.49
 COPY ./ ./
 
 # Build your program for release
-RUN cargo build
-RUN cp ./target/debug/permscan /bin
+RUN cargo build --release
+RUN cp ./target/release/permscan /bin
 RUN rm -r target
 RUN rm -r src
 RUN rm Cargo.*
