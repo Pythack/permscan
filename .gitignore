@@ -8,3 +8,4 @@ permscan-x86_64-unknown-linux-gnu.zip
 .DS_Store
 .vscode
 .markdownlintignore
+settings.json
