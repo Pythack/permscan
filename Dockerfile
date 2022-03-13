@@ -1,17 +1,15 @@
-# 1. This tells docker to use the Rust official image
+# 1. Use the Rust official image
 FROM rust:1.49
 
-# 2. Copy the files in your machine to the Docker image
-COPY ./ ./
+LABEL org.opencontainers.image.source="https://github.com/pythack/permscan"
 
-# Build your program for release
-RUN cargo build
-RUN cp ./target/debug/permscan /bin
-RUN rm -r target
-RUN rm -r src
-RUN rm Cargo.*
-RUN rm Dockerfile
+# Copy the files to the Docker image
+WORKDIR /permscan_code/
+COPY ./Cargo.toml ./
+COPY ./src/ ./src/
 
-# Run the binary
-#CMD ["cp ./target/release/permscan /bin"]
-#EXPOSE 3030
+# Build binary program for release
+RUN cargo build --release
+RUN cp ./target/release/permscan /bin
+
+WORKDIR /

@@ -25,8 +25,7 @@ OPTIONS:
 
 ## Try it on Docker
 
-Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest` on a
-machine with Docker installed and started.
+Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest` on a machine with Docker installed.
 
 ## Installation
 
@@ -42,7 +41,7 @@ If you have an M1 cpu, your architecture is ARM.
 * Decompress the downloaded folder.
 * Inside the decompressed folder, there will be a binary named permscan: this is
   the program.
-* Move it to /usr/locale/bin to be able to run it at any time from the command
+* Move it to /usr/local/bin to be able to run it at any time from the command
   line.
 
 #### x86_64
@@ -52,7 +51,7 @@ If you have an M1 cpu, your architecture is ARM.
 * Decompress the downloaded folder.
 * Inside the decompressed folder, there will be a binary named permscan: this is
   the program.
-* Move it to /usr/locale/bin to be able to run it at any time from the command
+* Move it to /usr/local/bin to be able to run it at any time from the command
   line.
 
 ### GNU/Linux
@@ -62,7 +61,7 @@ If you have an M1 cpu, your architecture is ARM.
 * Decompress the downloaded folder.
 * Inside the decompressed folder, there will be a binary named permscan: this is
   the program.
-* Move it to /usr/locale/bin to be able to run it at any time from the command
+* Move it to /usr/local/bin to be able to run it at any time from the command
   line.
 
 ## License

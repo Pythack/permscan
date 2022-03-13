@@ -1,0 +1,36 @@
+name: publish
+
+on: 
+  push:
+    branches: [ master ]
+    paths:
+      - '/src/main.rs'
+      - '/Cargo.toml'
+      - '/Dockerfile'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '/src/main.rs'
+      - '/Cargo.toml'
+      - '/Dockerfile'
+
+jobs:
+  publish-permscan-image:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.PAT }}
+
+    - name: Build the permscan Docker image
+      run: |
+        docker build . --tag ghcr.io/pythack/permscan:latest
+        docker run ghcr.io/pythack/permscan:latest
+    - name: Push the permscan Docker image
+      run: docker push ghcr.io/pythack/permscan:latest
