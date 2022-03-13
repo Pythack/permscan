@@ -4,7 +4,7 @@ A linux binary to filter files and directories based on permission criteria
 
 ## `permscan --help` output
 
-```b
+```
 Permission scanner 1.0.0
 Scan a directory for files that match permission criteria
 
