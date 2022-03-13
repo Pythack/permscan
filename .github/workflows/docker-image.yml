@@ -2,6 +2,12 @@ name: publish
 
 on: 
   push:
+    branches: [ master ]
+    paths:
+      - '/src/main.rs'
+      - '/Cargo.toml'
+  pull_request:
+    branches: [ master ]
     paths:
       - '/src/main.rs'
       - '/Cargo.toml'
