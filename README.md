@@ -5,6 +5,7 @@ A linux binary to filter files and directories based on permission criteria
 ## `permscan --help` output
 
 ```
+Permission scanner 1.2.2
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan for more information.
 
@@ -13,9 +14,9 @@ USAGE:
 
 FLAGS:
     -h, --help       Prints help information
+    -i               If present, will return the list of files that don't match with the criteria
     -m               If present, will return the list of files that match at least one criteria, else return the list of
                      files that match all criteria
-    -r               If present, will return the list of files that don't match with the criteria
     -V, --version    Prints version information
 
 OPTIONS:
