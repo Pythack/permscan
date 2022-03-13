@@ -5,8 +5,9 @@ A linux binary to filter files and directories based on permission criteria
 ## `permscan --help` output
 
 ```
-Permission scanner 1.0.0
-Scan a directory for files that match permission criteria
+Permission scanner 1.1.1
+Scan a directory for files that match permission criteria.
+Visit https://github.com/Pythack/permscan for more information.
 
 USAGE:
     permscan [FLAGS] [OPTIONS]
@@ -18,9 +19,13 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
+        --group <group>    Specify permissions that the group who owns the file or directory needs to have on the item
+                           in the format ?rwx
+        --other <other>    Specify permissions that users who does not own the file or directory needs to have on the
+                           item in the format ?rwx
         --owner <owner>    Specify the owner of the file in the format user:group
         --user <user>      Specify permissions that the user who owns the file or directory needs to have on the item in
-                           the format rwx
+                           the format ?rwx
 ```
 
 ## Try it on Docker
