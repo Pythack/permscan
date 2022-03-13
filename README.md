@@ -4,7 +4,7 @@ A linux binary to filter files and directories based on permission criteria
 
 ## `permscan --help` output
 
-```bash
+```b
 Permission scanner 1.0.0
 Scan a directory for files that match permission criteria
 
@@ -22,6 +22,11 @@ OPTIONS:
         --user <user>      Specify permissions that the user who owns the file or directory needs to have on the item in
                            the format rwx
 ```
+
+## Try it on Docker
+
+Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest` on a
+machine with Docker installed and started.
 
 ## Installation
 
@@ -51,6 +56,14 @@ If you have an M1 cpu, your architecture is ARM.
   line.
 
 ### GNU/Linux
+
+* Download
+<https://github.com/Pythack/permscan/releases/download/v1.0.0/permscan-x86_64-unknown-linux-gnu.zip>
+* Decompress the downloaded folder.
+* Inside the decompressed folder, there will be a binary named permscan: this is
+  the program.
+* Move it to /usr/locale/bin to be able to run it at any time from the command
+  line.
 
 ## License
 
