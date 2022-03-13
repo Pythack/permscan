@@ -3,7 +3,7 @@ name: publish
 on: [push]
 
 jobs:
-  publish-hello-world-image:
+  publish-image:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,6 +18,6 @@ jobs:
 
     - name: Build the hello-world Docker image
       run: |
-        docker build . --tag ghcr.io/Pythack/permscan:latest
-        docker run ghcr.io/Pythack/permscan:latest
-        docker push ghcr.io/Pythack/permscan:latest
+        docker build . --tag ghcr.io/pythack/permscan:latest
+        docker run ghcr.io/pythack/permscan:latest
+        docker push ghcr.io/pythack/permscan:latest
