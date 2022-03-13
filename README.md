@@ -23,6 +23,10 @@ OPTIONS:
                            the format rwx
 ```
 
+## Try it on Docker
+
+Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan` on a machine with Docker installed. 
+
 ## License
 
 This project is licensed under both :
