@@ -20,4 +20,5 @@ jobs:
       run: |
         docker build . --tag ghcr.io/pythack/permscan:latest
         docker run ghcr.io/pythack/permscan:latest
-        docker push ghcr.io/pythack/permscan:latest
+    - name: Push the permscan Docker image
+      run: docker push ghcr.io/pythack/permscan:latest
