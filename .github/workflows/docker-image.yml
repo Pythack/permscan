@@ -3,16 +3,8 @@ name: publish
 on: 
   push:
     branches: [ master ]
-    paths:
-      - '/src/main.rs'
-      - '/Cargo.toml'
-      - '/Dockerfile'
   pull_request:
     branches: [ master ]
-    paths:
-      - '/src/main.rs'
-      - '/Cargo.toml'
-      - '/Dockerfile'
 
 jobs:
   publish-permscan-image:
