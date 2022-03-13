@@ -26,12 +26,12 @@ fn main() {
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_owner(files_owner_check, owner)
+                permscan::get_based_on_owner(files_owner_check, owner, opt.revert)
                     .iter()
                     .cloned(),
             );
         } else {
-            let owner_lines = permscan::get_based_on_owner(files_owner_check, owner);
+            let owner_lines = permscan::get_based_on_owner(files_owner_check, owner, opt.revert);
             all_lines.push(owner_lines);
         }
     }
@@ -43,12 +43,12 @@ fn main() {
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_user(files_user_check, user)
+                permscan::get_based_on_user(files_user_check, user, opt.revert)
                     .iter()
                     .cloned(),
             );
         } else {
-            let user_lines = permscan::get_based_on_user(files_user_check, user);
+            let user_lines = permscan::get_based_on_user(files_user_check, user, opt.revert);
             all_lines.push(user_lines);
         }
     }
@@ -60,12 +60,12 @@ fn main() {
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_group(files_group_check, group)
+                permscan::get_based_on_group(files_group_check, group, opt.revert)
                     .iter()
                     .cloned(),
             );
         } else {
-            let user_lines = permscan::get_based_on_group(files_group_check, group);
+            let user_lines = permscan::get_based_on_group(files_group_check, group, opt.revert);
             all_lines.push(user_lines);
         }
     }
@@ -77,12 +77,12 @@ fn main() {
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_other(files_other_check, other)
+                permscan::get_based_on_other(files_other_check, other, opt.revert)
                     .iter()
                     .cloned(),
             );
         } else {
-            let user_lines = permscan::get_based_on_other(files_other_check, other);
+            let user_lines = permscan::get_based_on_other(files_other_check, other, opt.revert);
             all_lines.push(user_lines);
         }
     }
