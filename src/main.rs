@@ -7,24 +7,24 @@ use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
 #[structopt(
     name = "Permission scanner",
-    about = "Scan a directory for files that match permission criteria"
+    about = "Scan a directory for files that match permission criteria. \n Visit https://github.com/Pythack/permscan for more information. "
 )]
 struct Opt {
     #[structopt(
         long,
-        help = "Specify permissions that the user who owns the file or directory needs to have on the item in the format rwx"
+        help = "Specify permissions that the user who owns the file or directory needs to have on the item in the format ?rwx"
     )]
     user: Option<String>,
 
     #[structopt(
         long,
-        help = "Specify permissions that the group who owns the file or directory needs to have on the item in the format rwx"
+        help = "Specify permissions that the group who owns the file or directory needs to have on the item in the format ?rwx"
     )]
     group: Option<String>,
 
     #[structopt(
         long,
-        help = "Specify permissions that users who does not own the file or directory needs to have on the item in the format rwx"
+        help = "Specify permissions that users who does not own the file or directory needs to have on the item in the format ?rwx"
     )]
     other: Option<String>,
 
