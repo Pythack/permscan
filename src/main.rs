@@ -137,7 +137,7 @@ fn main() {
     let files_other_check = files_owner_check.clone();
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
-    if opt.owner.is_none() && opt.user.is_none() {
+    if opt.owner.is_none() && opt.user.is_none() && opt.group.is_none() && opt.other.is_none() {
         let lines = get_all_files(files);
         all_lines.push(lines)
     }
