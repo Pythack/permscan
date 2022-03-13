@@ -1,4 +1,4 @@
-name: publish
+name: Update Docker Image
 
 on: 
   push:
