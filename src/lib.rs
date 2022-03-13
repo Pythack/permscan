@@ -37,7 +37,7 @@ pub struct Opt {
 
     #[structopt(
         short,
-        help = "If present, will return the list of files that don't match with the criterias"
+        help = "If present, will return the list of files that don't match with the criteria"
     )]
     pub revert: bool,
 }
