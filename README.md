@@ -25,7 +25,7 @@ OPTIONS:
 
 ## Try it on Docker
 
-Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan` on a machine with Docker installed. 
+Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest` on a machine with Docker installed. 
 
 ## License
 
