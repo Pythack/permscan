@@ -120,12 +120,14 @@ pub fn get_based_on_other(files: String, user: String, revert: bool) -> Vec<Stri
     temp_lines
 }
 
-pub fn get_all_files(files: String) -> Vec<String> {
+pub fn get_all_files(files: String, revert: bool) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    for line in lines.skip(1) {
-        let line = String::from(line);
-        temp_lines.push(line)
+    if !revert {
+        for line in lines.skip(1) {
+            let line = String::from(line);
+            temp_lines.push(line)
+        }
     }
     temp_lines
 }

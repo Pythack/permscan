@@ -15,7 +15,7 @@ fn main() {
     let mut temp_lines: Vec<String> = Vec::new();
 
     if opt.owner.is_none() && opt.user.is_none() && opt.group.is_none() && opt.other.is_none() {
-        let lines = permscan::get_all_files(files);
+        let lines = permscan::get_all_files(files, opt.revert);
         all_lines.push(lines)
     }
 
