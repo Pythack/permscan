@@ -5,7 +5,6 @@ A linux binary to filter files and directories based on permission criteria
 ## `permscan --help` output
 
 ```
-Permission scanner 1.1.1
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan for more information.
 
@@ -16,6 +15,7 @@ FLAGS:
     -h, --help       Prints help information
     -m               If present, will return the list of files that match at least one criteria, else return the list of
                      files that match all criteria
+    -r               If present, will return the list of files that don't match with the criteria
     -V, --version    Prints version information
 
 OPTIONS:
@@ -37,31 +37,6 @@ For a precise guide on what the options do and how to use them, see the [wiki](h
 Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest` on a machine with Docker installed.
 
 ## Installation
-
-### macOS
-
-* If you have an intel cpu, your architecture is x86_64.
-If you have an M1 cpu, your architecture is ARM.
-
-#### ARM
-
-* Download
-<https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip>
-* Decompress the downloaded folder.
-* Inside the decompressed folder, there will be a binary named permscan: this is
-  the program.
-* Move it to /usr/local/bin to be able to run it at any time from the command
-  line.
-
-#### x86_64
-
-* Download
-<https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip>
-* Decompress the downloaded folder.
-* Inside the decompressed folder, there will be a binary named permscan: this is
-  the program.
-* Move it to /usr/local/bin to be able to run it at any time from the command
-  line.
 
 ### GNU/Linux
 
