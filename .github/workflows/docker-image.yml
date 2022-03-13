@@ -3,7 +3,7 @@ name: publish
 on: [push]
 
 jobs:
-  publish-image:
+  publish-permscan-image:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.PAT }}
 
-    - name: Build the hello-world Docker image
+    - name: Build the permscan Docker image
       run: |
         docker build . --tag ghcr.io/pythack/permscan:latest
         docker run ghcr.io/pythack/permscan:latest
