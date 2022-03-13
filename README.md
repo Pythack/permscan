@@ -23,6 +23,35 @@ OPTIONS:
                            the format rwx
 ```
 
+## Installation
+
+### macOS
+
+* If you have an intel cpu, your architecture is x86_64.
+If you have an M1 cpu, your architecture is ARM.
+
+#### ARM
+
+* Download
+<https://github.com/Pythack/permscan/releases/download/v1.0.0/permscan-aarch64-apple-darwin.zip>>
+* Decompress the downloaded folder.
+* Inside the decompressed folder, there will be a binary named permscan: this is
+  the program.
+* Move it to /usr/locale/bin to be able to run it at any time from the command
+  line.
+
+#### x86_64
+
+* Download
+<https://github.com/Pythack/permscan/releases/download/v1.0.0/permscan-x86_64-apple-darwin.zip>
+* Decompress the downloaded folder.
+* Inside the decompressed folder, there will be a binary named permscan: this is
+  the program.
+* Move it to /usr/locale/bin to be able to run it at any time from the command
+  line.
+
+### GNU/Linux
+
 ## License
 
 This project is licensed under both :
