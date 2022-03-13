@@ -64,6 +64,17 @@ If you have an M1 cpu, your architecture is ARM.
 * Move it to /usr/local/bin to be able to run it at any time from the command
   line.
 
+## Building
+
+* As permscan is written in rust, you will need rust to build it. The
+  [latest](https://www.rust-lang.org/tools/install) version is recommended.
+
+* To build :
+
+  * `git clone https://github.com/Pythack/permscan`
+  * `cd permscan`
+  * `cargo build --release`
+
 ## License
 
 This project is licensed under both :
