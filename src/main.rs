@@ -64,13 +64,27 @@ fn get_based_on_user(files: String, user: String) -> Vec<String> {
     temp_lines
 }
 
+fn get_all_files(files: String) -> Vec<String> {
+    let lines = files.split('\n');
+    let mut temp_lines: Vec<String> = Vec::new();
+    for line in lines.skip(1) {
+        let line = String::from(line);
+        temp_lines.push(line)
+    }
+    temp_lines
+}
+
 fn main() {
     let opt = Opt::from_args();
     let files = run_command(String::from("ls"), String::from("-la"));
-    let files_owner_check = files;
+    let files_owner_check = files.clone();
     let files_user_check = files_owner_check.clone();
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
+    if opt.owner.is_none() && opt.user.is_none() {
+        let lines = get_all_files(files);
+        all_lines.push(lines)
+    }
     if opt.owner.is_some() {
         let owner = match opt.owner {
             None => String::from(""),
