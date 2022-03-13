@@ -37,7 +37,7 @@ If you have an M1 cpu, your architecture is ARM.
 #### ARM
 
 * Download
-<https://github.com/Pythack/permscan/releases/download/v1.0.0/permscan-aarch64-apple-darwin.zip>>
+<https://github.com/Pythack/permscan/releases/download/v1.0.0/permscan-aarch64-apple-darwin.zip>
 * Decompress the downloaded folder.
 * Inside the decompressed folder, there will be a binary named permscan: this is
   the program.
