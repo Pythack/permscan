@@ -7,7 +7,7 @@ use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
 #[structopt(
     name = "Permission scanner",
-    about = "Scan a directory for files that match permission criteria. \n Visit https://github.com/Pythack/permscan for more information. "
+    about = "Scan a directory for files that match permission criteria. \nVisit https://github.com/Pythack/permscan for more information. "
 )]
 struct Opt {
     #[structopt(
