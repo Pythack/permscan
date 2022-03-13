@@ -19,7 +19,7 @@ fn main() {
         && opt.group.is_none()
         && opt.other.is_none()
     {
-        let lines = permscan::get_all_files(files, opt.revert);
+        let lines = permscan::get_all_files(files, opt.invert);
         all_lines.push(lines)
     }
 
@@ -33,7 +33,7 @@ fn main() {
                 permscan::get_based_on_owner(
                     files_owner_check,
                     owner,
-                    opt.revert,
+                    opt.invert,
                 )
                 .iter()
                 .cloned(),
@@ -42,7 +42,7 @@ fn main() {
             let owner_lines = permscan::get_based_on_owner(
                 files_owner_check,
                 owner,
-                opt.revert,
+                opt.invert,
             );
             all_lines.push(owner_lines);
         }
@@ -55,13 +55,13 @@ fn main() {
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_user(files_user_check, user, opt.revert)
+                permscan::get_based_on_user(files_user_check, user, opt.invert)
                     .iter()
                     .cloned(),
             );
         } else {
             let user_lines =
-                permscan::get_based_on_user(files_user_check, user, opt.revert);
+                permscan::get_based_on_user(files_user_check, user, opt.invert);
             all_lines.push(user_lines);
         }
     }
@@ -76,7 +76,7 @@ fn main() {
                 permscan::get_based_on_group(
                     files_group_check,
                     group,
-                    opt.revert,
+                    opt.invert,
                 )
                 .iter()
                 .cloned(),
@@ -85,7 +85,7 @@ fn main() {
             let user_lines = permscan::get_based_on_group(
                 files_group_check,
                 group,
-                opt.revert,
+                opt.invert,
             );
             all_lines.push(user_lines);
         }
@@ -101,7 +101,7 @@ fn main() {
                 permscan::get_based_on_other(
                     files_other_check,
                     other,
-                    opt.revert,
+                    opt.invert,
                 )
                 .iter()
                 .cloned(),
@@ -110,7 +110,7 @@ fn main() {
             let user_lines = permscan::get_based_on_other(
                 files_other_check,
                 other,
-                opt.revert,
+                opt.invert,
             );
             all_lines.push(user_lines);
         }

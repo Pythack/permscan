@@ -42,7 +42,7 @@ pub struct Opt {
         short,
         help = "If present, will return the list of files that don't match with the criteria"
     )]
-    pub revert: bool,
+    pub invert: bool,
 }
 pub fn run_command(command: String, args: String) -> String {
     let output = Command::new(command).arg(args).output().expect("");
@@ -70,7 +70,7 @@ pub fn rem_first(value: &str) -> String {
 pub fn get_based_on_owner(
     files: String,
     owner: String,
-    revert: bool,
+    invert: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
@@ -79,7 +79,7 @@ pub fn get_based_on_owner(
     let re = Regex::new(&retext).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!revert && re.is_match(&line)) || (revert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
             temp_lines.push(line);
         }
     }
@@ -89,7 +89,7 @@ pub fn get_based_on_owner(
 pub fn get_based_on_user(
     files: String,
     user: String,
-    revert: bool,
+    invert: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
@@ -97,7 +97,7 @@ pub fn get_based_on_user(
     let re = Regex::new(&retext).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!revert && re.is_match(&line)) || (revert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
             temp_lines.push(line);
         }
     }
@@ -107,7 +107,7 @@ pub fn get_based_on_user(
 pub fn get_based_on_group(
     files: String,
     user: String,
-    revert: bool,
+    invert: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
@@ -115,7 +115,7 @@ pub fn get_based_on_group(
     let re = Regex::new(&retext).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!revert && re.is_match(&line)) || (revert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
             temp_lines.push(line);
         }
     }
@@ -125,7 +125,7 @@ pub fn get_based_on_group(
 pub fn get_based_on_other(
     files: String,
     user: String,
-    revert: bool,
+    invert: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
@@ -133,17 +133,17 @@ pub fn get_based_on_other(
     let re = Regex::new(&retext).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!revert && re.is_match(&line)) || (revert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
             temp_lines.push(line);
         }
     }
     temp_lines
 }
 
-pub fn get_all_files(files: String, revert: bool) -> Vec<String> {
+pub fn get_all_files(files: String, invert: bool) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    if !revert {
+    if !invert {
         for line in lines.skip(1) {
             let line = String::from(line);
             temp_lines.push(line)
