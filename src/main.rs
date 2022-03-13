@@ -50,11 +50,16 @@ fn run_command(command: String, args: String) -> String {
 
 fn rem_first(value: &str) -> String {
     let mut chars = value.chars();
-    println!("{}", chars.nth(0).unwrap());
-    if chars.nth(0).unwrap() == '?' {
-        chars.next();
+    //println!("{}", chars.nth(0).unwrap());
+    let first_value = match chars.nth(0) {
+        None => String::from(""),
+        Some(value) => String::from(value),
+    };
+    if first_value == String::from('?') {
+        return String::from(chars.as_str());
+    } else {
+        return String::from(value);
     }
-    return String::from(chars.as_str());
 }
 
 fn get_based_on_owner(files: String, owner: String) -> Vec<String> {
