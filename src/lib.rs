@@ -26,7 +26,10 @@ pub struct Opt {
     )]
     pub other: Option<String>,
 
-    #[structopt(long, help = "Specify the owner of the file in the format user:group")]
+    #[structopt(
+        long,
+        help = "Specify the owner of the file in the format user:group"
+    )]
     pub owner: Option<String>,
 
     #[structopt(
@@ -64,10 +67,15 @@ pub fn rem_first(value: &str) -> String {
     }
 }
 
-pub fn get_based_on_owner(files: String, owner: String, revert: bool) -> Vec<String> {
+pub fn get_based_on_owner(
+    files: String,
+    owner: String,
+    revert: bool,
+) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    let retext = String::from(r"^[drwxt\-]{10}[ 0-9]* *") + &*owner + r" (.|\n)*$";
+    let retext =
+        String::from(r"^[drwxt\-]{10}[ 0-9]* *") + &*owner + r" (.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
@@ -78,7 +86,11 @@ pub fn get_based_on_owner(files: String, owner: String, revert: bool) -> Vec<Str
     temp_lines
 }
 
-pub fn get_based_on_user(files: String, user: String, revert: bool) -> Vec<String> {
+pub fn get_based_on_user(
+    files: String,
+    user: String,
+    revert: bool,
+) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext = String::from(r"^[drwxt\-]") + &user + r"(.|\n)*$";
@@ -92,7 +104,11 @@ pub fn get_based_on_user(files: String, user: String, revert: bool) -> Vec<Strin
     temp_lines
 }
 
-pub fn get_based_on_group(files: String, user: String, revert: bool) -> Vec<String> {
+pub fn get_based_on_group(
+    files: String,
+    user: String,
+    revert: bool,
+) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext = String::from(r"^[drwxt\-]{4}") + &user + r"(.|\n)*$";
@@ -106,7 +122,11 @@ pub fn get_based_on_group(files: String, user: String, revert: bool) -> Vec<Stri
     temp_lines
 }
 
-pub fn get_based_on_other(files: String, user: String, revert: bool) -> Vec<String> {
+pub fn get_based_on_other(
+    files: String,
+    user: String,
+    revert: bool,
+) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext = String::from(r"^[drwxt\-]{7}") + &user + r"(.|\n)*$";
