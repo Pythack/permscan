@@ -1,8 +1,10 @@
 name: Update Docker Image
 
 on: 
-  release:
-    types: [published]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   publish-permscan-image:
