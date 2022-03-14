@@ -6,7 +6,11 @@ use permscan::Opt;
 
 fn main() {
     let opt = Opt::from_args();
-    let files = permscan::run_command(String::from("ls"), String::from("-la"));
+    let files = permscan::run_command(
+        String::from("ls"),
+        String::from("-la"),
+        opt.path,
+    );
     let files_owner_check = files.clone();
     let files_user_check = files_owner_check.clone();
     let files_group_check = files_owner_check.clone();

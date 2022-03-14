@@ -43,9 +43,19 @@ pub struct Opt {
         help = "If present, will return the list of files that don't match with the criteria"
     )]
     pub invert: bool,
+
+    #[structopt(
+        default_value = "./",
+        help = "The path of the directory your want to look into."
+    )]
+    pub path: String,
 }
-pub fn run_command(command: String, args: String) -> String {
-    let output = Command::new(command).arg(args).output().expect("");
+pub fn run_command(command: String, args: String, path: String) -> String {
+    let output = Command::new(command)
+        .arg(args)
+        .arg(path)
+        .output()
+        .expect("");
     let stdout = String::from_utf8(output.stdout);
 
     match stdout {
