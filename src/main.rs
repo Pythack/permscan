@@ -51,7 +51,7 @@ fn main() {
     if opt.user.is_some() {
         let user = match opt.user {
             None => String::from(""),
-            Some(user) => permscan::rem_first(&user),
+            Some(user) => permscan::rem_first(&user).replace('*', r"[rwx\-]"),
         };
         if opt.merge {
             temp_lines.extend(
@@ -69,7 +69,7 @@ fn main() {
     if opt.group.is_some() {
         let group = match opt.group {
             None => String::from(""),
-            Some(group) => permscan::rem_first(&group),
+            Some(group) => permscan::rem_first(&group).replace('*', r"[rwx\-]"),
         };
         if opt.merge {
             temp_lines.extend(
@@ -94,7 +94,7 @@ fn main() {
     if opt.other.is_some() {
         let other = match opt.other {
             None => String::from(""),
-            Some(other) => permscan::rem_first(&other),
+            Some(other) => permscan::rem_first(&other).replace('*', r"[rwx\-]"),
         };
         if opt.merge {
             temp_lines.extend(
