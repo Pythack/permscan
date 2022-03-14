@@ -41,13 +41,9 @@ Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest` on a m
 
 ### GNU/Linux
 
-* Download
-<https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.zip>
-* Decompress the downloaded folder.
-* Inside the decompressed folder, there will be a binary named permscan: this is
-  the program.
-* Move it to /usr/local/bin to be able to run it at any time from the command
-  line.
+* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz`
+* `tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz`
+* `mv permscan-x86_64-unknown-linux-gnu/permscan /bin`
 
 ## Building
 
