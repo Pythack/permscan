@@ -65,7 +65,6 @@ pub fn run_command(command: String, args: String, path: String) -> String {
 }
 pub fn rem_first(value: &str) -> String {
     let mut chars = value.chars();
-    //println!("{}", chars.nth(0).unwrap());
     let first_value = match chars.next() {
         None => String::from(""),
         Some(value) => String::from(value),
