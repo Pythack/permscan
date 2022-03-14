@@ -5,12 +5,12 @@ A linux binary to filter files and directories based on permission criteria
 ## `permscan --help` output
 
 ```
-Permission scanner 1.2.2
+Permission scanner 1.3.3
 Scan a directory for files that match permission criteria.
-Visit https://github.com/Pythack/permscan for more information.
+Visit https://github.com/Pythack/permscan#readme for more information.
 
 USAGE:
-    permscan [FLAGS] [OPTIONS]
+    permscan [FLAGS] [OPTIONS] [path]
 
 FLAGS:
     -h, --help       Prints help information
@@ -27,6 +27,9 @@ OPTIONS:
         --owner <owner>    Specify the owner of the file in the format user:group
         --user <user>      Specify permissions that the user who owns the file or directory needs to have on the item in
                            the format ?rwx
+
+ARGS:
+    <path>    The path of the directory your want to look into. [default: ./]
 ```
 
 ## Wiki
