@@ -1,9 +1,7 @@
 target
 permscan
 
-permscan-x86_64-apple-darwin.zip
-permscan-aarch64-apple-darwin.zip
-permscan-x86_64-unknown-linux-gnu.zip
+permscan-x86_64-unknown-linux-gnu.tar.gz
 
 .DS_Store
 .vscode
