@@ -46,7 +46,7 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest
 
 * `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz`
 * `tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz`
-* `mv permscan-x86_64-unknown-linux-gnu/permscan /bin`
+* `sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin`
 
 ## Building
 
