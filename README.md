@@ -33,9 +33,12 @@ OPTIONS:
 
 For a precise guide on what the options do and how to use them, see the [wiki](https://github.com/Pythack/permscan/wiki)
 
-## Try it on Docker
+## Run in Docker
 
-Run `docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest` on a machine with Docker installed and running.
+Run this on a machine with Docker installed and running :
+```console
+docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest
+```
 
 ## Installation
 
