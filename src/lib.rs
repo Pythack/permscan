@@ -10,19 +10,19 @@ use structopt::StructOpt;
 pub struct Opt {
     #[structopt(
         long,
-        help = "Specify permissions that the user who owns the file or directory needs to have on the item in the format /rwx"
+        help = "Specify permissions that the user who owns the file or directory needs to have on the item in the format @rwx"
     )]
     pub user: Option<String>,
 
     #[structopt(
         long,
-        help = "Specify permissions that the group who owns the file or directory needs to have on the item in the format /rwx"
+        help = "Specify permissions that the group who owns the file or directory needs to have on the item in the format @rwx"
     )]
     pub group: Option<String>,
 
     #[structopt(
         long,
-        help = "Specify permissions that users who does not own the file or directory needs to have on the item in the format /rwx"
+        help = "Specify permissions that users who does not own the file or directory needs to have on the item in the format @rwx"
     )]
     pub other: Option<String>,
 
