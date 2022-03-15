@@ -7,6 +7,9 @@ use permscan::Opt;
 
 fn main() {
     let opt = Opt::from_args();
+    if opt.recursive {
+        println!("Please be patient, a recursive search can take time... ");
+    }
     let ls_options = String::from("-l")
         + match opt.all {
             true => "a",
