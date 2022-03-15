@@ -35,7 +35,7 @@ pub struct Opt {
     #[structopt(
         short,
         long,
-        help = "If present, will also search every sub-directories"
+        help = "If present, will recursively traverse the folder"
     )]
     pub recursive: bool,
 
