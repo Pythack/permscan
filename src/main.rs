@@ -17,11 +17,7 @@ fn main() {
             true => "R",
             false => "",
         };
-    let files = permscan::run_command(
-        String::from("ls"),
-        String::from(ls_options),
-        opt.path,
-    );
+    let files = permscan::run_command(String::from("ls"), ls_options, opt.path);
     let files_owner_check = files.clone();
     let files_user_check = files_owner_check.clone();
     let files_group_check = files_owner_check.clone();
@@ -168,7 +164,7 @@ fn main() {
         }
         let final_lines_len = final_lines.len();
         for line in &final_lines[final_lines_len - 1] {
-            if opt.recursive && sub_dir.is_match(&line) {
+            if opt.recursive && sub_dir.is_match(line) {
                 println!("\x1b[92m{}\x1b[0m", line);
             } else {
                 println!("{}", line);
