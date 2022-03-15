@@ -54,6 +54,12 @@ pub struct Opt {
     pub invert: bool,
 
     #[structopt(
+        short,
+        help = "If present, will search even hidden files and folders"
+    )]
+    pub all: bool,
+
+    #[structopt(
         default_value = "./",
         help = "The path of the directory your want to look into."
     )]
@@ -89,15 +95,21 @@ pub fn get_based_on_owner(
     files: String,
     owner: String,
     invert: bool,
+    recursive: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext =
         String::from(r"^[drwxt\-]{10}[ 0-9]* *") + &*owner + r" (.|\n)*$";
     let re = Regex::new(&retext).unwrap();
+    let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
+    let sub_dir = Regex::new(&sub_dir_text).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line))
+            || (invert && !re.is_match(&line))
+            || (recursive && sub_dir.is_match(&line))
+        {
             temp_lines.push(line);
         }
     }
@@ -114,8 +126,7 @@ pub fn get_based_on_user(
     let mut temp_lines: Vec<String> = Vec::new();
     let retext = String::from(r"^[drwxt\-]") + &user + r"[drwxt\-]{6}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
-    let sub_dir_text =
-        String::from(r"^[drwxt\-]") + &user + r"[drwxt\-]{6}(.|\n)*$";
+    let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
     let sub_dir = Regex::new(&sub_dir_text).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
@@ -133,15 +144,21 @@ pub fn get_based_on_group(
     files: String,
     user: String,
     invert: bool,
+    recursive: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext =
         String::from(r"^[drwxt\-]{4}") + &user + r"[drwxt\-]{3}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
+    let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
+    let sub_dir = Regex::new(&sub_dir_text).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line))
+            || (invert && !re.is_match(&line))
+            || (recursive && sub_dir.is_match(&line))
+        {
             temp_lines.push(line);
         }
     }
@@ -152,14 +169,20 @@ pub fn get_based_on_other(
     files: String,
     user: String,
     invert: bool,
+    recursive: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext = String::from(r"^[drwxt\-]{7}") + &user + r"(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
+    let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
+    let sub_dir = Regex::new(&sub_dir_text).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line))
+            || (invert && !re.is_match(&line))
+            || (recursive && sub_dir.is_match(&line))
+        {
             temp_lines.push(line);
         }
     }

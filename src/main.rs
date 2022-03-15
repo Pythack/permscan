@@ -1,15 +1,22 @@
 use array_tool::vec::*;
 use itertools::Itertools;
+use regex::Regex;
 use structopt::StructOpt;
 
 use permscan::Opt;
 
 fn main() {
     let opt = Opt::from_args();
-    let ls_options = match opt.recursive {
-        true => "-laR",
-        false => "-la",
-    };
+    let ls_options = String::from("-l")
+        + match opt.all {
+            true => "a",
+            false => "",
+        };
+    let ls_options = ls_options
+        + match opt.recursive {
+            true => "R",
+            false => "",
+        };
     let files = permscan::run_command(
         String::from("ls"),
         String::from(ls_options),
@@ -42,6 +49,7 @@ fn main() {
                     files_owner_check,
                     owner,
                     opt.invert,
+                    opt.recursive,
                 )
                 .iter()
                 .cloned(),
@@ -51,6 +59,7 @@ fn main() {
                 files_owner_check,
                 owner,
                 opt.invert,
+                opt.recursive,
             );
             all_lines.push(owner_lines);
         }
@@ -94,6 +103,7 @@ fn main() {
                     files_group_check,
                     group,
                     opt.invert,
+                    opt.recursive,
                 )
                 .iter()
                 .cloned(),
@@ -103,6 +113,7 @@ fn main() {
                 files_group_check,
                 group,
                 opt.invert,
+                opt.recursive,
             );
             all_lines.push(user_lines);
         }
@@ -119,6 +130,7 @@ fn main() {
                     files_other_check,
                     other,
                     opt.invert,
+                    opt.recursive,
                 )
                 .iter()
                 .cloned(),
@@ -128,15 +140,21 @@ fn main() {
                 files_other_check,
                 other,
                 opt.invert,
+                opt.recursive,
             );
             all_lines.push(user_lines);
         }
     }
-
+    let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
+    let sub_dir = Regex::new(&sub_dir_text).unwrap();
     if opt.merge {
         let temp_lines: Vec<String> = temp_lines.into_iter().unique().collect();
         for line in temp_lines {
-            println!("{}", line);
+            if opt.recursive && sub_dir.is_match(&line) {
+                println!("\x1b[92m{}\x1b[0m", line);
+            } else {
+                println!("{}", line);
+            }
         }
     } else if !all_lines.is_empty() {
         let reference_lines = all_lines[0].clone();
@@ -150,7 +168,11 @@ fn main() {
         }
         let final_lines_len = final_lines.len();
         for line in &final_lines[final_lines_len - 1] {
-            println!("{}", line);
+            if opt.recursive && sub_dir.is_match(&line) {
+                println!("\x1b[92m{}\x1b[0m", line);
+            } else {
+                println!("{}", line);
+            }
         }
     }
 }
