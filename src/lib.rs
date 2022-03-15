@@ -34,12 +34,21 @@ pub struct Opt {
 
     #[structopt(
         short,
+        long,
+        help = "If present, will also search every sub-directories"
+    )]
+    pub recursive: bool,
+
+    #[structopt(
+        short,
+        long,
         help = "If present, will return the list of files that match at least one criteria, else return the list of files that match all criteria"
     )]
     pub merge: bool,
 
     #[structopt(
         short,
+        long,
         help = "If present, will return the list of files that don't match with the criteria"
     )]
     pub invert: bool,
