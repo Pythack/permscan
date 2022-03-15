@@ -2,6 +2,7 @@ target
 permscan
 
 permscan-x86_64-unknown-linux-gnu.tar.gz
+permscan-x86_64-unknown-linux-musl.tar.gz
 
 .DS_Store
 .vscode
