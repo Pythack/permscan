@@ -102,7 +102,7 @@ pub fn get_based_on_user(
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    let retext = String::from(r"^[drwxt\-]") + &user + r"(.|\n)*$";
+    let retext = String::from(r"^[drwxt\-]") + &user + r"[drwxt\-]{6}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
@@ -120,7 +120,8 @@ pub fn get_based_on_group(
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    let retext = String::from(r"^[drwxt\-]{4}") + &user + r"(.|\n)*$";
+    let retext =
+        String::from(r"^[drwxt\-]{4}") + &user + r"[drwxt\-]{3}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
