@@ -63,13 +63,22 @@ fn main() {
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_user(files_user_check, user, opt.invert)
-                    .iter()
-                    .cloned(),
+                permscan::get_based_on_user(
+                    files_user_check,
+                    user,
+                    opt.invert,
+                    opt.recursive,
+                )
+                .iter()
+                .cloned(),
             );
         } else {
-            let user_lines =
-                permscan::get_based_on_user(files_user_check, user, opt.invert);
+            let user_lines = permscan::get_based_on_user(
+                files_user_check,
+                user,
+                opt.invert,
+                opt.recursive,
+            );
             all_lines.push(user_lines);
         }
     }
