@@ -54,6 +54,12 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 * `tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz`
 * `sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin`
 
+### Linux-musl
+
+* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz`
+* `tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz`
+* `sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin`
+
 ## Building
 
 * As permscan is written in rust, you will need rust to build it. The
