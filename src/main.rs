@@ -6,9 +6,13 @@ use permscan::Opt;
 
 fn main() {
     let opt = Opt::from_args();
+    let ls_options = match opt.recursive {
+        true => "-laR",
+        false => "-la",
+    };
     let files = permscan::run_command(
         String::from("ls"),
-        String::from("-la"),
+        String::from(ls_options),
         opt.path,
     );
     let files_owner_check = files.clone();

@@ -108,14 +108,21 @@ pub fn get_based_on_user(
     files: String,
     user: String,
     invert: bool,
+    recursive: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext = String::from(r"^[drwxt\-]") + &user + r"[drwxt\-]{6}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
+    let sub_dir_text =
+        String::from(r"^[drwxt\-]") + &user + r"[drwxt\-]{6}(.|\n)*$";
+    let sub_dir = Regex::new(&sub_dir_text).unwrap();
     for line in lines.skip(1) {
         let line = String::from(line);
-        if (!invert && re.is_match(&line)) || (invert && !re.is_match(&line)) {
+        if (!invert && re.is_match(&line))
+            || (invert && !re.is_match(&line))
+            || (recursive && sub_dir.is_match(&line))
+        {
             temp_lines.push(line);
         }
     }
