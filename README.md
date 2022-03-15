@@ -23,12 +23,12 @@ FLAGS:
 
 OPTIONS:
         --group <group>    Specify permissions that the group who owns the file or directory needs to have on the item
-                           in the format ?rwx
+                           in the format /rwx
         --other <other>    Specify permissions that users who does not own the file or directory needs to have on the
-                           item in the format ?rwx
+                           item in the format /rwx
         --owner <owner>    Specify the owner of the file in the format user:group
         --user <user>      Specify permissions that the user who owns the file or directory needs to have on the item in
-                           the format ?rwx
+                           the format /rwx
 
 ARGS:
     <path>    The path of the directory your want to look into. [default: ./]
