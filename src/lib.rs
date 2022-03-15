@@ -81,7 +81,7 @@ pub fn rem_first(value: &str) -> String {
         None => String::from(""),
         Some(value) => String::from(value),
     };
-    if first_value == String::from('/') {
+    if first_value == String::from('@') {
         return String::from(chars.as_str());
     } else {
         String::from(value)
