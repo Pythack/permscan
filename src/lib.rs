@@ -55,7 +55,7 @@ pub struct Opt {
 
     #[structopt(
         short,
-        help = "If present, will search even hidden files and folders"
+        help = "If present, do not ignore entries starting with ."
     )]
     pub all: bool,
 
