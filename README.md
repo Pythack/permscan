@@ -5,19 +5,21 @@ A linux binary to filter files and directories based on permission criteria
 ## `permscan --help` output
 
 ```
-Permission scanner 1.3.3
-Scan a directory for files that match permission criteria.
-Visit https://github.com/Pythack/permscan#readme for more information.
+Permission scanner 2.0.0
+Scan a directory for files that match permission criteria. 
+Visit https://github.com/Pythack/permscan#readme for more information. 
 
 USAGE:
     permscan [FLAGS] [OPTIONS] [path]
 
 FLAGS:
-    -h, --help       Prints help information
-    -i               If present, will return the list of files that don't match with the criteria
-    -m               If present, will return the list of files that match at least one criteria, else return the list of
-                     files that match all criteria
-    -V, --version    Prints version information
+    -a                 If present, do not ignore entries starting with .
+    -h, --help         Prints help information
+    -i, --invert       If present, will return the list of files that don't match with the criteria
+    -m, --merge        If present, will return the list of files that match at least one criteria, else return the list
+                       of files that match all criteria
+    -r, --recursive    If present, will recursively traverse the folder
+    -V, --version      Prints version information
 
 OPTIONS:
         --group <group>    Specify permissions that the group who owns the file or directory needs to have on the item
@@ -39,6 +41,7 @@ For a precise guide on what the options do and how to use them, see the [wiki](h
 ## Run in Docker
 
 Run this on a machine with Docker installed and running :
+
 ```console
 docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest
 ```
