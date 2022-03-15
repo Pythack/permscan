@@ -43,7 +43,7 @@ For a precise guide on what the options do and how to use them, see the [wiki](h
 Run this on a machine with Docker installed and running :
 
 ```console
-docker run -it --rm --name permscan ghcr.io/pythack/permscan:latest
+docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 ```
 
 ## Installation
