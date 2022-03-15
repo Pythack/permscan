@@ -10,19 +10,19 @@ use structopt::StructOpt;
 pub struct Opt {
     #[structopt(
         long,
-        help = "Specify permissions that the user who owns the file or directory needs to have on the item in the format ?rwx"
+        help = "Specify permissions that the user who owns the file or directory needs to have on the item in the format /rwx"
     )]
     pub user: Option<String>,
 
     #[structopt(
         long,
-        help = "Specify permissions that the group who owns the file or directory needs to have on the item in the format ?rwx"
+        help = "Specify permissions that the group who owns the file or directory needs to have on the item in the format /rwx"
     )]
     pub group: Option<String>,
 
     #[structopt(
         long,
-        help = "Specify permissions that users who does not own the file or directory needs to have on the item in the format ?rwx"
+        help = "Specify permissions that users who does not own the file or directory needs to have on the item in the format /rwx"
     )]
     pub other: Option<String>,
 
@@ -81,7 +81,7 @@ pub fn rem_first(value: &str) -> String {
         None => String::from(""),
         Some(value) => String::from(value),
     };
-    if first_value == String::from('?') {
+    if first_value == String::from('/') {
         return String::from(chars.as_str());
     } else {
         String::from(value)
@@ -96,8 +96,9 @@ pub fn get_based_on_owner(
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    let retext =
-        String::from(r"^[drwxt\-]{10}[ 0-9]* *") + &*owner + r" (.|\n)*$";
+    let retext = String::from(r"^[dlcbps\-][rwx\-]{9}[ 0-9]* *")
+        + &*owner
+        + r" (.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
     let sub_dir = Regex::new(&sub_dir_text).unwrap();
@@ -121,7 +122,7 @@ pub fn get_based_on_user(
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    let retext = String::from(r"^[drwxt\-]") + &user + r"[drwxt\-]{6}(.|\n)*$";
+    let retext = String::from(r"^[dlcbps\-]") + &user + r"[rwx\-]{6}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
     let sub_dir = Regex::new(&sub_dir_text).unwrap();
@@ -146,7 +147,7 @@ pub fn get_based_on_group(
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext =
-        String::from(r"^[drwxt\-]{4}") + &user + r"[drwxt\-]{3}(.|\n)*$";
+        String::from(r"^[dlcbps\-][rwx\-]{3}") + &user + r"[rwx\-]{3}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
     let sub_dir = Regex::new(&sub_dir_text).unwrap();
@@ -170,7 +171,7 @@ pub fn get_based_on_other(
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    let retext = String::from(r"^[drwxt\-]{7}") + &user + r"(.|\n)*$";
+    let retext = String::from(r"^[dlcbps\-][rwx\-]{6}") + &user + r"(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
     let sub_dir = Regex::new(&sub_dir_text).unwrap();
