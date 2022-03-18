@@ -1,4 +1,4 @@
-FROM rust:1.49
+FROM rust:latest
 LABEL org.opencontainers.image.source="https://github.com/pythack/permscan"
 
 # Copying the code

@@ -1,7 +1,7 @@
 [package]
 name = "permscan"
 version = "2.0.2"
-edition = "2018"
+edition = "2021"
 [[bin]]
 name = "permscan"
 path = "./src/main.rs"
