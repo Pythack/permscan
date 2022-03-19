@@ -6,8 +6,8 @@ A linux binary to filter files and directories based on permission criteria
 
 ```
 Permission scanner 2.0.3
-Scan a directory for files that match permission criteria. 
-Visit https://github.com/Pythack/permscan#readme for more information. 
+Scan a directory for files that match permission criteria.
+Visit https://github.com/Pythack/permscan#readme for more information.
 
 USAGE:
     permscan [FLAGS] [OPTIONS] [path]
