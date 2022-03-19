@@ -25,6 +25,7 @@ fn main() {
     let files_user_check = files_owner_check.clone();
     let files_group_check = files_owner_check.clone();
     let files_other_check = files_owner_check.clone();
+    let files_type_check = files_owner_check.clone();
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
 
@@ -138,6 +139,35 @@ fn main() {
             let user_lines = permscan::get_based_on_other(
                 files_other_check,
                 other,
+                opt.invert,
+                opt.recursive,
+            );
+            all_lines.push(user_lines);
+        }
+    }
+
+    if opt.file_type.is_some() {
+        let file_type = match opt.file_type {
+            None => String::from(""),
+            Some(file_type) => {
+                permscan::rem_first(&file_type).replace('?', r"[rwx\-]")
+            }
+        };
+        if opt.merge {
+            temp_lines.extend(
+                permscan::get_based_on_type(
+                    files_type_check,
+                    file_type,
+                    opt.invert,
+                    opt.recursive,
+                )
+                .iter()
+                .cloned(),
+            );
+        } else {
+            let user_lines = permscan::get_based_on_type(
+                files_type_check,
+                file_type,
                 opt.invert,
                 opt.recursive,
             );

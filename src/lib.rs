@@ -32,6 +32,9 @@ pub struct Opt {
     )]
     pub owner: Option<String>,
 
+    #[structopt(long = "type", help = "Specify the type of the object")]
+    pub file_type: Option<String>,
+
     #[structopt(
         short,
         help = "If present, will recursively traverse the folder"
@@ -140,14 +143,14 @@ pub fn get_based_on_user(
 
 pub fn get_based_on_group(
     files: String,
-    user: String,
+    group: String,
     invert: bool,
     recursive: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
     let retext =
-        String::from(r"^[dlcbps\-][rwx\-]{3}") + &user + r"[rwx\-]{3}(.|\n)*$";
+        String::from(r"^[dlcbps\-][rwx\-]{3}") + &group + r"[rwx\-]{3}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
     let sub_dir = Regex::new(&sub_dir_text).unwrap();
@@ -165,13 +168,37 @@ pub fn get_based_on_group(
 
 pub fn get_based_on_other(
     files: String,
-    user: String,
+    other: String,
     invert: bool,
     recursive: bool,
 ) -> Vec<String> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<String> = Vec::new();
-    let retext = String::from(r"^[dlcbps\-][rwx\-]{6}") + &user + r"(.|\n)*$";
+    let retext = String::from(r"^[dlcbps\-][rwx\-]{6}") + &other + r"(.|\n)*$";
+    let re = Regex::new(&retext).unwrap();
+    let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
+    let sub_dir = Regex::new(&sub_dir_text).unwrap();
+    for line in lines.skip(1) {
+        let line = String::from(line);
+        if (!invert && re.is_match(&line))
+            || (invert && !re.is_match(&line))
+            || (recursive && sub_dir.is_match(&line))
+        {
+            temp_lines.push(line);
+        }
+    }
+    temp_lines
+}
+
+pub fn get_based_on_type(
+    files: String,
+    file_type: String,
+    invert: bool,
+    recursive: bool,
+) -> Vec<String> {
+    let lines = files.split('\n');
+    let mut temp_lines: Vec<String> = Vec::new();
+    let retext = String::from(r"^") + &file_type + r"[rwx\-]{9}(.|\n)*$";
     let re = Regex::new(&retext).unwrap();
     let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
     let sub_dir = Regex::new(&sub_dir_text).unwrap();
