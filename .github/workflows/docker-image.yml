@@ -24,11 +24,6 @@ jobs:
         docker run ghcr.io/pythack/permscan-gnu:latest
     - name: Push the permscan Docker image
       run: docker push ghcr.io/pythack/permscan-gnu:latest
-    - uses: actions/delete-package-versions@v3
-      with: 
-        package-name: 'permscan-gnu'
-        min-versions-to-keep: 1
-        token: ${{ secrets.PAT }}
   publish-permscan-image-musl:
     runs-on: ubuntu-latest
 
@@ -48,8 +43,3 @@ jobs:
         docker run ghcr.io/pythack/permscan-musl:latest
     - name: Push the permscan Docker image
       run: docker push ghcr.io/pythack/permscan-musl:latest
-    - uses: actions/delete-package-versions@v3
-      with: 
-        package-name: 'permscan-musl'
-        min-versions-to-keep: 1
-        token: ${{ secrets.PAT }}
