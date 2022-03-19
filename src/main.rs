@@ -8,7 +8,7 @@ use permscan::Opt;
 fn main() {
     let opt = Opt::from_args();
     if opt.recursive {
-        println!("Please be patient, a recursive search can take time... ");
+        println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
     }
     let ls_options = String::from("-l")
         + match opt.all {
