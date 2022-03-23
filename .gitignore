@@ -3,6 +3,9 @@ permscan
 
 permscan-x86_64-unknown-linux-gnu.tar.gz
 permscan-x86_64-unknown-linux-musl.tar.gz
+permscan-x86_64-apple-darwin.zip
+permscan-aarch64-apple-darwin.zip
+
 
 .DS_Store
 .vscode
