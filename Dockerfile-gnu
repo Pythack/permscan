@@ -11,6 +11,10 @@ RUN \
     cargo build --release &&\
     cp ./target/release/permscan /bin
 
+RUN \
+    cargo install cargo-deb &&\
+    cargo deb
+
 # Making the tar.gz file
 RUN \
     mkdir permscan-x86_64-unknown-linux-gnu &&\
