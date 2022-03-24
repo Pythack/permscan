@@ -7,7 +7,6 @@ description = "Scan a directory for files that match permission criteria."
 documentation = "https://github.com/Pythack/permscan/wiki"
 repository = "https://github.com/Pythack/permscan"
 homepage = "https://github.com/Pythack/permscan"
-readme = "./README.md"
 license = "MIT OR Apache-2.0"
 categories = ["command-line-utilities", "filesystem", ]
 
