@@ -9,7 +9,6 @@ repository = "https://github.com/Pythack/permscan"
 homepage = "https://github.com/Pythack/permscan"
 license = "MIT OR Apache-2.0"
 categories = ["command-line-utilities", "filesystem", ]
-depends = "ls"
 
 [[bin]]
 name = "permscan"
