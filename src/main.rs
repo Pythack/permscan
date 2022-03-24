@@ -29,7 +29,7 @@ fn main() {
         && opt.group.is_none()
         && opt.other.is_none()
     {
-        let lines = permscan::get_all_files(files.as_str(), opt.invert);
+        let lines = permscan::get_all_files(&files, opt.invert);
         all_lines.push(lines)
     }
 
@@ -41,7 +41,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_owner(
-                    files.as_str(),
+                    &files,
                     owner,
                     opt.invert,
                     opt.recursive,
@@ -51,7 +51,7 @@ fn main() {
             );
         } else {
             let owner_lines = permscan::get_based_on_owner(
-                files.as_str(),
+                &files,
                 owner,
                 opt.invert,
                 opt.recursive,
@@ -78,7 +78,7 @@ fn main() {
             );
         } else {
             let user_lines = permscan::get_based_on_user(
-                files.as_str(),
+                &files,
                 user,
                 opt.invert,
                 opt.recursive,
@@ -95,7 +95,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_group(
-                    files.as_str(),
+                    &files,
                     group,
                     opt.invert,
                     opt.recursive,
@@ -122,7 +122,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_other(
-                    files.as_str(),
+                    &files,
                     other,
                     opt.invert,
                     opt.recursive,
