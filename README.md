@@ -1,13 +1,13 @@
 # permscan
 
-A linux binary to filter files and directories based on permission criteria
+A linux and macOS binary to filter files and directories based on permission criteria
 
 ## `permscan --help` output
 
 ```
-Permission scanner 2.1.2
-Scan a directory for files that match permission criteria. 
-Visit https://github.com/Pythack/permscan#readme for more information. 
+Permission scanner 2.1.3
+Scan a directory for files that match permission criteria.
+Visit https://github.com/Pythack/permscan#readme for more information.
 
 USAGE:
     permscan [FLAGS] [OPTIONS] [path]
@@ -60,6 +60,23 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 * `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz`
 * `tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz`
 * `sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin`
+
+### MacOS
+
+* If you have an Apple chip, your architecture is ARM.
+* If you have an Intel chip, your architecture is x86_64.
+
+#### ARM
+
+* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip`
+* `unzip permscan-aarch64-apple-darwin.zip`
+* `sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin`
+
+#### x86_64
+
+* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip`
+* `unzip permscan-x86_64-apple-darwin.zip`
+* `sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin`
 
 ## Building
 
