@@ -21,11 +21,6 @@ fn main() {
             false => "",
         };
     let files = permscan::run_command(String::from("ls"), ls_options, opt.path);
-    let files_owner_check = files.clone();
-    let files_user_check = files_owner_check.clone();
-    let files_group_check = files_owner_check.clone();
-    let files_other_check = files_owner_check.clone();
-    let files_type_check = files_owner_check.clone();
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
 
@@ -34,7 +29,7 @@ fn main() {
         && opt.group.is_none()
         && opt.other.is_none()
     {
-        let lines = permscan::get_all_files(files, opt.invert);
+        let lines = permscan::get_all_files(files.as_str(), opt.invert);
         all_lines.push(lines)
     }
 
@@ -46,7 +41,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_owner(
-                    files_owner_check,
+                    files.as_str(),
                     owner,
                     opt.invert,
                     opt.recursive,
@@ -56,7 +51,7 @@ fn main() {
             );
         } else {
             let owner_lines = permscan::get_based_on_owner(
-                files_owner_check,
+                files.as_str(),
                 owner,
                 opt.invert,
                 opt.recursive,
@@ -73,7 +68,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_user(
-                    files_user_check,
+                    &files,
                     user,
                     opt.invert,
                     opt.recursive,
@@ -83,7 +78,7 @@ fn main() {
             );
         } else {
             let user_lines = permscan::get_based_on_user(
-                files_user_check,
+                files.as_str(),
                 user,
                 opt.invert,
                 opt.recursive,
@@ -100,7 +95,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_group(
-                    files_group_check,
+                    files.as_str(),
                     group,
                     opt.invert,
                     opt.recursive,
@@ -110,7 +105,7 @@ fn main() {
             );
         } else {
             let user_lines = permscan::get_based_on_group(
-                files_group_check,
+                &files,
                 group,
                 opt.invert,
                 opt.recursive,
@@ -127,7 +122,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_other(
-                    files_other_check,
+                    files.as_str(),
                     other,
                     opt.invert,
                     opt.recursive,
@@ -137,7 +132,7 @@ fn main() {
             );
         } else {
             let user_lines = permscan::get_based_on_other(
-                files_other_check,
+                &files,
                 other,
                 opt.invert,
                 opt.recursive,
@@ -156,7 +151,7 @@ fn main() {
         if opt.merge {
             temp_lines.extend(
                 permscan::get_based_on_type(
-                    files_type_check,
+                    &files,
                     file_type,
                     opt.invert,
                     opt.recursive,
@@ -166,7 +161,7 @@ fn main() {
             );
         } else {
             let user_lines = permscan::get_based_on_type(
-                files_type_check,
+                &files,
                 file_type,
                 opt.invert,
                 opt.recursive,
@@ -174,8 +169,7 @@ fn main() {
             all_lines.push(user_lines);
         }
     }
-    let sub_dir_text = String::from(r"^(.+)/*([^/]+)*:$");
-    let sub_dir = Regex::new(&sub_dir_text).unwrap();
+    let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
     if opt.merge {
         let temp_lines: Vec<String> = temp_lines.into_iter().unique().collect();
         for line in temp_lines {
