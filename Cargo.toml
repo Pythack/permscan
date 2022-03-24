@@ -2,11 +2,15 @@
 name = "permscan"
 version = "2.1.3"
 edition = "2021"
-authors = ["Pythack pythackcode@gmail.com"]
-description = "Scan a directory for files that match permission criteria. "
+authors = ["Pythack pythackcode@gmail.com", "gmnsii 95436780+gmnsii@users.noreply.github.com"]
+description = "Scan a directory for files that match permission criteria."
 documentation = "https://github.com/Pythack/permscan/wiki"
 repository = "https://github.com/Pythack/permscan"
 homepage = "https://github.com/Pythack/permscan"
+readme = "https://github.com/Pythack/permscan/blob/master/README.md"
+license = "MIT OR Apache-2.0"
+categories = ["command-line-utilities", "filesystem", ]
+
 [[bin]]
 name = "permscan"
 path = "./src/main.rs"
