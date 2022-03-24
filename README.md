@@ -37,7 +37,7 @@ ARGS:
 
 ## Wiki
 
-For a precise guide on what the options do and how to use them, see the [wiki](https://github.com/Pythack/permscan/wiki)
+For a precise guide on what the different arguments, options and flags do and how to use them, see the [wiki](https://github.com/Pythack/permscan/wiki)
 
 ## Run in Docker
 
