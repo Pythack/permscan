@@ -1,4 +1,5 @@
 use regex::Regex;
+use reqwest::blocking::Client;
 use std::process::Command;
 use structopt::StructOpt;
 
@@ -230,4 +231,16 @@ pub fn get_all_files(files: &str, invert: bool) -> Vec<String> {
         }
     }
     temp_lines
+}
+
+pub fn check_for_newer_version() {
+    let client = Client::new();
+    let body = client
+        .get("https://api.github.com/repos/Pythack/permscan/releases")
+        .send();
+    if let Ok(body) = body {
+        println!("{:?}", body.text());
+    } else {
+        println!("Ok");
+    }
 }
