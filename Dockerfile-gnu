@@ -15,6 +15,8 @@ RUN \
     cargo install cargo-deb &&\
     cargo deb
 
+RUN cp ./target/debian/permscan.deb ./
+
 # Making the tar.gz file
 RUN \
     mkdir permscan-x86_64-unknown-linux-gnu &&\
