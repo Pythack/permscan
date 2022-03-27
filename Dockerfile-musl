@@ -8,6 +8,7 @@ RUN \
     apk update &&\
     apk add rustup &&\
     apk add pkgconfig &&\
+    apk add openssl-dev &&\
     apk add build-base &&\
     rustup-init -y
 
