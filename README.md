@@ -14,7 +14,7 @@ USAGE:
 
 FLAGS:
     -a               If present, permscan will parse hidden files as well
-    -u, --update     If present, permscan will parse hidden files as well
+    -u, --update     Check for a newer version of permscan
     -h, --help       Prints help information
     -i               If present, will return the list of files that don't match with the criteria
     -m               If present, will return the list of files that match at least one criteria, else return the list of
