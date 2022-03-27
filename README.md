@@ -5,7 +5,7 @@ A linux and macOS binary to filter files and directories based on permission cri
 ## `permscan --help` output
 
 ```
-Permission scanner 2.1.1
+Permission scanner 2.2.1
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan#readme for more information.
 
@@ -14,6 +14,7 @@ USAGE:
 
 FLAGS:
     -a               If present, permscan will parse hidden files as well
+    -u, --update     Check for a newer version of permscan
     -h, --help       Prints help information
     -i               If present, will return the list of files that don't match with the criteria
     -m               If present, will return the list of files that match at least one criteria, else return the list of

@@ -1,6 +1,6 @@
 [package]
 name = "permscan"
-version = "2.1.1"
+version = "2.2.1"
 edition = "2021"
 authors = ["Pythack pythackcode@gmail.com", "gmnsii 95436780+gmnsii@users.noreply.github.com"]
 description = "Scan a directory for files that match permission criteria."
@@ -24,3 +24,5 @@ structopt = { version = "0.3.26", default-features = false }
 regex = "1.5.5"
 itertools = "0.10.3"
 array_tool = "1.0.3"
+reqwest = { version = "0.11.10", features = ["json", "blocking"] }
+serde_json = "1.0.79"
