@@ -58,6 +58,7 @@ pub struct Opt {
     pub all: bool,
 
     #[structopt(
+        short = "u",
         long = "update",
         help = "If present, permscan will parse hidden files as well"
     )]
