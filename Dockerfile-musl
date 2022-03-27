@@ -7,6 +7,7 @@ LABEL org.opencontainers.image.source="https://github.com/pythack/permscan"
 RUN \
     apk update &&\
     apk add rustup &&\
+    apk add pkgconfig &&\
     apk add build-base &&\
     rustup-init -y
 
