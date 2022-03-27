@@ -60,11 +60,11 @@ pub struct Opt {
 
     #[structopt(
         default_value = "./",
-        help = "The path of the directory your want to look into."
+        help = "The path of the directory your want to look into"
     )]
     pub path: String,
 
-    #[structopt(long, help = "Check for newer versions.")]
+    #[structopt(long, help = "Check for newer versions of permscan")]
     pub update: bool,
 }
 
