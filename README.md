@@ -1,6 +1,6 @@
 # permscan
 
-A linux and macOS binary to filter files and directories based on permission criteria
+A linux and macOS binary to filter file system items based on permission criteria
 
 ## `permscan --help` output
 
