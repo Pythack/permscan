@@ -6,7 +6,7 @@ use subprocess::Exec;
 #[path = "./misc.rs"]
 mod misc;
 
-const VERSION: &str = "v2.1.1"; //TODO; re
+const VERSION: &str = "v2.2.2";
 
 pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
     println!(
