@@ -14,7 +14,6 @@ pub fn check_for_newer_version() {
                 serde_json::from_str(&response).expect("Failed to parse");
             let latest = json.as_array().unwrap();
             if !latest.is_empty() {
-                println!("{}", latest[0]["tag_name"]);
                 if latest[0]["tag_name"] != VERSION {
                     println!("\x1b[93mNew version available! Visit this url: {}\x1b[0m", latest[0]["url"]);
                 } else {
