@@ -236,7 +236,7 @@ pub fn get_all_files(files: &str, invert: bool) -> Vec<String> {
 pub fn check_for_newer_version() {
     let client = Client::new();
     let body = client
-        .get("https://api.github.com/repos/Pythack/permscan/releases")
+        .get("https://api.github.com/repos/Pythack/permscan/releases").header(USER_AGENT, "permscan update checker 1.0")
         .send();
     if let Ok(body) = body {
         println!("{:?}", body.text());
