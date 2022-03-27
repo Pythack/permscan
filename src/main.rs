@@ -13,14 +13,21 @@ use opt::Opt;
 
 fn main() {
     let exit_code = permscan();
+    if exit_code != 0 {
+        println!("permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki", exit_code)
+    }
     std::process::exit(exit_code)
 }
 
 fn permscan() -> i32 {
     let opt = Opt::from_args();
     if opt.check_update {
-        if let Err(_e) = updates::check_for_newer_version() {
-            return 2;
+        if let Err(e) = updates::check_for_newer_version() {
+            match &*e.to_string() {
+                "version" => return 22,
+                "connection" => return 60,
+                _ => return -1,
+            }
         }
         return 0; // Successful exit code
     }
@@ -30,7 +37,7 @@ fn permscan() -> i32 {
             "\x1b[91mpermscan: {}: No such file or directory\x1b[0m",
             &opt.path
         );
-        return 1;
+        return 2;
     }
     if opt.recursive {
         println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");

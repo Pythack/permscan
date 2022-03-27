@@ -3,10 +3,10 @@ use std::error::Error;
 use std::io::{self, stdout, Write};
 use subprocess::Exec;
 
-const VERSION: &str = "v2.2.1";
-
 #[path = "./misc.rs"]
 mod misc;
+
+const VERSION: &str = "v2.1.1"; //TODO; re
 
 pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
     println!(
@@ -21,49 +21,56 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
         .get("https://api.github.com/repos/Pythack/permscan/releases")
         .header("User-Agent", "permscan update checker 1.0")
         .send();
-    if let Ok(body) = body {
-        if let Ok(response) = body.text() {
-            let json: serde_json::Value =
-                serde_json::from_str(&response).expect("Failed to parse");
-            let latest = json.as_array().unwrap();
-            if !latest.is_empty() {
-                println!("{}", latest[0]["tag_name"]);
-                if latest[0]["tag_name"] != VERSION {
-                    println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap(), "v"), latest[0]["html_url"].as_str().unwrap());
-                    print!("Do you want to update ? (y/*) ");
-                    let _ = stdout().flush();
-                    let mut answer = String::new();
-                    io::stdin()
-                        .read_line(&mut answer)
-                        .expect("Failed to read input");
-                    if let Some('\n') = answer.chars().next_back() {
-                        answer.pop();
-                    }
-                    if let Some('\r') = answer.chars().next_back() {
-                        answer.pop();
-                    }
-                    if answer.to_lowercase() == "y" {
-                        let mut version = String::new();
-                        print!("What version (linux-gnu, linux-musl, macos-arm, macos-x86_64) ");
-                        let _ = stdout().flush();
+    match body {
+        Ok(body) => {
+            if let Ok(response) = body.text() {
+                let json: serde_json::Value =
+                    serde_json::from_str(&response).expect("Failed to parse");
+                let latest = json.as_array().unwrap();
+                if !latest.is_empty() {
+                    println!("{}", latest[0]["tag_name"]);
+                    if latest[0]["tag_name"] != VERSION {
+                        println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap(), "v"), latest[0]["html_url"].as_str().unwrap());
+                        print!("Do you want to update ? (y/*) ");
+                        let _flush = stdout().flush();
+                        let mut answer = String::new();
                         io::stdin()
-                            .read_line(&mut version)
+                            .read_line(&mut answer)
                             .expect("Failed to read input");
-                        if let Some('\n') = version.chars().next_back() {
-                            version.pop();
+                        if let Some('\n') = answer.chars().next_back() {
+                            answer.pop();
                         }
-                        if let Some('\r') = version.chars().next_back() {
-                            version.pop();
+                        if let Some('\r') = answer.chars().next_back() {
+                            answer.pop();
                         }
-                        if let Err(e) = update(&version) {
-                            eprintln!("{}", e);
-                            return Err(e);
+                        if answer.to_lowercase() == "y" {
+                            let mut version = String::new();
+                            print!("What version (linux-gnu, linux-musl, macos-arm, macos-x86_64) ");
+                            let _flush = stdout().flush();
+                            io::stdin()
+                                .read_line(&mut version)
+                                .expect("Failed to read input");
+                            if let Some('\n') = version.chars().next_back() {
+                                version.pop();
+                            }
+                            if let Some('\r') = version.chars().next_back() {
+                                version.pop();
+                            }
+                            if let Err(e) = update(&version) {
+                                eprintln!("\x1b[91m{}\x1b[0m", e);
+                                return Err("version".into());
+                            }
                         }
+                    } else {
+                        println!("\r\x1b[92mYou have the latest version! Thank you for using permscan!\x1b[0m");
                     }
-                } else {
-                    println!("\r\x1b[92mYou have the latest version! Thank you for using permscan!\x1b[0m");
                 }
             }
+        }
+
+        _ => {
+            eprintln!("\n\x1b[91mpermscan: update: failed to connect to the github api. are you connected to the internet ?\x1b[0m");
+            return Err("connection".into());
         }
     }
     Ok(())
