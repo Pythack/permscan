@@ -7,6 +7,7 @@ use structopt::StructOpt;
 mod get_files;
 mod misc;
 mod opt;
+mod updates;
 
 use opt::Opt;
 
@@ -18,7 +19,9 @@ fn main() {
 fn permscan() -> i32 {
     let opt = Opt::from_args();
     if opt.check_update {
-        misc::check_for_newer_version();
+        if let Err(_e) = updates::check_for_newer_version() {
+            return 2;
+        }
         return 0; // Successful exit code
     }
     let path_exists = Path::new(&opt.path).exists();
@@ -27,7 +30,7 @@ fn permscan() -> i32 {
             "\x1b[91mpermscan: {}: No such file or directory\x1b[0m",
             &opt.path
         );
-        return 2;
+        return 1;
     }
     if opt.recursive {
         println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
