@@ -7,7 +7,9 @@ use permscan::Opt;
 
 fn main() {
     let opt = Opt::from_args();
-    permscan::check_for_newer_version();
+    if opt.update {
+        permscan::check_for_newer_version();
+    }
     if opt.recursive {
         println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
     }

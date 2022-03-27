@@ -1,5 +1,6 @@
 use regex::Regex;
 use reqwest::blocking::Client;
+use std::collections::HashMap;
 use std::process::Command;
 use structopt::StructOpt;
 
@@ -65,6 +66,9 @@ pub struct Opt {
         help = "The path of the directory your want to look into."
     )]
     pub path: String,
+
+    #[structopt(long, help = "Check for newer versions.")]
+    pub update: bool,
 }
 pub fn run_command(command: String, args: String, path: String) -> String {
     let output = Command::new(command)
@@ -236,11 +240,22 @@ pub fn get_all_files(files: &str, invert: bool) -> Vec<String> {
 pub fn check_for_newer_version() {
     let client = Client::new();
     let body = client
-        .get("https://api.github.com/repos/Pythack/permscan/releases").header(USER_AGENT, "permscan update checker 1.0")
+        .get("https://api.github.com/repos/Pythack/permscan/releases")
+        .header("User-Agent", "permscan update checker 1.0")
         .send();
     if let Ok(body) = body {
-        println!("{:?}", body.text());
-    } else {
-        println!("Ok");
+        if let Ok(response) = body.text() {
+            let json: serde_json::Value =
+                serde_json::from_str(&response).expect("Failed to parse");
+            let latest = json.as_array().unwrap();
+            if !latest.is_empty() {
+                println!("{}", latest[0]["tag_name"]);
+                if latest[0]["tag_name"] != "v2.1.0" {
+                    println!("\x1b[93mNew version available! Visit this url: {}\x1b[0m", latest[0]["url"]);
+                } else {
+                    println!("You have the latest version!");
+                }
+            }
+        }
     }
 }
