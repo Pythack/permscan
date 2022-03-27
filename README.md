@@ -5,7 +5,7 @@ A linux and macOS binary to filter file system items based on permission criteri
 ## `permscan --help` output
 
 ```
-Permission scanner 2.2.3
+Permission scanner 2.2.4
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan#readme for more information.
 
