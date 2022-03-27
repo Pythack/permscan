@@ -1,6 +1,6 @@
 use std::process::Command;
 
-#[allow(dead_code)] // For some reason, i get a dead code warning for
+#[allow(dead_code)] // For some reason, I get a dead code warning for
                     // run_command, despite it clearly being used.
 pub fn run_command(command: String, args: String, path: String) -> String {
     let output = Command::new(command)
