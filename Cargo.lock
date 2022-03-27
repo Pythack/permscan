@@ -547,6 +547,7 @@ dependencies = [
  "itertools",
  "regex",
  "reqwest",
+ "serde_json",
  "structopt",
  "tokio",
 ]
