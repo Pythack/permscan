@@ -1,4 +1,6 @@
 use reqwest::blocking::Client;
+use std::io;
+use std::io::prelude::*;
 use std::process::Command;
 
 const VERSION: &str = "v2.2.1";
@@ -30,6 +32,13 @@ pub fn rem_first(value: &str, first_char: &str) -> String {
 }
 
 pub fn check_for_newer_version() {
+    println!(
+        "\x1b[94mCurrent version: {}\x1b[0m",
+        rem_first(VERSION, "v")
+    );
+    print!("Checking latest version on GitHub... ");
+    let _flush = io::stdout().flush();
+
     let client = Client::new();
     let body = client
         .get("https://api.github.com/repos/Pythack/permscan/releases")
@@ -42,9 +51,9 @@ pub fn check_for_newer_version() {
             let latest = json.as_array().unwrap();
             if !latest.is_empty() {
                 if latest[0]["tag_name"] != VERSION {
-                    println!("\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", rem_first(latest[0]["tag_name"].as_str().unwrap(), "v"), latest[0]["html_url"].as_str().unwrap());
+                    println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", rem_first(latest[0]["tag_name"].as_str().unwrap(), "v"), latest[0]["html_url"].as_str().unwrap());
                 } else {
-                    println!("\x1b[92mYou have the latest version!\x1b[0m");
+                    println!("\r\x1b[92mYou have the latest version! Thank you for using permscan!\x1b[0m");
                 }
             }
         }
