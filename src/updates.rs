@@ -105,7 +105,7 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         "macos-arm" => {
-            Exec::shell("wget https://github.com/Pythack/permscan/releases/download/latest/permscan-aarch64-apple-darwin.zip").join()?;
+            Exec::shell("wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip").join()?;
             Exec::shell("unzip permscan-aarch64-apple-darwin.zip").join()?;
             Exec::shell(
                 "sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin",
