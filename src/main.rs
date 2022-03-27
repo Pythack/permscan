@@ -14,7 +14,7 @@ use opt::Opt;
 fn main() {
     let exit_code = permscan();
     if exit_code != 0 {
-        println!("permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki", exit_code)
+        println!("permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes", exit_code)
     }
     std::process::exit(exit_code)
 }
