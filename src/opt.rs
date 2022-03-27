@@ -65,6 +65,13 @@ pub struct Opt {
     pub check_update: bool,
 
     #[structopt(
+        short = "e",
+        long = "exit-info",
+        help = "If present, print exit code"
+    )]
+    pub exit_info: bool,
+
+    #[structopt(
         default_value = "./",
         help = "The path of the directory your want to look into."
     )]
