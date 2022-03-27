@@ -23,7 +23,10 @@ fn get_files() -> i32 {
     }
     let path_exists = Path::new(&opt.path).exists();
     if !path_exists {
-        println!("permscan: {}: No such file or directory", &opt.path);
+        println!(
+            "\x1b[91mpermscan: {}: No such file or directory\x1b[0m",
+            &opt.path
+        );
         return 2;
     }
     if opt.recursive {
