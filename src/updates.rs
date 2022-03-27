@@ -105,7 +105,7 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         "macos-arm" => {
-            Exec::shell("wget https://github.com/Pythack/permscan/releases/download/v2.1.1/permscan-aarch64-apple-darwin.zip").join()?;
+            Exec::shell("wget https://github.com/Pythack/permscan/releases/download/latest/permscan-aarch64-apple-darwin.zip").join()?;
             Exec::shell("unzip permscan-aarch64-apple-darwin.zip").join()?;
             Exec::shell(
                 "sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin",
@@ -113,6 +113,7 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             .join()?;
             Exec::shell("rm -rf permscan-aarch64-apple-darwin.zip").join()?;
             Exec::shell("rm -rf permscan-aarch64-apple-darwin").join()?;
+            Exec::shell("rm -rf __MACOSX").join()?;
             Ok(())
         }
         "macos-x86_64" => {
@@ -124,6 +125,7 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             .join()?;
             Exec::shell("rm -rf permscan-x86_64-apple-darwin.zip").join()?;
             Exec::shell("rm -rf permscan-x86_64-apple-darwin").join()?;
+            Exec::shell("rm -rf __MACOSX").join()?;
             Ok(())
         }
         _ => {
