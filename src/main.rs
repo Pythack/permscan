@@ -6,7 +6,6 @@ use structopt::StructOpt;
 mod get_files;
 mod misc;
 mod opt;
-mod updates;
 
 use opt::Opt;
 
@@ -18,7 +17,7 @@ fn main() {
 fn get_files() -> i32 {
     let opt = Opt::from_args();
     if opt.check_update {
-        updates::check_for_newer_version();
+        misc::check_for_newer_version();
         return 0; // Successful exit code
     }
     if opt.recursive {
@@ -77,7 +76,7 @@ fn get_files() -> i32 {
     if opt.user.is_some() {
         let user = match opt.user {
             None => String::from(""),
-            Some(user) => misc::rem_first(&user).replace('?', r"[rwx\-]"),
+            Some(user) => misc::rem_first(&user, "@").replace('?', r"[rwx\-]"),
         };
         if opt.merge {
             temp_lines.extend(
@@ -104,7 +103,9 @@ fn get_files() -> i32 {
     if opt.group.is_some() {
         let group = match opt.group {
             None => String::from(""),
-            Some(group) => misc::rem_first(&group).replace('?', r"[rwx\-]"),
+            Some(group) => {
+                misc::rem_first(&group, "@").replace('?', r"[rwx\-]")
+            }
         };
         if opt.merge {
             temp_lines.extend(
@@ -131,7 +132,9 @@ fn get_files() -> i32 {
     if opt.other.is_some() {
         let other = match opt.other {
             None => String::from(""),
-            Some(other) => misc::rem_first(&other).replace('?', r"[rwx\-]"),
+            Some(other) => {
+                misc::rem_first(&other, "@").replace('?', r"[rwx\-]")
+            }
         };
         if opt.merge {
             temp_lines.extend(
@@ -159,7 +162,7 @@ fn get_files() -> i32 {
         let file_type = match opt.file_type {
             None => String::from(""),
             Some(file_type) => {
-                misc::rem_first(&file_type).replace('?', r"[rwx\-]")
+                misc::rem_first(&file_type, "@").replace('?', r"[rwx\-]")
             }
         };
         if opt.merge {
