@@ -60,6 +60,12 @@ pub struct Opt {
     pub all: bool,
 
     #[structopt(
+        long = "update",
+        help = "If present, permscan will parse hidden files as well"
+    )]
+    pub check_update: bool,
+
+    #[structopt(
         default_value = "./",
         help = "The path of the directory your want to look into."
     )]

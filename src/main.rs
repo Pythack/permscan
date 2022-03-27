@@ -8,8 +8,16 @@ use permscan::Opt;
 mod updates;
 
 fn main() {
+    let exit_code = permscan();
+    std::process::exit(exit_code)
+}
+
+fn permscan() -> i32 {
     let opt = Opt::from_args();
-    updates::check_for_newer_version();
+    if opt.check_update {
+        updates::check_for_newer_version();
+        return 0; // Successful exit code
+    }
     if opt.recursive {
         println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
     }
@@ -201,4 +209,5 @@ fn main() {
             }
         }
     }
+    0 // Successful exit code
 }
