@@ -11,11 +11,11 @@ mod opt;
 use opt::Opt;
 
 fn main() {
-    let exit_code = get_files();
+    let exit_code = permscan();
     std::process::exit(exit_code)
 }
 
-fn get_files() -> i32 {
+fn permscan() -> i32 {
     let opt = Opt::from_args();
     if opt.check_update {
         misc::check_for_newer_version();
