@@ -1,6 +1,6 @@
 use reqwest::blocking::Client;
 
-const VERSION: &str = "v2.1.1";
+const VERSION: &str = "v2.2.1";
 
 pub fn check_for_newer_version() {
     let client = Client::new();
