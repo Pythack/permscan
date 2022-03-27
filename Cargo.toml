@@ -8,7 +8,7 @@ documentation = "https://github.com/Pythack/permscan/wiki"
 repository = "https://github.com/Pythack/permscan"
 homepage = "https://github.com/Pythack/permscan"
 license = "MIT OR Apache-2.0"
-categories = ["command-line-utilities", "filesystem", ]
+categories = ["command-line-utilities", "filesystem"]
 
 [[bin]]
 name = "permscan"
