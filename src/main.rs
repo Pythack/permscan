@@ -1,6 +1,7 @@
 use array_tool::vec::*;
 use itertools::Itertools;
 use regex::Regex;
+use std::path::Path;
 use structopt::StructOpt;
 
 mod get_files;
@@ -19,6 +20,11 @@ fn get_files() -> i32 {
     if opt.check_update {
         misc::check_for_newer_version();
         return 0; // Successful exit code
+    }
+    let path_exists = Path::new(&opt.path).exists();
+    if !path_exists {
+        println!("permscan: {}: No such file or directory", &opt.path);
+        return 2;
     }
     if opt.recursive {
         println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
