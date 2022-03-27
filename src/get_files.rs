@@ -1,6 +1,5 @@
 use regex::Regex;
 use reqwest::blocking::Client;
-use std::collections::HashMap;
 use std::process::Command;
 use structopt::StructOpt;
 

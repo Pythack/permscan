@@ -3,12 +3,23 @@ use itertools::Itertools;
 use regex::Regex;
 use structopt::StructOpt;
 
-use permscan::Opt;
+mod get_files;
+mod misc;
+mod opt;
+mod updates;
+
+use opt::Opt;
 
 fn main() {
+    let exit_code = get_files();
+    std::process::exit(exit_code)
+}
+
+fn get_files() -> i32 {
     let opt = Opt::from_args();
-    if opt.update {
-        permscan::check_for_newer_version();
+    if opt.check_update {
+        updates::check_for_newer_version();
+        return 0; // Successful exit code
     }
     if opt.recursive {
         println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
@@ -23,7 +34,7 @@ fn main() {
             true => "R",
             false => "",
         };
-    let files = permscan::run_command(String::from("ls"), ls_options, opt.path);
+    let files = misc::run_command(String::from("ls"), ls_options, opt.path);
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
 
@@ -32,7 +43,7 @@ fn main() {
         && opt.group.is_none()
         && opt.other.is_none()
     {
-        let lines = permscan::get_all_files(&files, opt.invert);
+        let lines = get_files::get_all_files(&files, opt.invert);
         all_lines.push(lines)
     }
 
@@ -43,7 +54,7 @@ fn main() {
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_owner(
+                get_files::get_based_on_owner(
                     &files,
                     owner,
                     opt.invert,
@@ -53,7 +64,7 @@ fn main() {
                 .cloned(),
             );
         } else {
-            let owner_lines = permscan::get_based_on_owner(
+            let owner_lines = get_files::get_based_on_owner(
                 &files,
                 owner,
                 opt.invert,
@@ -66,11 +77,11 @@ fn main() {
     if opt.user.is_some() {
         let user = match opt.user {
             None => String::from(""),
-            Some(user) => permscan::rem_first(&user).replace('?', r"[rwx\-]"),
+            Some(user) => misc::rem_first(&user).replace('?', r"[rwx\-]"),
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_user(
+                get_files::get_based_on_user(
                     &files,
                     user,
                     opt.invert,
@@ -80,7 +91,7 @@ fn main() {
                 .cloned(),
             );
         } else {
-            let user_lines = permscan::get_based_on_user(
+            let user_lines = get_files::get_based_on_user(
                 &files,
                 user,
                 opt.invert,
@@ -93,11 +104,11 @@ fn main() {
     if opt.group.is_some() {
         let group = match opt.group {
             None => String::from(""),
-            Some(group) => permscan::rem_first(&group).replace('?', r"[rwx\-]"),
+            Some(group) => misc::rem_first(&group).replace('?', r"[rwx\-]"),
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_group(
+                get_files::get_based_on_group(
                     &files,
                     group,
                     opt.invert,
@@ -107,7 +118,7 @@ fn main() {
                 .cloned(),
             );
         } else {
-            let user_lines = permscan::get_based_on_group(
+            let user_lines = get_files::get_based_on_group(
                 &files,
                 group,
                 opt.invert,
@@ -120,11 +131,11 @@ fn main() {
     if opt.other.is_some() {
         let other = match opt.other {
             None => String::from(""),
-            Some(other) => permscan::rem_first(&other).replace('?', r"[rwx\-]"),
+            Some(other) => misc::rem_first(&other).replace('?', r"[rwx\-]"),
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_other(
+                get_files::get_based_on_other(
                     &files,
                     other,
                     opt.invert,
@@ -134,7 +145,7 @@ fn main() {
                 .cloned(),
             );
         } else {
-            let user_lines = permscan::get_based_on_other(
+            let user_lines = get_files::get_based_on_other(
                 &files,
                 other,
                 opt.invert,
@@ -148,12 +159,12 @@ fn main() {
         let file_type = match opt.file_type {
             None => String::from(""),
             Some(file_type) => {
-                permscan::rem_first(&file_type).replace('?', r"[rwx\-]")
+                misc::rem_first(&file_type).replace('?', r"[rwx\-]")
             }
         };
         if opt.merge {
             temp_lines.extend(
-                permscan::get_based_on_type(
+                get_files::get_based_on_type(
                     &files,
                     file_type,
                     opt.invert,
@@ -163,7 +174,7 @@ fn main() {
                 .cloned(),
             );
         } else {
-            let user_lines = permscan::get_based_on_type(
+            let user_lines = get_files::get_based_on_type(
                 &files,
                 file_type,
                 opt.invert,
@@ -201,4 +212,5 @@ fn main() {
             }
         }
     }
+    0 // Successful exit code
 }
