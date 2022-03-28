@@ -39,7 +39,7 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
                             .expect("Failed to read input");
                         if answer.to_lowercase().trim() == "y" {
                             let mut version = String::new();
-                            print!("What version (linux-gnu, linux-musl, macos-arm, macos-x86_64) ");
+                            print!("What version of permscan do you need ? (1, 2, 3, 4) \n1. linux-gnu\n2. linux-musl\n3. macos-arm\n4. macos-x86_64\n");
                             let _flush = stdout().flush();
                             io::stdin()
                                 .read_line(&mut version)
