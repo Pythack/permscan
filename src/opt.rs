@@ -35,26 +35,23 @@ pub struct Opt {
 
     #[structopt(
         short,
-        help = "If present, will recursively traverse the folder"
+        help = "If present, permscan will recursively traverse the folder"
     )]
     pub recursive: bool,
 
     #[structopt(
         short,
-        help = "If present, will return the list of files that match at least one criteria, else return the list of files that match all criteria"
+        help = "Return files that match at least one criteria, instead of those that match all criteria"
     )]
     pub merge: bool,
 
     #[structopt(
         short,
-        help = "If present, will return the list of files that don't match with the criteria"
+        help = "Return the list of files that don't match with the criteria"
     )]
     pub invert: bool,
 
-    #[structopt(
-        short,
-        help = "If present, permscan will parse hidden files as well"
-    )]
+    #[structopt(short, help = "Parse hidden files as well")]
     pub all: bool,
 
     #[structopt(
@@ -64,11 +61,7 @@ pub struct Opt {
     )]
     pub check_update: bool,
 
-    #[structopt(
-        short = "e",
-        long = "exit-info",
-        help = "If present, print exit code"
-    )]
+    #[structopt(short = "e", long = "exit-info", help = "Show exit code")]
     pub exit_info: bool,
 
     #[structopt(
