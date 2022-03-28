@@ -12,17 +12,21 @@ mod updates;
 use opt::Opt;
 
 fn main() {
-    let opt = Opt::from_args();
-    let exit_info: bool = opt.exit_info;
-    let exit_code = permscan(opt);
-    if exit_info {
-        if exit_code != 0 {
-            println!("permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes", exit_code)
-        } else {
-            println!("permscan: process successfully exited with exit code 0")
+    let exit_code;
+    {
+        let opt = Opt::from_args();
+        let exit_info: bool = opt.exit_info;
+        exit_code = permscan(opt);
+        if exit_info {
+            if exit_code != 0 {
+                println!("permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes", exit_code)
+            } else {
+                println!(
+                    "permscan: process successfully exited with exit code 0"
+                )
+            }
         }
     }
-
     std::process::exit(exit_code)
 }
 
