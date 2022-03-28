@@ -56,9 +56,11 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
 ```
+
 ```
 tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
 ```
+
 ```
 sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
 ```
@@ -68,9 +70,11 @@ sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
 ```
+
 ```
 tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
 ```
+
 ```
 sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
 ```
@@ -85,9 +89,11 @@ sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip
 ```
+
 ```
 unzip permscan-aarch64-apple-darwin.zip
 ```
+
 ```
 sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
 ```
@@ -97,9 +103,11 @@ sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip
 ```
+
 ```
 unzip permscan-x86_64-apple-darwin.zip
 ```
+
 ```
 sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
 ```
@@ -114,9 +122,11 @@ sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
   ```
   git clone https://github.com/Pythack/permscan
   ```
+
   ```
   cd permscan
   ```
+
   ```
   cargo build --release
   ```
