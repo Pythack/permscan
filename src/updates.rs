@@ -37,26 +37,17 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
                         io::stdin()
                             .read_line(&mut answer)
                             .expect("Failed to read input");
-                        if let Some('\n') = answer.chars().next_back() {
-                            answer.pop();
-                        }
-                        if let Some('\r') = answer.chars().next_back() {
-                            answer.pop();
-                        }
-                        if answer.to_lowercase() == "y" {
+                        if answer.to_lowercase().trim() == "y" {
                             let mut version = String::new();
                             print!("What version (linux-gnu, linux-musl, macos-arm, macos-x86_64) ");
                             let _flush = stdout().flush();
                             io::stdin()
                                 .read_line(&mut version)
                                 .expect("Failed to read input");
-                            if let Some('\n') = version.chars().next_back() {
-                                version.pop();
-                            }
-                            if let Some('\r') = version.chars().next_back() {
-                                version.pop();
-                            }
-                            if let Err(e) = update(&version) {
+
+                            if let Err(e) =
+                                update(version.to_lowercase().trim())
+                            {
                                 eprintln!("\x1b[91m{}\x1b[0m", e);
                                 return Err("version".into());
                             }
