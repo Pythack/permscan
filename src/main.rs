@@ -19,10 +19,10 @@ fn main() {
         exit_code = permscan(opt);
         if exit_info {
             if exit_code != 0 {
-                println!("permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes", exit_code)
+                println!("\x1b[91mpermscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes\x1b[0m", exit_code)
             } else {
                 println!(
-                    "permscan: process successfully exited with exit code 0"
+                    "\x1b[92mpermscan: process successfully exited with exit code 0\x1b[0m"
                 )
             }
         }
