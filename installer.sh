@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-echo "WHat version of pemscan do you need ? (linux-gnu, linux-musl macos-arm, macos-w86_64)"
+echo "What version of permscan do you need ? (linux-gnu, linux-musl macos-arm, macos-w86_64)"
 read version
 if [ $version = "linux-gnu" ]; then
     wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
