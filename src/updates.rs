@@ -6,13 +6,10 @@ use subprocess::Exec;
 #[path = "./misc.rs"]
 mod misc;
 
-const VERSION: &str = "v2.2.6";
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
-    println!(
-        "\x1b[94mCurrent version: {}\x1b[0m",
-        misc::rem_first(VERSION, "v")
-    );
+    println!("\x1b[94mCurrent version: {}\x1b[0m", VERSION);
     print!("Checking latest version on GitHub... ");
     let _flush = io::stdout().flush();
 
@@ -28,7 +25,11 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
                     serde_json::from_str(&response).expect("Failed to parse");
                 let latest = json.as_array().unwrap();
                 if !latest.is_empty() {
-                    if latest[0]["tag_name"] != VERSION {
+                    if misc::rem_first(
+                        latest[0]["tag_name"].as_str().unwrap(),
+                        "v",
+                    ) != VERSION
+                    {
                         println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap(), "v"), latest[0]["html_url"].as_str().unwrap());
                         print!("Do you want to update ? (y/*) ");
                         let _flush = stdout().flush();
