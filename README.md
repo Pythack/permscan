@@ -2,10 +2,10 @@
 
 A linux and macOS binary to filter file system items based on permission criteria
 
-## `permscan --help` output
+## Help
 
 ```
-Permission scanner 2.2.5
+Permission scanner 2.2.6
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan#readme for more information.
 
@@ -53,15 +53,27 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 
 ### GNU/Linux
 
-* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz`
-* `tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz`
-* `sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin`
+```
+wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
+```
+```
+tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
+```
+```
+sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
+```
 
 ### Linux-musl
 
-* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz`
-* `tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz`
-* `sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin`
+```
+wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
+```
+```
+tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
+```
+```
+sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
+```
 
 ### MacOS
 
@@ -70,15 +82,27 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 
 #### ARM
 
-* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip`
-* `unzip permscan-aarch64-apple-darwin.zip`
-* `sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin`
+```
+wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip
+```
+```
+unzip permscan-aarch64-apple-darwin.zip
+```
+```
+sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
+```
 
 #### x86_64
 
-* `wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip`
-* `unzip permscan-x86_64-apple-darwin.zip`
-* `sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin`
+```
+wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip
+```
+```
+unzip permscan-x86_64-apple-darwin.zip
+```
+```
+sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
+```
 
 ## Building
 
@@ -87,9 +111,15 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 
 * To build :
 
-  * `git clone https://github.com/Pythack/permscan`
-  * `cd permscan`
-  * `cargo build --release`
+  ```
+  git clone https://github.com/Pythack/permscan
+  ```
+  ```
+  cd permscan
+  ```
+  ```
+  cargo build --release
+  ```
 
 ## License
 
