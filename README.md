@@ -51,7 +51,23 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 
 ## Installation
 
-### GNU/Linux
+### Using our installer
+
+```
+wget https://raw.githubusercontent.com/Pythack/permscan/master/installer.sh
+```
+
+```
+chmod +x ./installer.sh
+```
+
+```
+./installer.sh
+```
+
+### Manually
+
+#### GNU/Linux
 
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
@@ -65,7 +81,7 @@ tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
 sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
 ```
 
-### Linux-musl
+#### Linux-musl
 
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
@@ -79,12 +95,12 @@ tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
 sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
 ```
 
-### MacOS
+#### MacOS
 
 * If you have an Apple chip, your architecture is ARM.
 * If you have an Intel chip, your architecture is x86_64.
 
-#### ARM
+##### ARM
 
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip
@@ -98,7 +114,7 @@ unzip permscan-aarch64-apple-darwin.zip
 sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
 ```
 
-#### x86_64
+##### x86_64
 
 ```
 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip
