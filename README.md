@@ -54,7 +54,7 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 ### Using our installer
 
 ```
-wget https://raw.githubusercontent.com/Pythack/permscan/master/installer.sh
+wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh
 ```
 
 ```
