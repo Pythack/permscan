@@ -34,6 +34,6 @@ elif [ "$version" = "4" ]; then
     rm -rf __MACOSX
 else
     echo "permscan: installer: unknown version"
-    exit 1    
-fi 
+    exit 1
+fi
 rm -f installer.sh

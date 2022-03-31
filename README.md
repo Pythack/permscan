@@ -58,11 +58,11 @@ wget https://raw.githubusercontent.com/Pythack/permscan/master/installer.sh
 ```
 
 ```
-chmod +x ./installer.sh
+chmod +x ./permscan-installer.sh
 ```
 
 ```
-./installer.sh
+./permscan-installer.sh
 ```
 
 ### Manually
