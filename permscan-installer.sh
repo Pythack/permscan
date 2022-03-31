@@ -19,14 +19,14 @@ elif [ "$version" = "2" ]; then
     rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
     rm -rf permscan-x86_64-unknown-linux-musl
 elif [ "$version" = "3" ]; then
-    wget https://github.com/Pythack/permscan/releases/download/v2.2.6/permscan-aarch64-apple-darwin.zip
+    wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip
     unzip permscan-aarch64-apple-darwin.zip
     sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
     rm -rf permscan-aarch64-apple-darwin.zip
     rm -rf permscan-aarch64-apple-darwin
     rm -rf __MACOSX
 elif [ "$version" = "4" ]; then
-    wget https://github.com/Pythack/permscan/releases/download/v2.2.6/permscan-x86_64-apple-darwin.zip
+    wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip
     unzip permscan-x86_64-apple-darwin.zip
     sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
     rm -rf permscan-x86_64-apple-darwin.zip
