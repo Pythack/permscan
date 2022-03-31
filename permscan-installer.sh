@@ -36,4 +36,4 @@ else
     echo "permscan: installer: unknown version"
     exit 1
 fi
-rm -f installer.sh
+rm -f permscan-installer.sh
