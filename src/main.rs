@@ -31,6 +31,8 @@ fn main() {
 }
 
 fn permscan(opt: Opt) -> i32 {
+    // Run the checks_for_newer_version function if the update flag is raised.
+    // Exits when done
     if opt.check_update {
         if let Err(e) = updates::check_for_newer_version() {
             match &*e.to_string() {
@@ -41,6 +43,8 @@ fn permscan(opt: Opt) -> i32 {
         }
         return 0; // Successful exit code
     }
+
+    // Check if the path entered by the user exists
     let path_exists = Path::new(&opt.path).exists();
     if !path_exists {
         println!(
@@ -49,6 +53,10 @@ fn permscan(opt: Opt) -> i32 {
         );
         return 2;
     }
+
+    // We are going to run ls to get all the files before classing them
+    // by permissions. We use different flags for ls based on the permscan
+    // flags
     let ls_options = String::from("-l")
         + match opt.all {
             true => "a",
@@ -62,10 +70,14 @@ fn permscan(opt: Opt) -> i32 {
             }
             false => "",
         };
+
+    // Get all files using ls
     let files = misc::run_command(String::from("ls"), ls_options, opt.path);
+
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
 
+    // Prints files based on permissions criteria
     if opt.owner.is_none()
         && opt.user.is_none()
         && opt.group.is_none()
