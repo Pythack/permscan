@@ -88,6 +88,7 @@ fn permscan(opt: Opt) -> i32 {
 }
 
 // print files matching permscan options and flags
+#[allow(clippy::too_many_arguments)]
 fn print_matching_files(
     owner: Option<String>,
     user: Option<String>,
