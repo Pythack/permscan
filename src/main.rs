@@ -74,7 +74,6 @@ fn permscan(opt: Opt) -> i32 {
     // Get all files using ls
     let files = misc::run_command(String::from("ls"), ls_options, opt.path);
 
-    /// print files matching permscan options and flags and return exit code
     print_matching_files(
         opt.owner,
         opt.user,
@@ -85,7 +84,7 @@ fn permscan(opt: Opt) -> i32 {
         opt.recursive,
         opt.file_type,
         files,
-    )
+    ) // print files matching permscan options and flags and return exit code
 }
 
 // print files matching permscan options and flags
