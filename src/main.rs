@@ -207,6 +207,19 @@ fn print_matching_files(
         }
     }
     let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
+    print_results(sub_dir, temp_lines, all_lines, recursive, merge);
+
+    0 // Successful exit code
+}
+
+fn print_results(
+    sub_dir: Regex,
+    temp_lines: Vec<String>,
+    mut all_lines: Vec<Vec<String>>,
+    recursive: bool,
+    merge: bool,
+) {
     if merge {
         let temp_lines: Vec<String> = temp_lines.into_iter().unique().collect();
         for line in temp_lines {
@@ -235,5 +248,4 @@ fn print_matching_files(
             }
         }
     }
-    0 // Successful exit code
 }
