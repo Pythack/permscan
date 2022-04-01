@@ -49,9 +49,6 @@ fn permscan(opt: Opt) -> i32 {
         );
         return 2;
     }
-    if opt.recursive {
-        println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
-    }
     let ls_options = String::from("-l")
         + match opt.all {
             true => "a",
@@ -59,7 +56,10 @@ fn permscan(opt: Opt) -> i32 {
         };
     let ls_options = ls_options
         + match opt.recursive {
-            true => "R",
+            true => {
+                println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
+                "R"
+            }
             false => "",
         };
     let files = misc::run_command(String::from("ls"), ls_options, opt.path);
