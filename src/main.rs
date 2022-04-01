@@ -1,7 +1,7 @@
 use array_tool::vec::*;
 use itertools::Itertools;
 use regex::Regex;
-use std::{fs::FileType, ops::Deref, path::Path};
+use std::path::Path;
 use structopt::StructOpt;
 
 mod get_files;
