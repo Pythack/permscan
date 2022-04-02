@@ -220,7 +220,12 @@ fn print_matching_files(
 
     match print_results(sub_dir, temp_lines, all_lines, recursive, merge) {
         Ok(()) => 0,
-        Err(_e) => 5,
+        Err(_e) => {
+            eprintln!(
+                "\x1b[91mpermscan: stdout: failed to print results\x1b[0m"
+            );
+            5
+        }
     }
 }
 
