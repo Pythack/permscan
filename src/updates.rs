@@ -21,8 +21,11 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
     match body {
         Ok(body) => {
             if let Ok(response) = body.text() {
-                let json: serde_json::Value = serde_json::from_str(&response)
-                    .expect("permscan: failed to parse github api response");
+                let json: serde_json::Value =
+                    match serde_json::from_str(&response) {
+                        Ok(value) => value,
+                        _ => return Err("parsing".into()),
+                    };
                 let latest = json.as_array().unwrap();
                 if !latest.is_empty() {
                     if misc::rem_first(
