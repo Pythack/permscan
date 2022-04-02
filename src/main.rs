@@ -237,7 +237,7 @@ fn print_results(
     merge: bool,
 ) -> Result<(), Box<dyn Error>> {
     // lock stdout manually for better performances since we are going to print
-    // to stdout a lot
+    // to it a lot
     let stdout = std::io::stdout();
     let mut lock = stdout.lock();
 
