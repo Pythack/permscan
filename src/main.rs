@@ -89,7 +89,7 @@ fn permscan(opt: Opt) -> i32 {
         }
         Err(_e) => {
             eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
-            103
+            3
         }
     }
 }
