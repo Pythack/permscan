@@ -1,6 +1,8 @@
 use array_tool::vec::*;
 use itertools::Itertools;
 use regex::Regex;
+use std::error::Error;
+use std::io::Write;
 use std::path::Path;
 use structopt::StructOpt;
 
@@ -216,9 +218,10 @@ fn print_matching_files(
     }
     let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
 
-    print_results(sub_dir, temp_lines, all_lines, recursive, merge);
-
-    0 // Successful exit code
+    match print_results(sub_dir, temp_lines, all_lines, recursive, merge) {
+        Ok(()) => 0,
+        Err(_e) => 5,
+    }
 }
 
 fn print_results(
@@ -227,14 +230,19 @@ fn print_results(
     mut all_lines: Vec<Vec<String>>,
     recursive: bool,
     merge: bool,
-) {
+) -> Result<(), Box<dyn Error>> {
+    // lock stdout manually for better performances since we are going to print
+    // to stdout a lot
+    let stdout = std::io::stdout();
+    let mut lock = stdout.lock();
+
     if merge {
         let temp_lines: Vec<String> = temp_lines.into_iter().unique().collect();
         for line in temp_lines {
             if recursive && sub_dir.is_match(&line) {
-                println!("\x1b[92m{}\x1b[0m", line);
+                writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
             } else {
-                println!("{}", line);
+                writeln!(lock, "{}", line)?;
             }
         }
     } else if !all_lines.is_empty() {
@@ -250,10 +258,11 @@ fn print_results(
         let final_lines_len = final_lines.len();
         for line in &final_lines[final_lines_len - 1] {
             if recursive && sub_dir.is_match(line) {
-                println!("\x1b[92m{}\x1b[0m", line);
+                writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
             } else {
-                println!("{}", line);
+                writeln!(lock, "{}", line)?;
             }
         }
     }
+    Ok(())
 }
