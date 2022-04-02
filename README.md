@@ -3,7 +3,7 @@
 permscan is a linux and macOS binary to filter file system items based on
 permission criteria. By default, it will search not-recursively and ignore hidden
 files but this behavior can be modified using flags. You can also specify the
-directory you want to search into.
+path of the directory you want to search into.
 
 ## Contents
 
