@@ -39,7 +39,7 @@ fn permscan(opt: Opt) -> i32 {
                 "version" => return 22,
                 "connection" => return 60,
                 _ => return -1,
-            }
+            };
         }
         return 0; // Successful exit code
     }
@@ -70,21 +70,28 @@ fn permscan(opt: Opt) -> i32 {
             }
             false => "",
         };
-
     // Get all files using ls
     let files = misc::run_command(String::from("ls"), ls_options, opt.path);
 
-    print_matching_files(
-        opt.owner,
-        opt.user,
-        opt.group,
-        opt.other,
-        opt.merge,
-        opt.invert,
-        opt.recursive,
-        opt.file_type,
-        files,
-    ) // print files matching permscan options and flags and return exit code
+    match files {
+        Ok(content) => {
+            print_matching_files(
+                opt.owner,
+                opt.user,
+                opt.group,
+                opt.other,
+                opt.merge,
+                opt.invert,
+                opt.recursive,
+                opt.file_type,
+                content,
+            ) // print files matching permscan options and flags and return exit code
+        }
+        Err(_e) => {
+            eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
+            3
+        }
+    }
 }
 
 // Get files matching criteria and call the print_result function

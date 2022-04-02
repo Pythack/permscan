@@ -1,6 +1,6 @@
 [package]
 name = "permscan"
-version = "2.2.7"
+version = "2.2.8"
 edition = "2021"
 authors = ["Pythack pythackcode@gmail.com", "gmnsii 95436780+gmnsii@users.noreply.github.com"]
 description = "Scan a directory for files that match permission criteria."
