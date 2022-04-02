@@ -17,7 +17,7 @@ path of the directory you want to search into.
 ## Help
 
 ```
-Permission scanner 2.2.8
+Permission scanner 2.2.9
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan#readme for more information.
 
