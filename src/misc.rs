@@ -2,15 +2,22 @@ use std::process::Command;
 
 #[allow(dead_code)] // For some reason, I get a dead code warning for
                     // run_command, despite it clearly being used.
-pub fn run_command(command: String, args: String, path: String) -> String {
-    let output = Command::new(command).arg(args).arg(path).output().expect(
-        "permscan: failed to get files. is ls installed on your system ?",
-    );
-    let stdout = String::from_utf8(output.stdout);
+pub fn run_command(
+    command: String,
+    args: String,
+    path: String,
+) -> Option<String> {
+    let output = Command::new(command).arg(args).arg(path).output();
 
-    match stdout {
-        Err(_e) => String::from(""),
-        Ok(out) => out,
+    match output {
+        Ok(content) => {
+            let stdout = String::from_utf8(content.stdout);
+            match stdout {
+                Err(_e) => Some(String::from("")),
+                Ok(out) => Some(out),
+            }
+        }
+        Err(_e) => None,
     }
 }
 pub fn rem_first(value: &str, first_char: &str) -> String {
