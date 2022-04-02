@@ -1,6 +1,18 @@
 # permscan
 
-A linux and macOS binary to filter file system items based on permission criteria
+permscan is a linux and macOS binary to filter file system items based on
+permission criteria. By default, it will search not-recursively and ignore hidden
+files but this behavior can be modified using flags. You can also specify the
+directory you want to search into.
+
+## Contents
+
+* [Help](##Help)
+* [Wiki](##Wiki)
+* [Run in docker](##Run-in-docker)
+* [Installation](##Installation)
+* [Building](##Building)
+* [License](##License)
 
 ## Help
 
@@ -39,7 +51,7 @@ ARGS:
 
 ## Wiki
 
-For a precise guide on  the different arguments, options, flags and errors, see the [wiki](https://github.com/Pythack/permscan/wiki)
+For a precise guide on the different arguments, options, flags and errors, see the [wiki](https://github.com/Pythack/permscan/wiki)
 
 ## Run in Docker
 
