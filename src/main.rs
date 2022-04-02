@@ -74,7 +74,7 @@ fn permscan(opt: Opt) -> i32 {
     let files = misc::run_command(String::from("ls"), ls_options, opt.path);
 
     match files {
-        Some(content) => {
+        Ok(content) => {
             print_matching_files(
                 opt.owner,
                 opt.user,
@@ -87,12 +87,10 @@ fn permscan(opt: Opt) -> i32 {
                 content,
             ) // print files matching permscan options and flags and return exit code
         }
-        None => {
+        Err(_e) => {
             eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
             103
-        } // None doesn't mean that we didn't get any files but that we failed to
-          // run the ls command. If we didn't get any files we would have an
-          // empty string
+        }
     }
 }
 
