@@ -133,7 +133,8 @@ sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
 * As permscan is written in rust, you will need rust to build it. The
   [latest](https://www.rust-lang.org/tools/install) version is recommended.
 
-* To build :
+* Our installer now have a build option, but you can still build it manually if you
+  wish :
 
   ```
   git clone https://github.com/Pythack/permscan
