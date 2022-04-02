@@ -39,7 +39,7 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
                             .expect("Failed to read input");
                         if answer.to_lowercase().trim() == "y" {
                             let mut version = String::new();
-                            print!("What version of permscan do you need ? (1, 2, 3, 4) \n1. linux-gnu\n2. linux-musl\n3. macos-arm\n4. macos-x86_64\n");
+                            print!("What version of permscan do you need ? (1, 2, 3, 4, 5) \n1. linux-gnu\n2. linux-musl\n3. macos-arm\n4. macos-x86_64\n5. build it yourself (recommended if your architecture is not yet supported) (rustlang must be installed)\n");
                             let _flush = stdout().flush();
                             io::stdin()
                                 .read_line(&mut version)
@@ -69,7 +69,7 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
 
 pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
     match version {
-        "linux-gnu" => {
+        "linux-gnu" | "1" => {
             Exec::shell("wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz").join()?;
             Exec::shell("tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz")
                 .join()?;
@@ -82,7 +82,7 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             Exec::shell("rm -rf permscan-x86_64-unknown-linux-gnu").join()?;
             Ok(())
         }
-        "linux-musl" => {
+        "linux-musl" | "2" => {
             Exec::shell("wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz").join()?;
             Exec::shell("tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz")
                 .join()?;
@@ -95,7 +95,7 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             Exec::shell("rm -rf permscan-x86_64-unknown-linux-musl").join()?;
             Ok(())
         }
-        "macos-arm" => {
+        "macos-arm" | "3" => {
             Exec::shell("wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip").join()?;
             Exec::shell("unzip permscan-aarch64-apple-darwin.zip").join()?;
             Exec::shell(
@@ -107,7 +107,7 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             Exec::shell("rm -rf __MACOSX").join()?;
             Ok(())
         }
-        "macos-x86_64" => {
+        "macos-x86_64" | "4" => {
             Exec::shell("wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip").join()?;
             Exec::shell("unzip permscan-x86_64-apple-darwin.zip").join()?;
             Exec::shell(
@@ -117,6 +117,17 @@ pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
             Exec::shell("rm -rf permscan-x86_64-apple-darwin.zip").join()?;
             Exec::shell("rm -rf permscan-x86_64-apple-darwin").join()?;
             Exec::shell("rm -rf __MACOSX").join()?;
+            Ok(())
+        }
+        "5" => {
+            Exec::shell("git clone https://github.com/Pythack/permscan")
+                .join()?;
+            Exec::shell("cd permscan").join()?;
+            Exec::shell("cargo build --release").join()?;
+            Exec::shell("sudo mv ./target/release/permscan /usr/local/bin")
+                .join()?;
+            Exec::shell("cd ..").join()?;
+            Exec::shell("rm -rf permscan").join()?;
             Ok(())
         }
         _ => {

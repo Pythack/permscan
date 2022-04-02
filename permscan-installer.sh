@@ -4,7 +4,8 @@ echo "What version of permscan do you need ? (1, 2, 3, 4)
 1. linux-gnu
 2. linux-musl
 3. macos-arm
-4. macos-x86_64"
+4. macos-x86_64
+5. build it yourself (recommended if your architecture is not yet supported) (rustlang must be installed)"
 read -r version
 if [ "$version" = "1" ]; then
     wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
@@ -32,6 +33,13 @@ elif [ "$version" = "4" ]; then
     rm -rf permscan-x86_64-apple-darwin.zip
     rm -rf permscan-x86_64-apple-darwin
     rm -rf __MACOSX
+elif [ "$version" = "5" ]; then
+    git clone https://github.com/Pythack/permscan
+    cd permscan || exit
+    cargo build --release
+    sudo mv ./target/release/permscan /usr/local/bin
+    cd ..
+    rm -rf permscan
 else
     echo "permscan: installer: unknown version"
     exit 1
