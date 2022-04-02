@@ -37,16 +37,12 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
                         print!("Do you want to update ? (y/*) ");
                         let _flush = stdout().flush();
                         let mut answer = String::new();
-                        io::stdin()
-                            .read_line(&mut answer)
-                            .expect("permscan: failed to read input");
+                        io::stdin().read_line(&mut answer)?;
                         if answer.to_lowercase().trim() == "y" {
                             let mut version = String::new();
                             print!("What version of permscan do you need ? (1, 2, 3, 4, 5) \n1. linux-gnu\n2. linux-musl\n3. macos-arm\n4. macos-x86_64\n5. build it yourself (recommended if your architecture is not yet supported) (rustlang must be installed)\n");
                             let _flush = stdout().flush();
-                            io::stdin()
-                                .read_line(&mut version)
-                                .expect("permscan: failed to read input");
+                            io::stdin().read_line(&mut version)?;
 
                             if let Err(e) =
                                 update(version.to_lowercase().trim())
