@@ -40,7 +40,6 @@ elif [ "$version" = "5" ]; then
     sudo mv ./target/release/permscan /usr/local/bin
     cd ..
     rm -rf permscan
-    exit 0
 else
     echo "permscan: installer: unknown version"
     exit 1
