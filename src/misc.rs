@@ -3,11 +3,9 @@ use std::process::Command;
 #[allow(dead_code)] // For some reason, I get a dead code warning for
                     // run_command, despite it clearly being used.
 pub fn run_command(command: String, args: String, path: String) -> String {
-    let output = Command::new(command)
-        .arg(args)
-        .arg(path)
-        .output()
-        .expect("");
+    let output = Command::new(command).arg(args).arg(path).output().expect(
+        "permscan: failed to get files. is ls installed on your system ?",
+    );
     let stdout = String::from_utf8(output.stdout);
 
     match stdout {
