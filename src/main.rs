@@ -88,7 +88,7 @@ fn permscan(opt: Opt) -> i32 {
             ) // print files matching permscan options and flags and return exit code
         }
         None => {
-            println!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
+            eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
             103
         } // None doesn't mean that we didn't get any files but that we failed to
           // run the ls command. If we didn't get any files we would have an
