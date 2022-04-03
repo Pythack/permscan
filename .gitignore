@@ -16,6 +16,7 @@ permscan-aarch64-apple-darwin.zip
 
 .DS_Store
 .vscode
+.idea
 .markdownlintignore
 settings.json
 *.deb
