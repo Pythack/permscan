@@ -4,7 +4,7 @@ BUILD="false"
 while getopts 'b' flag; do
     case "${flag}" in
     b) BUILD="true" ;;
-    *) echo 'permscan: update: illegal argument' ;;
+    *) exit 1 ;;
     esac
 done
 
