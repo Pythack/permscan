@@ -6,7 +6,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build-gnu:
+  build:
     runs-on: [ubuntu-latest, macos-latest]
 
     steps:
@@ -14,6 +14,3 @@ jobs:
       - name: Check
         run: cargo check --verbose # Checks if it can compile without actually
         # compiling it
-
-  build-musl:
-    runs-on:
