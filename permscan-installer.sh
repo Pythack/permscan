@@ -55,3 +55,4 @@ elif [ "$BUILD" = "true" ]; then
     cd ..
     rm -rf permscan
 fi
+rm -f permscan-installer.sh
