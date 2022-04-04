@@ -1,16 +1,27 @@
 name: Rust
 
 on: [push, pull_request]
+paths:
+  - "src/**"
+  - "Cargo.toml"
+  - "Cargo.lock"
+  - ".github/workflows/**"
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-    runs-on: [ubuntu-latest, macos-latest]
-
+  build-ubuntu:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Check
-        run: cargo check --verbose # Checks if it can compile without actually
-        # compiling it
+        run: cargo check # Checks if it can compile
+        # without actually compiling it
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check
+        run: cargo check # Checks if it can compile
+        # without actually compiling it
