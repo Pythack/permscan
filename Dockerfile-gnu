@@ -11,11 +11,6 @@ RUN \
     cargo build --release && \
     cp ./target/release/permscan /bin
 
-RUN \
-    cargo install cargo-deb && \
-    cargo deb
-
-RUN cp ./target/debian/*.deb ./
 
 # Making the tar.gz file
 RUN \
