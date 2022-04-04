@@ -9,6 +9,7 @@ on:
       - "Dockerfile-musl"
       - "Cargo.toml"
       - "Cargo.lock"
+      - ".github/workflows/**"
 
 jobs:
   publish-permscan-image-gnu:
