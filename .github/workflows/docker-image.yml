@@ -2,7 +2,8 @@ name: Update Docker Images
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
     paths:
       - "src/**"
       - "Dockerfile-gnu"
