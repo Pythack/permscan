@@ -5,7 +5,7 @@ paths:
   - "src/**"
   - "Cargo.toml"
   - "Cargo.lock"
-  - ".github/workflows/**"
+  - ".github/workflows/rust.yml"
 
 env:
   CARGO_TERM_COLOR: always
