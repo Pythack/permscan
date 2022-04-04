@@ -1,20 +1,19 @@
 name: Rust
 
-on:
-  push:
-    branches: [ master ]
+on: [push, pull_request]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  build-gnu:
+    runs-on: [ubuntu-latest, macos-latest]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v2
+      - name: Check
+        run: cargo check --verbose # Checks if it can compile without actually
+        # compiling it
+
+  build-musl:
+    runs-on:
