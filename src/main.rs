@@ -36,7 +36,7 @@ fn permscan(opt: Opt) -> i32 {
     // Run the checks_for_newer_version function if the update flag is raised.
     // Exits when done
     if opt.check_update {
-        if let Err(e) = updates::check_for_newer_version() {
+        if let Err(e) = updates::check_for_newer_version(opt.build) {
             match &*e.to_string() {
                 "version" => return 22,
                 "connection" => return 60,

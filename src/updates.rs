@@ -8,7 +8,7 @@ mod misc;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
+pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
     println!("\x1b[94mCurrent version: {}\x1b[0m", VERSION);
     print!("Checking latest version on GitHub... ");
     let _flush = io::stdout().flush();
@@ -45,7 +45,7 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
                             io::stdin().read_line(&mut version)?;
 
                             if let Err(e) =
-                                update(version.to_lowercase().trim())
+                                update(version.to_lowercase().trim(), build)
                             {
                                 eprintln!("\x1b[91m{}\x1b[0m", e);
                                 return Err("version".into());
@@ -66,12 +66,17 @@ pub fn check_for_newer_version() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub fn update(version: &str) -> Result<(), Box<dyn Error>> {
-    Exec::shell("wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz").join()?;
-    Exec::shell("tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz").join()?;
-    Exec::shell("sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin")
-        .join()?;
-    Exec::shell("rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz").join()?;
-    Exec::shell("rm -rf permscan-x86_64-unknown-linux-gnu").join()?;
+pub fn update(version: &str, build: bool) -> Result<(), Box<dyn Error>> {
+    Exec::shell("wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh").join()?;
+    Exec::shell("chmod +x ./permscan-installer.sh").join()?;
+    match build {
+        true => {
+            Exec::shell("./permscan-installer.sh -b").join()?;
+        }
+        false => {
+            Exec::shell("./permscan-installer.sh").join()?;
+        }
+    }
+
     Ok(())
 }
