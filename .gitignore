@@ -20,3 +20,4 @@ permscan-aarch64-apple-darwin.zip
 .markdownlintignore
 settings.json
 *.deb
+targets
