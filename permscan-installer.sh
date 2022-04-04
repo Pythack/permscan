@@ -1,9 +1,9 @@
 #!/bin/bash
 
 BUILD="false"
-while getopts 'u' flag; do
+while getopts 'b' flag; do
     case "${flag}" in
-    u) BUILD="true" ;;
+    b) BUILD="true" ;;
     *) echo 'permscan: update: illegal argument' ;;
     esac
 done
