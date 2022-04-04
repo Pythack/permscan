@@ -55,6 +55,7 @@ if [ "$BUILD" = "false" ]; then
 elif [ "$BUILD" = "true" ]; then
     if ! command -v cargo &>/dev/null; then
         echo "permscan: installer: build failed. make sure the rust programming language is installed"
+        exit 1
     else
         git clone https://github.com/Pythack/permscan
         cd permscan || exit
