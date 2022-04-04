@@ -25,7 +25,7 @@ if [ "$BUILD" = "false" ]; then
             rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
             rm -rf permscan-x86_64-unknown-linux-musl
         else
-            echo "permscan: installer: os not supported. try building it (run this installer with the -b flag)"
+            echo "permscan: installer: os not supported. try building it (run this installer with the -b flag if installing permscan or run permscan -ub if updating)"
             exit 1
         fi
     elif [ "$OS" = "Darwin" ]; then
@@ -45,11 +45,11 @@ if [ "$BUILD" = "false" ]; then
             rm -rf permscan-x86_64-apple-darwin
             rm -rf __MACOSX
         else
-            echo "permscan: installer: os not supported. try building it (run this installer with the -b flag)"
+            echo "permscan: installer: os not supported. try building it (run this installer with the -b flag if installing permscan or run permscan -ub if updating)"
             exit 1
         fi
     else
-        echo "permscan: installer: os not supported. try building it (run this installer with the -b flag)"
+        echo "permscan: installer: os not supported. try building it (run this installer with the -b flag if installing permscan or run permscan -ub if updating)"
         exit 1
     fi
 elif [ "$BUILD" = "true" ]; then
