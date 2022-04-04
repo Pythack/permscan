@@ -19,4 +19,4 @@ Please delete options that are not relevant.
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] My changes generate no new warnings
-- [ ] The program run without problem on linux or in a linux docker container
+- [ ] The rust.yml workflow run without any problems
