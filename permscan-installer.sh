@@ -22,7 +22,7 @@ if [ "$BUILD" = "false" ]; then
                 rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
                 rm -rf permscan-x86_64-unknown-linux-gnu
             else
-                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-x86_64-unknown-linux-gnu.tar.gz
+                wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-x86_64-unknown-linux-gnu.tar.gz
                 tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
                 sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
                 rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
@@ -36,7 +36,7 @@ if [ "$BUILD" = "false" ]; then
                 rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
                 rm -rf permscan-x86_64-unknown-linux-musl
             else
-                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-x86_64-unknown-linux-musl.tar.gz
+                wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-x86_64-unknown-linux-musl.tar.gz
                 tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
                 sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
                 rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
@@ -57,7 +57,7 @@ if [ "$BUILD" = "false" ]; then
                 rm -rf permscan-aarch64-apple-darwin
                 rm -rf __MACOSX
             else
-                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-aarch64-apple-darwin.zip
+                wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-aarch64-apple-darwin.zip
                 unzip permscan-aarch64-apple-darwin.zip
                 sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
                 rm -rf permscan-aarch64-apple-darwin.zip
@@ -73,7 +73,7 @@ if [ "$BUILD" = "false" ]; then
                 rm -rf permscan-x86_64-apple-darwin
                 rm -rf __MACOSX
             else
-                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-x86_64-apple-darwin.zip
+                wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-x86_64-apple-darwin.zip
                 unzip permscan-x86_64-apple-darwin.zip
                 sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
                 rm -rf permscan-x86_64-apple-darwin.zip
@@ -93,12 +93,24 @@ elif [ "$BUILD" = "true" ]; then
         echo "permscan: installer: build failed. make sure the rust programming language is installed"
         exit 1
     else
-        git clone https://github.com/Pythack/permscan
-        cd permscan || exit
-        cargo build --release
-        sudo mv ./target/release/permscan /usr/local/bin
-        cd ..
-        rm -rf permscan
+        if [ "$VERSION" = "latest" ]; then
+            git clone https://github.com/Pythack/permscan
+            cd permscan || exit
+            cargo build --release
+            sudo mv ./target/release/permscan /usr/local/bin
+            cd ..
+            rm -rf permscan
+        else
+            wget https://github.com/Pythack/permscan/archive/refs/tags/v"${VERSION}".tar.gz
+            tar -xzvf v"${VERSION}".tar.gz
+            cd permscan-"${VERSION}" || exit
+            cargo build --release
+            sudo mv ./target/release/permscan /usr/local/bin
+            cd ..
+            rm -rf v"${VERSION}".tar.gz
+            rm -rf permscan-"${VERSION}"
+            rm -rf permscan
+        fi
     fi
 fi
 rm -f permscan-installer.sh
