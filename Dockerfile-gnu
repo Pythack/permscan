@@ -5,6 +5,8 @@ LABEL org.opencontainers.image.source="https://github.com/pythack/permscan"
 WORKDIR /permscan_code/
 COPY ./Cargo.toml ./
 COPY ./src/ ./src/
+COPY ./permscan-installer.sh ./
+
 
 # Building and installing the binary
 RUN \
