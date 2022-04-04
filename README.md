@@ -63,8 +63,6 @@ docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
 
 ## Installation
 
-### Using our installer
-
 ```
 wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh
 ```
@@ -77,88 +75,22 @@ chmod +x ./permscan-installer.sh
 ./permscan-installer.sh
 ```
 
-### Manually
-
-#### GNU/Linux
-
-```
-wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
-```
-
-```
-tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
-```
-
-```
-sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
-```
-
-#### Linux-musl
-
-```
-wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
-```
-
-```
-tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
-```
-
-```
-sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
-```
-
-#### MacOS
-
-* If you have an Apple chip, your architecture is ARM.
-* If you have an Intel chip, your architecture is x86_64.
-
-##### ARM
-
-```
-wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip
-```
-
-```
-unzip permscan-aarch64-apple-darwin.zip
-```
-
-```
-sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
-```
-
-##### x86_64
-
-```
-wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip
-```
-
-```
-unzip permscan-x86_64-apple-darwin.zip
-```
-
-```
-sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
-```
-
 ## Building
 
 * As permscan is written in rust, you will need rust to build it. The
   [latest](https://www.rust-lang.org/tools/install) version is recommended.
 
-* Our installer now have a build option, but you can still build it manually if you
-  wish :
+```
+wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh
+```
 
-  ```
-  git clone https://github.com/Pythack/permscan
-  ```
+```
+chmod +x ./permscan-installer.sh
+```
 
-  ```
-  cd permscan
-  ```
-
-  ```
-  cargo build --release
-  ```
+```
+./permscan-installer.sh -b
+```
 
 ## License
 
