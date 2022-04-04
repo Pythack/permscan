@@ -25,7 +25,7 @@ if [ "$BUILD" = "false" ]; then
             rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
             rm -rf permscan-x86_64-unknown-linux-musl
         else
-            echo "permscan: update: os not supported. try building it (run this installer with the -b flag)"
+            echo "permscan: installer: os not supported. try building it (run this installer with the -b flag)"
         fi
     elif [ "$OS" = "Darwin" ]; then
         OSTYPE=$(uname -m)
@@ -44,10 +44,10 @@ if [ "$BUILD" = "false" ]; then
             rm -rf permscan-x86_64-apple-darwin
             rm -rf __MACOSX
         else
-            echo "permscan: update: os not supported. try building it (run this installer with the -b flag)"
+            echo "permscan: installer: os not supported. try building it (run this installer with the -b flag)"
         fi
     else
-        echo "permscan: update: os not supported. try building it (run this installer with the -b flag)"
+        echo "permscan: installer: os not supported. try building it (run this installer with the -b flag)"
     fi
 elif [ "$BUILD" = "true" ]; then
     git clone https://github.com/Pythack/permscan
