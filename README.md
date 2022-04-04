@@ -76,6 +76,14 @@ chmod +x ./permscan-installer.sh
 ./permscan-installer.sh
 ```
 
+This will install the latest version but you can also specify a version using
+the -v flag followed of the version number.
+Ex :
+
+```
+./permscan-installer.sh -v 2.2.10
+```
+
 ## Building
 
 * As permscan is written in rust, you will need rust to build it. The
