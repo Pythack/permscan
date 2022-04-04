@@ -1,9 +1,11 @@
 #!/bin/bash
 
+VERSION="latest"
 BUILD="false"
-while getopts 'b' flag; do
+while getopts 'bv:' flag; do
     case "${flag}" in
     b) BUILD="true" ;;
+    v) VERSION="${OPTARG}" ;;
     *) exit 1 ;;
     esac
 done
@@ -13,17 +15,33 @@ if [ "$BUILD" = "false" ]; then
     if [ "$OS" = "Linux" ]; then
         OSTYPE=$(uname -o)
         if [ "$OSTYPE" = "GNU/Linux" ]; then
-            wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
-            tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
-            sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
-            rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
-            rm -rf permscan-x86_64-unknown-linux-gnu
+            if [ "$VERSION" = "latest" ]; then
+                wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
+                tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
+                sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
+                rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
+                rm -rf permscan-x86_64-unknown-linux-gnu
+            else
+                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-x86_64-unknown-linux-gnu.tar.gz
+                tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
+                sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
+                rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
+                rm -rf permscan-x86_64-unknown-linux-gnu
+            fi
         elif [ "$OSTYPE" = "Linux" ]; then
-            wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
-            tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
-            sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
-            rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
-            rm -rf permscan-x86_64-unknown-linux-musl
+            if [ "$VERSION" = "latest" ]; then
+                wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
+                tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
+                sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
+                rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
+                rm -rf permscan-x86_64-unknown-linux-musl
+            else
+                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-x86_64-unknown-linux-musl.tar.gz
+                tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
+                sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
+                rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
+                rm -rf permscan-x86_64-unknown-linux-musl
+            fi
         else
             echo "permscan: installer: os not supported. try building it (run this installer with the -b flag if installing permscan or run permscan -ub if updating)"
             exit 1
@@ -31,19 +49,37 @@ if [ "$BUILD" = "false" ]; then
     elif [ "$OS" = "Darwin" ]; then
         OSTYPE=$(uname -m)
         if [ "$OSTYPE" = "arm64" ]; then
-            wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip
-            unzip permscan-aarch64-apple-darwin.zip
-            sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
-            rm -rf permscan-aarch64-apple-darwin.zip
-            rm -rf permscan-aarch64-apple-darwin
-            rm -rf __MACOSX
+            if [ "$VERSION" = "latest" ]; then
+                wget https://github.com/Pythack/permscan/releases/latest/download/permscan-aarch64-apple-darwin.zip
+                unzip permscan-aarch64-apple-darwin.zip
+                sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
+                rm -rf permscan-aarch64-apple-darwin.zip
+                rm -rf permscan-aarch64-apple-darwin
+                rm -rf __MACOSX
+            else
+                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-aarch64-apple-darwin.zip
+                unzip permscan-aarch64-apple-darwin.zip
+                sudo mv permscan-aarch64-apple-darwin/permscan /usr/local/bin
+                rm -rf permscan-aarch64-apple-darwin.zip
+                rm -rf permscan-aarch64-apple-darwin
+                rm -rf __MACOSX
+            fi
         elif [ "$OSTYPE" = "x86_64" ]; then
-            wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip
-            unzip permscan-x86_64-apple-darwin.zip
-            sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
-            rm -rf permscan-x86_64-apple-darwin.zip
-            rm -rf permscan-x86_64-apple-darwin
-            rm -rf __MACOSX
+            if [ "$VERSION" = "latest" ]; then
+                wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-apple-darwin.zip
+                unzip permscan-x86_64-apple-darwin.zip
+                sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
+                rm -rf permscan-x86_64-apple-darwin.zip
+                rm -rf permscan-x86_64-apple-darwin
+                rm -rf __MACOSX
+            else
+                wget https://github.com/Pythack/permscan/releases/download/v${VERSION}/permscan-x86_64-apple-darwin.zip
+                unzip permscan-x86_64-apple-darwin.zip
+                sudo mv permscan-x86_64-apple-darwin/permscan /usr/local/bin
+                rm -rf permscan-x86_64-apple-darwin.zip
+                rm -rf permscan-x86_64-apple-darwin
+                rm -rf __MACOSX
+            fi
         else
             echo "permscan: installer: os not supported. try building it (run this installer with the -b flag if installing permscan or run permscan -ub if updating)"
             exit 1
