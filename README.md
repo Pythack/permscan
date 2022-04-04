@@ -77,7 +77,7 @@ chmod +x ./permscan-installer.sh
 ```
 
 This will install the latest version but you can also specify a version using
-the -v flag followed of the version number.
+the -v flag followed by the version number.
 Ex :
 
 ```
@@ -100,6 +100,17 @@ chmod +x ./permscan-installer.sh
 ```
 ./permscan-installer.sh -b
 ```
+
+This will build from the master branch but you can also specify a version using
+the -v flag followed by the version number. Ex :
+
+```
+./permscan-installer.sh -b -v 2.2.10
+```
+
+It is even recommended that instead
+of building from the master branch you use -v followed of the latest version number
+in case some broken feature accidentally got pushed to it.
 
 ## License
 
