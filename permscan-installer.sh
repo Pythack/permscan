@@ -53,11 +53,15 @@ if [ "$BUILD" = "false" ]; then
         exit 1
     fi
 elif [ "$BUILD" = "true" ]; then
-    git clone https://github.com/Pythack/permscan
-    cd permscan || exit
-    cargo build --release
-    sudo mv ./target/release/permscan /usr/local/bin
-    cd ..
-    rm -rf permscan
+    if ! command -v cargo &>/dev/null; then
+        echo "permscan: installer: build failed. make sure the rust programming language is installed"
+    else
+        git clone https://github.com/Pythack/permscan
+        cd permscan || exit
+        cargo build --release
+        sudo mv ./target/release/permscan /usr/local/bin
+        cd ..
+        rm -rf permscan
+    fi
 fi
 rm -f permscan-installer.sh
