@@ -17,7 +17,7 @@ path of the directory you want to search into.
 ## Help
 
 ```
-Permission scanner 2.2.9
+Permission scanner 2.2.10
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan#readme for more information.
 
@@ -25,14 +25,15 @@ USAGE:
     permscan [FLAGS] [OPTIONS] [path]
 
 FLAGS:
-    -a                 If present, permscan will parse hidden files as well
+    -a                 Parse hidden files as well
+    -b, --build        If the update flag is also present and the user decide to update, the update will be built from
+                       source
     -u, --update       Check for a newer version of permscan
-    -e, --exit-info    If present, print exit code
+    -e, --exit-info    Show exit code
     -h, --help         Prints help information
-    -i                 If present, will return the list of files that don't match with the criteria
-    -m                 If present, will return the list of files that match at least one criteria, else return the list
-                       of files that match all criteria
-    -r                 If present, will recursively traverse the folder
+    -i                 Return the list of files that don't match with the criteria
+    -m                 Return files that match at least one criteria, instead of those that match all criteria
+    -r                 If present, permscan will recursively traverse the folder
     -V, --version      Prints version information
 
 OPTIONS:
