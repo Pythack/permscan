@@ -44,6 +44,8 @@ if [ "$BUILD" = "false" ]; then
             rm -rf permscan-x86_64-apple-darwin
             rm -rf __MACOSX
         fi
+    else
+        echo "permscan: update: os not supported. try running with the -u flag"
     fi
 elif [ "$BUILD" = "true" ]; then
     git clone https://github.com/Pythack/permscan
