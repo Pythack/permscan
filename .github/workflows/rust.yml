@@ -23,12 +23,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check
-        run: cargo check # Checks if it can compile
+        run: cargo check --verbose # Checks if it can compile
         # without actually compiling it
   build-macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Check
-        run: cargo check # Checks if it can compile
+        run: cargo check --verbose # Checks if it can compile
         # without actually compiling it
