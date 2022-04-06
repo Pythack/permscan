@@ -25,7 +25,7 @@ pub fn check_path_exists(path: &str) -> Result<(), Box<dyn Error>> {
 
 // determine ls options based on permscan options.
 pub fn get_ls_options(all: &bool, recursive: &bool) -> String {
-    let ls_options = String::from("-l")
+    let ls_options = String::from("-lh")
         + match all {
             true => "a",
             false => "",
