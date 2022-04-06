@@ -49,8 +49,8 @@ pub fn run_ls(args: String, path: &str) -> Result<String, Box<dyn Error>> {
         Ok(content) => {
             let stdout = String::from_utf8(content.stdout);
             match stdout {
-                Err(_) => Ok(String::from("")),
                 Ok(out) => Ok(out),
+                Err(_) => Ok(String::from("")),
             }
         }
 

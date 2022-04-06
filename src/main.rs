@@ -103,7 +103,7 @@ fn permscan(opt: Opt) -> i32 {
     if let Ok(files) = misc::run_ls(ls_options, &opt.path) {
         match get_results(&opt, &files) {
             Ok(()) => exit::SUCCESS,
-            _ => {
+            Err(_) => {
                 eprintln!(
                     "\x1b[91mpermscan: stdout: failed to print results\x1b[0m"
                 );

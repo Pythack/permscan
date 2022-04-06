@@ -29,7 +29,7 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
                     &response,
                 ) {
                     Ok(value) => value,
-                    _ => {
+                    Err(_) => {
                         eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
                         return Err("parsingErr".into());
                     }
@@ -49,7 +49,7 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
             }
         }
 
-        _ => {
+        Err(_) => {
             eprintln!("\n\x1b[91mpermscan: update: failed to connect to the github api. are you connected to the internet ?\x1b[0m");
             return Err("connectionErr".into());
         }
@@ -64,7 +64,7 @@ fn json_to_vec(
 ) -> Result<Vec<serde_json::Value>, Box<dyn Error>> {
     return match json.as_array() {
         Some(val) => Ok(val.to_vec()),
-        _ => {
+        None => {
             eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
             Err("parsingErr".into())
         }
