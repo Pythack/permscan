@@ -91,7 +91,7 @@ fn permscan(opt: Opt) -> i32 {
     }
 
     // Check if the path entered by the user exists
-    if let Err(_e) = misc::check_path_exists(&opt.path) {
+    if misc::check_path_exists(&opt.path).is_err() {
         return exit::PATH_ERR;
     }
 

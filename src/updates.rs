@@ -76,7 +76,7 @@ fn get_input(buffer: &mut String) -> Result<&String, Box<dyn Error>> {
     let _flush = stdout().flush();
     match io::stdin().read_line(buffer) {
         Ok(_) => Ok(buffer),
-        Err(_e) => {
+        Err(_) => {
             eprintln!(
                 "\n\x1b[91mpermscan: update: failed to read input. please retry: \x1b[0m\n"
             );

@@ -49,12 +49,12 @@ pub fn run_ls(args: String, path: &str) -> Result<String, Box<dyn Error>> {
         Ok(content) => {
             let stdout = String::from_utf8(content.stdout);
             match stdout {
-                Err(_e) => Ok(String::from("")),
+                Err(_) => Ok(String::from("")),
                 Ok(out) => Ok(out),
             }
         }
 
-        Err(_e) => {
+        Err(_) => {
             eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
             Err("".into())
         }
