@@ -6,13 +6,16 @@ use subprocess::Exec;
 #[path = "./misc.rs"]
 mod misc;
 
+// get the current version from cargo.toml
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
+// check for a newer version and if one exists, prompt the user to update
 pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
     println!("\x1b[94mCurrent version: {}\x1b[0m", VERSION);
     print!("Checking latest version on GitHub... ");
     let _flush = io::stdout().flush();
 
+    // get the latest release from github api
     let client = Client::new();
     let body = client
         .get("https://api.github.com/repos/Pythack/permscan/releases")
@@ -28,12 +31,11 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
                     };
                 let latest = json.as_array().unwrap();
                 if !latest.is_empty() {
-                    if misc::rem_first(
-                        latest[0]["tag_name"].as_str().unwrap(),
-                        "v",
-                    ) != VERSION
+                    // compare latest release to current version
+                    if misc::rem_first(latest[0]["tag_name"].as_str().unwrap())
+                        != VERSION
                     {
-                        println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap(), "v"), latest[0]["html_url"].as_str().unwrap());
+                        println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap()), latest[0]["html_url"].as_str().unwrap());
                         print!("Do you want to update ? (y/*) ");
                         let _flush = stdout().flush();
                         let mut answer = String::new();
@@ -60,6 +62,8 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn update(build: bool) -> Result<(), Box<dyn Error>> {
+    // use our installer to install the newest version (overwrite the current
+    // version)
     Exec::shell("wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh").join()?;
     Exec::shell("chmod +x ./permscan-installer.sh").join()?;
     match build {
