@@ -281,6 +281,9 @@ fn print_results_nomerge(
     mut lines: Vec<Vec<String>>,
     recursive: bool,
 ) -> Result<(), Box<dyn Error>> {
+    // when using the recursive option, we have lines that tells us what
+    // folder we are into. We want to be able to match these lines to
+    // print them in color
     let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
 
     // lock stdout manually for better performances since we are going to print
@@ -288,6 +291,7 @@ fn print_results_nomerge(
     let stdout = std::io::stdout();
     let mut lock = stdout.lock();
 
+    // TODO: comment this
     if !lines.is_empty() {
         let reference_lines = lines[0].clone();
         let mut final_lines: Vec<Vec<String>> = vec![reference_lines];
@@ -315,6 +319,9 @@ fn print_results_merge(
     lines: Vec<String>,
     recursive: bool,
 ) -> Result<(), Box<dyn Error>> {
+    // when using the recursive option, we have lines that tells us what
+    // folder we are into. We want to be able to match these lines to
+    // print them in color
     let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
 
     // lock stdout manually for better performances since we are going to print
@@ -322,6 +329,7 @@ fn print_results_merge(
     let stdout = std::io::stdout();
     let mut lock = stdout.lock();
 
+    // remove items that appears multiple times
     let lines: Vec<String> = lines.into_iter().unique().collect();
 
     for line in lines {
