@@ -101,7 +101,7 @@ fn permscan(opt: Opt) -> i32 {
 
     // print the matching files if we run ls successfully
     if let Ok(files) = misc::run_ls(ls_options, &opt.path) {
-        match print_matching_files(&opt, &files) {
+        match get_results(&opt, &files) {
             Ok(()) => exit::SUCCESS,
             _ => {
                 eprintln!(
@@ -116,7 +116,7 @@ fn permscan(opt: Opt) -> i32 {
 
 // Get files matching criteria and call the print_result_nomerge function or
 // the print_result_merge function that prints those files
-fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
+fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
     if opt.merge {
         let mut lines: Vec<String> = Vec::new();
 
