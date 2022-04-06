@@ -7,7 +7,8 @@ use subprocess::Exec;
 mod misc;
 
 // get the current version from cargo.toml
-const VERSION: &str = env!("CARGO_PKG_VERSION");
+// const VERSION: &str = env!("CARGO_PKG_VERSION");
+const VERSION: &str = "2.2.2";
 
 // check for a newer version and if one exists, call ask_for_update()
 pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
@@ -34,7 +35,7 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
                         return Err("parsingErr".into());
                     }
                 };
-                let latest = json.as_array().unwrap();
+                let latest = json_to_vec(json)?;
                 if !latest.is_empty() {
                     // compare latest release to current version
                     if misc::rem_first(latest[0]["tag_name"].as_str().unwrap())
@@ -55,6 +56,18 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
         }
     }
     Ok(())
+}
+
+pub fn json_to_vec(
+    json: serde_json::Value,
+) -> Result<Vec<serde_json::Value>, Box<dyn Error>> {
+    return match json.as_array() {
+        Some(val) => Ok(val.to_vec()),
+        _ => {
+            eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
+            Err("parsingErr".into())
+        }
+    };
 }
 
 // ask the user if he wants to update
