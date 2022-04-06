@@ -43,7 +43,7 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
                         if answer.to_lowercase().trim() == "y" {
                             if let Err(e) = update(build) {
                                 eprintln!("\x1b[91m{}\x1b[0m", e);
-                                return Err("version".into());
+                                return Err("update".into());
                             }
                         }
                     } else {

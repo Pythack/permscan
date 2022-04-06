@@ -13,6 +13,31 @@ mod updates;
 
 use opt::Opt;
 
+mod exit {
+
+    // exit code when permscan runs without problems
+    pub const SUCCESS: i32 = 0;
+
+    // exit code for unknown error
+    pub const UNKNOWN_ERR: i32 = -1;
+
+    // exit code when update failed
+    pub const UPDATE_ERR: i32 = 1;
+
+    // exit code when the path entered by the user doesn't exist
+    pub const PATH_ERR: i32 = 2;
+
+    // exit code when failing to run ls to get files
+    pub const LS_ERR: i32 = 3;
+
+    // exit code when an IO error occurs
+    pub const IO_ERR: i32 = 5;
+
+    // exit code when connection to the github api failed
+    // (while checking for updates)
+    pub const CONNECTION_ERR: i32 = 60;
+}
+
 fn main() {
     let exit_code;
     // this scope ensures all variables all destructors are ran
@@ -41,12 +66,12 @@ fn permscan(opt: Opt) -> i32 {
     if opt.check_update {
         if let Err(e) = updates::check_for_newer_version(opt.build) {
             match &*e.to_string() {
-                "version" => return 22,
-                "connection" => return 60,
-                _ => return -1,
+                "update" => return exit::UPDATE_ERR,
+                "connection" => return exit::CONNECTION_ERR,
+                _ => return exit::UNKNOWN_ERR,
             };
         }
-        return 0; // Successful exit code
+        return exit::SUCCESS;
     }
 
     // Check if the path entered by the user exists
@@ -56,7 +81,7 @@ fn permscan(opt: Opt) -> i32 {
             "\x1b[91mpermscan: {}: No such file or directory\x1b[0m",
             &opt.path
         );
-        return 2;
+        return exit::PATH_ERR;
     }
 
     // We are going to run ls to get all the files before filtering them
@@ -84,7 +109,7 @@ fn permscan(opt: Opt) -> i32 {
         }
         Err(_e) => {
             eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
-            3
+            exit::LS_ERR
         }
     }
 }
@@ -250,12 +275,12 @@ fn print_matching_files(opt: Opt, files: &str) -> i32 {
         opt.recursive,
         opt.merge,
     ) {
-        Ok(()) => 0,
+        Ok(()) => exit::SUCCESS,
         Err(_e) => {
             eprintln!(
                 "\x1b[91mpermscan: stdout: failed to print results\x1b[0m"
             );
-            5
+            exit::IO_ERR
         }
     }
 }
