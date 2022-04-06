@@ -25,9 +25,6 @@ mod exit {
     // exit code when permscan runs without problems
     pub const SUCCESS: i32 = 0;
 
-    // exit code for unknown error
-    pub const UNKNOWN_ERR: i32 = -1;
-
     // exit code when update failed
     pub const UPDATE_ERR: i32 = 1;
 
@@ -46,6 +43,9 @@ mod exit {
     // exit code when connection to the github api failed
     // (while checking for updates)
     pub const CONNECTION_ERR: i32 = 60;
+
+    // exit code for unknown error
+    pub const UNKNOWN_ERR: i32 = -1;
 }
 
 fn main() {
