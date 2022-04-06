@@ -13,8 +13,35 @@ mod updates;
 
 use opt::Opt;
 
+mod exit {
+
+    // exit code when permscan runs without problems
+    pub const SUCCESS: i32 = 0;
+
+    // exit code for unknown error
+    pub const UNKNOWN_ERR: i32 = -1;
+
+    // exit code when update failed
+    pub const UPDATE_ERR: i32 = 1;
+
+    // exit code when the path entered by the user doesn't exist
+    pub const PATH_ERR: i32 = 2;
+
+    // exit code when failing to run ls to get files
+    pub const LS_ERR: i32 = 3;
+
+    // exit code when an IO error occurs
+    pub const IO_ERR: i32 = 5;
+
+    // exit code when connection to the github api failed
+    // (while checking for updates)
+    pub const CONNECTION_ERR: i32 = 60;
+}
+
 fn main() {
     let exit_code;
+    // this scope ensures all destructors are ran
+    // before using std::process::exit
     {
         let opt = Opt::from_args();
         let exit_info: bool = opt.exit_info;
@@ -23,7 +50,7 @@ fn main() {
             if exit_code != 0 {
                 println!("\x1b[91mpermscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes\x1b[0m", exit_code)
             } else {
-                println!(
+                eprintln!(
                     "\x1b[92mpermscan: process successfully exited with exit code 0\x1b[0m"
                 )
             }
@@ -32,31 +59,32 @@ fn main() {
     std::process::exit(exit_code)
 }
 
+// The true main function. Returns an exit code
 fn permscan(opt: Opt) -> i32 {
     // Run the checks_for_newer_version function if the update flag is raised.
-    // Exits when done
+    // Returns exit code when done
     if opt.check_update {
         if let Err(e) = updates::check_for_newer_version(opt.build) {
             match &*e.to_string() {
-                "version" => return 22,
-                "connection" => return 60,
-                _ => return -1,
+                "update" => return exit::UPDATE_ERR,
+                "connection" => return exit::CONNECTION_ERR,
+                _ => return exit::UNKNOWN_ERR,
             };
         }
-        return 0; // Successful exit code
+        return exit::SUCCESS;
     }
 
     // Check if the path entered by the user exists
     let path_exists = Path::new(&opt.path).exists();
     if !path_exists {
-        println!(
+        eprintln!(
             "\x1b[91mpermscan: {}: No such file or directory\x1b[0m",
             &opt.path
         );
-        return 2;
+        return exit::PATH_ERR;
     }
 
-    // We are going to run ls to get all the files before classing them
+    // We are going to run ls to get all the files before filtering them
     // by permissions. We use different flags for ls based on the permscan
     // flags
     let ls_options = String::from("-l")
@@ -73,158 +101,186 @@ fn permscan(opt: Opt) -> i32 {
             false => "",
         };
     // Get all files using ls
-    let files = misc::run_command(String::from("ls"), ls_options, opt.path);
+    let files = misc::run_ls(ls_options, &opt.path);
 
     match files {
         Ok(content) => {
-            print_matching_files(
-                opt.owner,
-                opt.user,
-                opt.group,
-                opt.other,
-                opt.merge,
-                opt.invert,
-                opt.recursive,
-                opt.file_type,
-                content,
-            ) // print files matching permscan options and flags and return exit code
+            print_matching_files(opt, &content) // print files matching permscan options and flags and return exit code
         }
         Err(_e) => {
             eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
-            3
+            exit::LS_ERR
         }
     }
 }
 
 // Get files matching criteria and call the print_result function
 // that prints them
-#[allow(clippy::too_many_arguments)]
-fn print_matching_files(
-    owner: Option<String>,
-    user: Option<String>,
-    group: Option<String>,
-    other: Option<String>,
-    merge: bool,
-    invert: bool,
-    recursive: bool,
-    file_type: Option<String>,
-    files: String,
-) -> i32 {
+fn print_matching_files(opt: Opt, files: &str) -> i32 {
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
 
-    if owner.is_none() && user.is_none() && group.is_none() && other.is_none() {
-        let lines = get_files::get_all_files(&files, invert);
+    // if no filtering option is passed to permscan we just print all files
+    if opt.owner.is_none()
+        && opt.user.is_none()
+        && opt.group.is_none()
+        && opt.other.is_none()
+    {
+        let lines = get_files::get_all_files(files, opt.invert);
         all_lines.push(lines)
     }
 
-    if owner.is_some() {
-        let owner = match owner {
+    if opt.owner.is_some() {
+        let owner = match opt.owner {
             None => String::from(""),
             Some(owner) => owner.replace(':', " *"),
         };
-        if merge {
+        if opt.merge {
             temp_lines.extend(
-                get_files::get_based_on_owner(&files, owner, invert, recursive)
-                    .iter()
-                    .cloned(),
+                get_files::get_based_on_owner(
+                    files,
+                    owner,
+                    opt.invert,
+                    opt.recursive,
+                )
+                .iter()
+                .cloned(),
             );
         } else {
-            let owner_lines =
-                get_files::get_based_on_owner(&files, owner, invert, recursive);
+            let owner_lines = get_files::get_based_on_owner(
+                files,
+                owner,
+                opt.invert,
+                opt.recursive,
+            );
             all_lines.push(owner_lines);
         }
     }
 
-    if user.is_some() {
-        let user = match user {
+    if opt.user.is_some() {
+        let user = match opt.user {
             None => String::from(""),
-            Some(user) => misc::rem_first(&user, "@").replace('?', r"[rwx\-]"),
+            Some(user) => misc::rem_first(&user).replace('?', r"[rwx\-]"),
         };
-        if merge {
+        if opt.merge {
             temp_lines.extend(
-                get_files::get_based_on_user(&files, user, invert, recursive)
-                    .iter()
-                    .cloned(),
+                get_files::get_based_on_user(
+                    files,
+                    user,
+                    opt.invert,
+                    opt.recursive,
+                )
+                .iter()
+                .cloned(),
             );
         } else {
-            let user_lines =
-                get_files::get_based_on_user(&files, user, invert, recursive);
+            let user_lines = get_files::get_based_on_user(
+                files,
+                user,
+                opt.invert,
+                opt.recursive,
+            );
             all_lines.push(user_lines);
         }
     }
 
-    if group.is_some() {
-        let group = match group {
+    if opt.group.is_some() {
+        let group = match opt.group {
             None => String::from(""),
-            Some(group) => {
-                misc::rem_first(&group, "@").replace('?', r"[rwx\-]")
-            }
+            Some(group) => misc::rem_first(&group).replace('?', r"[rwx\-]"),
         };
-        if merge {
+        if opt.merge {
             temp_lines.extend(
-                get_files::get_based_on_group(&files, group, invert, recursive)
-                    .iter()
-                    .cloned(),
+                get_files::get_based_on_group(
+                    files,
+                    group,
+                    opt.invert,
+                    opt.recursive,
+                )
+                .iter()
+                .cloned(),
             );
         } else {
-            let user_lines =
-                get_files::get_based_on_group(&files, group, invert, recursive);
+            let user_lines = get_files::get_based_on_group(
+                files,
+                group,
+                opt.invert,
+                opt.recursive,
+            );
             all_lines.push(user_lines);
         }
     }
 
-    if other.is_some() {
-        let other = match other {
+    if opt.other.is_some() {
+        let other = match opt.other {
             None => String::from(""),
-            Some(other) => {
-                misc::rem_first(&other, "@").replace('?', r"[rwx\-]")
-            }
+            Some(other) => misc::rem_first(&other).replace('?', r"[rwx\-]"),
         };
-        if merge {
+        if opt.merge {
             temp_lines.extend(
-                get_files::get_based_on_other(&files, other, invert, recursive)
-                    .iter()
-                    .cloned(),
+                get_files::get_based_on_other(
+                    files,
+                    other,
+                    opt.invert,
+                    opt.recursive,
+                )
+                .iter()
+                .cloned(),
             );
         } else {
-            let user_lines =
-                get_files::get_based_on_other(&files, other, invert, recursive);
+            let user_lines = get_files::get_based_on_other(
+                files,
+                other,
+                opt.invert,
+                opt.recursive,
+            );
             all_lines.push(user_lines);
         }
     }
 
-    if file_type.is_some() {
-        let file_type = match file_type {
+    if opt.file_type.is_some() {
+        let file_type = match opt.file_type {
             None => String::from(""),
             Some(file_type) => {
-                misc::rem_first(&file_type, "@").replace('?', r"[rwx\-]")
+                misc::rem_first(&file_type).replace('?', r"[rwx\-]")
             }
         };
-        if merge {
+        if opt.merge {
             temp_lines.extend(
                 get_files::get_based_on_type(
-                    &files, file_type, invert, recursive,
+                    files,
+                    file_type,
+                    opt.invert,
+                    opt.recursive,
                 )
                 .iter()
                 .cloned(),
             );
         } else {
             let user_lines = get_files::get_based_on_type(
-                &files, file_type, invert, recursive,
+                files,
+                file_type,
+                opt.invert,
+                opt.recursive,
             );
             all_lines.push(user_lines);
         }
     }
     let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
 
-    match print_results(sub_dir, temp_lines, all_lines, recursive, merge) {
-        Ok(()) => 0,
+    match print_results(
+        sub_dir,
+        temp_lines,
+        all_lines,
+        opt.recursive,
+        opt.merge,
+    ) {
+        Ok(()) => exit::SUCCESS,
         Err(_e) => {
             eprintln!(
                 "\x1b[91mpermscan: stdout: failed to print results\x1b[0m"
             );
-            5
+            exit::IO_ERR
         }
     }
 }

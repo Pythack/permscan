@@ -1,5 +1,7 @@
 use regex::Regex;
 
+// functions to get files matching permissions criteria
+
 pub fn get_based_on_owner(
     files: &str,
     owner: String,
