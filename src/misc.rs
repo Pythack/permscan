@@ -3,10 +3,10 @@ use std::path::Path;
 use std::process::Command;
 
 // remove first character from string
-pub fn rem_first(string: &str) -> String {
+pub fn rem_first(string: &str) -> &str {
     let mut chars = string.chars();
     chars.next();
-    return String::from(chars.as_str());
+    chars.as_str()
 }
 
 // check if the path entered by the user exists and return

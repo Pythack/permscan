@@ -86,7 +86,7 @@ fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
 }
 
 // a wrapper around io::stdin().read_line() that retry when failing
-fn get_input(buffer: &mut String) -> Result<&String, Box<dyn Error>> {
+fn get_input(buffer: &mut String) -> Result<&str, Box<dyn Error>> {
     let _flush = stdout().flush();
     match io::stdin().read_line(buffer) {
         Ok(_) => Ok(buffer),

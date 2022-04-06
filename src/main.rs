@@ -118,7 +118,7 @@ fn permscan(opt: Opt) -> i32 {
 // the print_result_merge function that prints those files
 fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
     if opt.merge {
-        let mut lines: Vec<String> = Vec::new();
+        let mut lines: Vec<&str> = Vec::new();
 
         if opt.owner.is_none()
             && opt.user.is_none()
@@ -140,7 +140,7 @@ fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
                     opt.recursive,
                 )
                 .iter()
-                .cloned(),
+                .copied(),
             );
         }
 
@@ -155,7 +155,7 @@ fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
                     opt.recursive,
                 )
                 .iter()
-                .cloned(),
+                .copied(),
             );
         }
 
@@ -170,7 +170,7 @@ fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
                     opt.recursive,
                 )
                 .iter()
-                .cloned(),
+                .copied(),
             );
         }
 
@@ -185,7 +185,7 @@ fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
                     opt.recursive,
                 )
                 .iter()
-                .cloned(),
+                .copied(),
             );
         }
 
@@ -200,12 +200,12 @@ fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
                     opt.recursive,
                 )
                 .iter()
-                .cloned(),
+                .copied(),
             );
         }
         print_results_merge(lines, opt.recursive)?
     } else {
-        let mut lines: Vec<Vec<String>> = Vec::new();
+        let mut lines: Vec<Vec<&str>> = Vec::new();
 
         if opt.owner.is_none()
             && opt.user.is_none()
@@ -278,7 +278,7 @@ fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
 
 // print results. Called when opt.merge is false
 fn print_results_nomerge(
-    mut lines: Vec<Vec<String>>,
+    mut lines: Vec<Vec<&str>>,
     recursive: bool,
 ) -> Result<(), Box<dyn Error>> {
     // when using the recursive option, we have lines that tells us what
@@ -294,7 +294,7 @@ fn print_results_nomerge(
     // TODO: comment this
     if !lines.is_empty() {
         let reference_lines = lines[0].clone();
-        let mut final_lines: Vec<Vec<String>> = vec![reference_lines];
+        let mut final_lines: Vec<Vec<&str>> = vec![reference_lines];
         lines.remove(0);
         for lines_set in &lines {
             let final_lines_len = final_lines.len();
@@ -316,7 +316,7 @@ fn print_results_nomerge(
 
 // print results. Called when opt.merge is true
 fn print_results_merge(
-    lines: Vec<String>,
+    lines: Vec<&str>,
     recursive: bool,
 ) -> Result<(), Box<dyn Error>> {
     // when using the recursive option, we have lines that tells us what
@@ -330,10 +330,10 @@ fn print_results_merge(
     let mut lock = stdout.lock();
 
     // remove items that appears multiple times
-    let lines: Vec<String> = lines.into_iter().unique().collect();
+    let lines: Vec<&str> = lines.iter().unique().copied().collect();
 
     for line in lines {
-        if recursive && sub_dir_text.is_match(&line) {
+        if recursive && sub_dir_text.is_match(line) {
             writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
         } else {
             writeln!(lock, "{}", line)?;
