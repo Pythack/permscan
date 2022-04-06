@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 
 use array_tool::vec::*;
-use itertools::Itertools;
 use regex::Regex;
 use std::error::Error;
 use std::io::Write;
@@ -330,7 +329,7 @@ fn print_results_merge(
     let mut lock = stdout.lock();
 
     // remove items that appears multiple times
-    let lines: Vec<&str> = lines.iter().unique().copied().collect();
+    let lines: Vec<&str> = lines.unique();
 
     for line in lines {
         if recursive && sub_dir_text.is_match(line) {
