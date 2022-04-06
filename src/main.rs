@@ -105,7 +105,8 @@ fn permscan(opt: Opt) -> i32 {
     exit::LS_ERR
 }
 
-// get all matching files
+// Get files matching criteria and call the print_result function
+// that prints them
 fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
     let mut all_lines: Vec<Vec<String>> = Vec::new();
     let mut temp_lines: Vec<String> = Vec::new();
