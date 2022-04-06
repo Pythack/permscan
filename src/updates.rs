@@ -60,7 +60,7 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
 
 // wrapper around json.as_array() that returns an error when the Option
 // is None
-pub fn json_to_vec(
+fn json_to_vec(
     json: serde_json::Value,
 ) -> Result<Vec<serde_json::Value>, Box<dyn Error>> {
     return match json.as_array() {
@@ -73,7 +73,7 @@ pub fn json_to_vec(
 }
 
 // ask the user if he wants to update
-pub fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
+fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
     print!("Do you want to update ? (y/*) ");
     let mut answer = String::new();
     get_input(&mut answer)?;
@@ -102,7 +102,7 @@ fn get_input(buffer: &mut String) -> Result<&String, Box<dyn Error>> {
 
 // use permscan-installer to install the newest
 // version (overwrite the current version)
-pub fn update(build: bool) -> Result<(), Box<dyn Error>> {
+fn update(build: bool) -> Result<(), Box<dyn Error>> {
     Exec::shell("wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh").join()?;
     Exec::shell("chmod +x ./permscan-installer.sh").join()?;
     match build {
