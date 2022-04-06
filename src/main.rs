@@ -40,7 +40,7 @@ mod exit {
 
 fn main() {
     let exit_code;
-    // this scope ensures all variables all destructors are ran
+    // this scope ensures all destructors are ran
     // before using std::process::exit
     {
         let opt = Opt::from_args();
