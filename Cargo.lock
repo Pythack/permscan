@@ -494,7 +494,7 @@ checksum = "d4fd5641d01c8f18a23da7b6fe29298ff4b55afcccdf78973b24cf3175fee32e"
 
 [[package]]
 name = "permscan"
-version = "2.2.10"
+version = "2.2.11"
 dependencies = [
  "array_tool",
  "regex",
