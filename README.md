@@ -1,20 +1,16 @@
+<div align="center">
+
 # permscan
 
 permscan is a linux and macOS binary to filter file system items based on
-permission criteria. By default, it will search not-recursively and ignore hidden
-files but this behavior can be modified using flags. You can also specify the
-path of the directory you want to search into.
+permission criteria.
 
-## Contents
+**Contents:** [Usage](#usage)  [Wiki](#wiki) — [Run in docker](#run-in-docker) —
+[Installation](#installation) - [Building](#building) - [License](#license)
 
-* [Help](##Help)
-* [Wiki](##Wiki)
-* [Run in docker](##Run-in-docker)
-* [Installation](##Installation)
-* [Building](##Building)
-* [License](##License)
+</div>
 
-## Help
+## Usage
 
 ```
 Permission scanner 2.2.10
