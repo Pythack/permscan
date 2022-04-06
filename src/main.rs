@@ -111,8 +111,8 @@ fn permscan(opt: Opt) -> i32 {
     exit::LS_ERR
 }
 
-// Get files matching criteria and call the print_result_nomerge function
-// or the print merge function (depending on opt.merge) that prints those files
+// Get files matching criteria and call the print_result_nomerge function or
+// the print_result_merge function that prints those files
 fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
     if opt.merge {
         let mut lines: Vec<String> = Vec::new();
