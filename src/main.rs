@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use array_tool::vec::*;
+use itertools::Itertools;
 use regex::Regex;
 use std::error::Error;
 use std::io::Write;
@@ -312,6 +313,9 @@ fn print_results_merge(
     // to it a lot
     let stdout = std::io::stdout();
     let mut lock = stdout.lock();
+
+    let lines: Vec<String> = lines.into_iter().unique().collect();
+
     for line in lines {
         if recursive && sub_dir_text.is_match(&line) {
             writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
