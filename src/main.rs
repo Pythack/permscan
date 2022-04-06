@@ -50,7 +50,7 @@ fn main() {
             if exit_code != 0 {
                 println!("\x1b[91mpermscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes\x1b[0m", exit_code)
             } else {
-                println!(
+                eprintln!(
                     "\x1b[92mpermscan: process successfully exited with exit code 0\x1b[0m"
                 )
             }
@@ -77,7 +77,7 @@ fn permscan(opt: Opt) -> i32 {
     // Check if the path entered by the user exists
     let path_exists = Path::new(&opt.path).exists();
     if !path_exists {
-        println!(
+        eprintln!(
             "\x1b[91mpermscan: {}: No such file or directory\x1b[0m",
             &opt.path
         );
