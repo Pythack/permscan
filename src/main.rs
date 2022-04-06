@@ -99,7 +99,8 @@ fn permscan(opt: Opt) -> i32 {
     // by permissions. Here we determine what flags we are going to run ls with
     let ls_options = misc::get_ls_options(&opt.all, &opt.recursive);
 
-    // print the matching files if we run ls successfully
+    // print the matching files if we ran ls successfully, return LS_ERR
+    // exit code otherwise
     if let Ok(files) = misc::run_ls(ls_options, &opt.path) {
         match get_results(&opt, &files) {
             Ok(()) => exit::SUCCESS,
