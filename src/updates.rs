@@ -7,8 +7,8 @@ use subprocess::Exec;
 mod misc;
 
 // get the current version from cargo.toml
-const VERSION: &str = env!("CARGO_PKG_VERSION");
-
+//const VERSION: &str = env!("CARGO_PKG_VERSION");
+const VERSION: &str = "2.2.2";
 // check for a newer version and if one exists, call ask_for_update()
 pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
     println!("\x1b[94mCurrent version: {}\x1b[0m", VERSION);
@@ -60,7 +60,6 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
 // ask the user if he wants to update
 pub fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
     print!("Do you want to update ? (y/*) ");
-    let _flush = stdout().flush();
     let mut answer = String::new();
     get_input(&mut answer)?;
     if answer.to_lowercase().trim() == "y" {
@@ -74,11 +73,12 @@ pub fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
 
 // a wrapper around io::stdin().read_line() that retry when failing
 fn get_input(buffer: &mut String) -> Result<&String, Box<dyn Error>> {
+    let _flush = stdout().flush();
     match io::stdin().read_line(buffer) {
         Ok(_) => Ok(buffer),
         Err(_e) => {
             eprintln!(
-                "\n\x1b[91mpermscan: update: failed to read input\x1b[0m"
+                "\n\x1b[91mpermscan: update: failed to read input. please retry: \x1b[0m\n"
             );
             get_input(buffer)
         }
