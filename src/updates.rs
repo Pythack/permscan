@@ -72,6 +72,7 @@ pub fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+// a wrapper around io::stdin().read_line() that retry when failing
 fn get_input(buffer: &mut String) -> Result<&String, Box<dyn Error>> {
     match io::stdin().read_line(buffer) {
         Ok(_) => Ok(buffer),
@@ -79,7 +80,7 @@ fn get_input(buffer: &mut String) -> Result<&String, Box<dyn Error>> {
             eprintln!(
                 "\n\x1b[91mpermscan: update: failed to read input\x1b[0m"
             );
-            Err("input".into())
+            get_input(buffer)
         }
     }
 }
