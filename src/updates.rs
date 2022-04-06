@@ -31,7 +31,7 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
                     Ok(value) => value,
                     _ => {
                         eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
-                        return Err("parsing".into());
+                        return Err("parsingErr".into());
                     }
                 };
                 let latest = json.as_array().unwrap();
