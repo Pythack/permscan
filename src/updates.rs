@@ -58,6 +58,8 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+// wrapper around json.as_array() that returns an error when the Option
+// is None
 pub fn json_to_vec(
     json: serde_json::Value,
 ) -> Result<Vec<serde_json::Value>, Box<dyn Error>> {
