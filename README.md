@@ -5,8 +5,8 @@
 permscan is a linux and macOS binary to filter file system items based on
 permission criteria.
 
-**Contents:** [Usage](#usage) - [Wiki](#wiki) — [Run in docker](#run-in-docker) —
-[Installation](#installation) - [Building](#building) - [License](#license)
+**Contents:** [Usage](#usage) — [Wiki](#wiki) — [Run in docker](#run-in-docker) —
+[Installation](#installation) — [Building](#building) — [License](#license)
 
 </div>
 
