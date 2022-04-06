@@ -37,6 +37,9 @@ mod exit {
     // exit code when failing to run ls to get files
     pub const LS_ERR: i32 = 3;
 
+    // exit code when failing to parse github api response
+    pub const PARSING_ERR: i32 = 4;
+
     // exit code when an IO error occurs
     pub const IO_ERR: i32 = 5;
 
@@ -79,6 +82,8 @@ fn permscan(opt: Opt) -> i32 {
             match &*e.to_string() {
                 "updateErr" => return exit::UPDATE_ERR,
                 "connectionErr" => return exit::CONNECTION_ERR,
+                "input" => return exit::IO_ERR,
+                "parsing" => return exit::PARSING_ERR,
                 _ => return exit::UNKNOWN_ERR,
             };
         }

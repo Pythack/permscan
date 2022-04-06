@@ -62,7 +62,7 @@ pub fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
     print!("Do you want to update ? (y/*) ");
     let _flush = stdout().flush();
     let mut answer = String::new();
-    io::stdin().read_line(&mut answer)?;
+    get_input(&mut answer)?;
     if answer.to_lowercase().trim() == "y" {
         if let Err(e) = update(build) {
             eprintln!("\x1b[91m{}\x1b[0m", e);
@@ -70,6 +70,18 @@ pub fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
         }
     }
     Ok(())
+}
+
+fn get_input(buffer: &mut String) -> Result<&String, Box<dyn Error>> {
+    match io::stdin().read_line(buffer) {
+        Ok(_) => Ok(buffer),
+        Err(_e) => {
+            eprintln!(
+                "\n\x1b[91mpermscan: update: failed to read input\x1b[0m"
+            );
+            Err("input".into())
+        }
+    }
 }
 
 // use permscan-installer to install the newest
