@@ -296,13 +296,12 @@ fn print_results_nomerge(
         let mut final_lines: Vec<Vec<&str>> = vec![reference_lines];
         lines.remove(0);
         for lines_set in &lines {
-            let final_lines_len = final_lines.len();
             final_lines.push(
-                final_lines[final_lines_len - 1].intersect(lines_set.to_vec()),
+                final_lines[final_lines.len() - 1]
+                    .intersect(lines_set.to_vec()),
             );
         }
-        let final_lines_len = final_lines.len();
-        for line in &final_lines[final_lines_len - 1] {
+        for line in &final_lines[final_lines.len() - 1] {
             if recursive && sub_dir_text.is_match(line) {
                 writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
             } else {
