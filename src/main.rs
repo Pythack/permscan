@@ -19,11 +19,6 @@ mod updates;
 
 use crate::opt::Opt;
 
-enum Files {
-    NoMerge(Vec<Vec<String>>),
-    Merge(Vec<String>),
-}
-
 mod exit {
 
     // exit code when permscan runs without problems
