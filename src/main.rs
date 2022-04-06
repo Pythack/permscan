@@ -79,9 +79,7 @@ fn permscan(opt: Opt) -> i32 {
             match &*e.to_string() {
                 "updateErr" => return exit::UPDATE_ERR,
                 "connectionErr" => return exit::CONNECTION_ERR,
-                _ => {
-                    return exit::UNKNOWN_ERR;
-                }
+                _ => return exit::UNKNOWN_ERR,
             };
         }
         return exit::SUCCESS;
