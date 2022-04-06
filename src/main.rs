@@ -105,17 +105,25 @@ fn permscan(opt: Opt) -> i32 {
     exit::LS_ERR
 }
 
-// Get files matching criteria and call the print_result function
-// that prints them
+// Get files matching criteria and call the print_result_nomerge function
+// or the print merge function (depending on opt.merge) that prints those files
 fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
-    let mut all_lines: Vec<Vec<String>> = Vec::new();
-    let mut temp_lines: Vec<String> = Vec::new();
-
     if opt.merge {
+        let mut lines: Vec<String> = Vec::new();
+
+        if opt.owner.is_none()
+            && opt.user.is_none()
+            && opt.group.is_none()
+            && opt.other.is_none()
+            && opt.file_type.is_none()
+        {
+            lines.extend(get_files::get_all_files(files, opt.invert))
+        }
+
         if let Some(owner) = &opt.owner {
             let owner = owner.replace(':', " *");
 
-            temp_lines.extend(
+            lines.extend(
                 get_files::get_based_on_owner(
                     files,
                     owner,
@@ -130,7 +138,7 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(user) = &opt.user {
             let user = misc::rem_first(user).replace('?', r"[rwx\-]");
 
-            temp_lines.extend(
+            lines.extend(
                 get_files::get_based_on_user(
                     files,
                     user,
@@ -145,7 +153,7 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(group) = &opt.group {
             let group = misc::rem_first(group).replace('?', r"[rwx\-]");
 
-            temp_lines.extend(
+            lines.extend(
                 get_files::get_based_on_group(
                     files,
                     group,
@@ -160,7 +168,7 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(other) = &opt.other {
             let other = misc::rem_first(other).replace('?', r"[rwx\-]");
 
-            temp_lines.extend(
+            lines.extend(
                 get_files::get_based_on_other(
                     files,
                     other,
@@ -175,7 +183,7 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(file_type) = &opt.file_type {
             let file_type = file_type.replace('?', r"[rwx\-]");
 
-            temp_lines.extend(
+            lines.extend(
                 get_files::get_based_on_type(
                     files,
                     file_type,
@@ -186,20 +194,23 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
                 .cloned(),
             );
         }
+        print_results_merge(lines, opt.recursive)?
     } else {
+        let mut lines: Vec<Vec<String>> = Vec::new();
+
         if opt.owner.is_none()
             && opt.user.is_none()
             && opt.group.is_none()
             && opt.other.is_none()
             && opt.file_type.is_none()
         {
-            all_lines.push(get_files::get_all_files(files, opt.invert))
+            lines.push(get_files::get_all_files(files, opt.invert))
         }
 
         if let Some(owner) = &opt.owner {
             let owner = owner.replace(':', " *");
 
-            all_lines.push(get_files::get_based_on_owner(
+            lines.push(get_files::get_based_on_owner(
                 files,
                 owner,
                 opt.invert,
@@ -210,7 +221,7 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(user) = &opt.user {
             let user = misc::rem_first(user).replace('?', r"[rwx\-]");
 
-            all_lines.push(get_files::get_based_on_user(
+            lines.push(get_files::get_based_on_user(
                 files,
                 user,
                 opt.invert,
@@ -221,7 +232,7 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(group) = &opt.group {
             let group = misc::rem_first(group).replace('?', r"[rwx\-]");
 
-            all_lines.push(get_files::get_based_on_group(
+            lines.push(get_files::get_based_on_group(
                 files,
                 group,
                 opt.invert,
@@ -232,7 +243,7 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(other) = &opt.other {
             let other = misc::rem_first(other).replace('?', r"[rwx\-]");
 
-            all_lines.push(get_files::get_based_on_other(
+            lines.push(get_files::get_based_on_other(
                 files,
                 other,
                 opt.invert,
@@ -243,24 +254,23 @@ fn print_matching_files(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
         if let Some(file_type) = &opt.file_type {
             let file_type = file_type.replace('?', r"[rwx\-]");
 
-            all_lines.push(get_files::get_based_on_type(
+            lines.push(get_files::get_based_on_type(
                 files,
                 file_type,
                 opt.invert,
                 opt.recursive,
             ));
         }
+        print_results_nomerge(lines, opt.recursive)?
     }
-    print_results(temp_lines, all_lines, opt.recursive, opt.merge)?;
 
     Ok(())
 }
 
-fn print_results(
-    temp_lines: Vec<String>,
-    mut all_lines: Vec<Vec<String>>,
+// print results. Called when opt.merge is false
+fn print_results_nomerge(
+    mut lines: Vec<Vec<String>>,
     recursive: bool,
-    merge: bool,
 ) -> Result<(), Box<dyn Error>> {
     let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
 
@@ -269,19 +279,11 @@ fn print_results(
     let stdout = std::io::stdout();
     let mut lock = stdout.lock();
 
-    if merge {
-        for line in temp_lines {
-            if recursive && sub_dir_text.is_match(&line) {
-                writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
-            } else {
-                writeln!(lock, "{}", line)?;
-            }
-        }
-    } else if !all_lines.is_empty() {
-        let reference_lines = all_lines[0].clone();
+    if !lines.is_empty() {
+        let reference_lines = lines[0].clone();
         let mut final_lines: Vec<Vec<String>> = vec![reference_lines];
-        all_lines.remove(0);
-        for lines_set in &all_lines {
+        lines.remove(0);
+        for lines_set in &lines {
             let final_lines_len = final_lines.len();
             final_lines.push(
                 final_lines[final_lines_len - 1].intersect(lines_set.to_vec()),
@@ -294,6 +296,27 @@ fn print_results(
             } else {
                 writeln!(lock, "{}", line)?;
             }
+        }
+    }
+    Ok(())
+}
+
+// print results. Called when opt.merge is true
+fn print_results_merge(
+    lines: Vec<String>,
+    recursive: bool,
+) -> Result<(), Box<dyn Error>> {
+    let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
+    // lock stdout manually for better performances since we are going to print
+    // to it a lot
+    let stdout = std::io::stdout();
+    let mut lock = stdout.lock();
+    for line in lines {
+        if recursive && sub_dir_text.is_match(&line) {
+            writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
+        } else {
+            writeln!(lock, "{}", line)?;
         }
     }
     Ok(())
