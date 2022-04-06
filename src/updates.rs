@@ -7,8 +7,7 @@ use subprocess::Exec;
 mod misc;
 
 // get the current version from cargo.toml
-// const VERSION: &str = env!("CARGO_PKG_VERSION");
-const VERSION: &str = "2.2.2";
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 // check for a newer version and if one exists, call ask_for_update()
 pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
