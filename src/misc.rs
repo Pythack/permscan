@@ -1,5 +1,7 @@
 use std::path::Path;
 
+#[path = "./colors.rs"]
+mod colors;
 #[path = "./types.rs"]
 mod types;
 
@@ -18,8 +20,10 @@ pub fn check_path_exists(path: &str) -> Result<()> {
     let path_exists = Path::new(&path).exists();
     if !path_exists {
         eprintln!(
-            "\x1b[91mpermscan: {}: No such file or directory\x1b[0m",
-            &path
+            "{}permscan: {}: No such file or directory\x1b[0m{}",
+            colors::RED,
+            &path,
+            colors::RESET
         );
         return Err("".into());
     }
@@ -28,10 +32,12 @@ pub fn check_path_exists(path: &str) -> Result<()> {
 
 pub fn print_exit_info(exit_code: i32) {
     if exit_code != 0 {
-        println!("\x1b[91mpermscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes\x1b[0m", exit_code)
+        println!("{}permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes{}", colors::RED, exit_code, colors::RESET)
     } else {
         eprintln!(
-            "\x1b[92mpermscan: process successfully exited with exit code 0\x1b[0m"
+            "{}permscan: process successfully exited with exit code 0{}",
+            colors::GREEN,
+            colors::RESET
         )
     }
 }
@@ -41,8 +47,10 @@ pub fn verify_type_argument(type_arg: &str) -> Result<()> {
 
     if !possible_types.contains(&type_arg) {
         eprintln!(
-            "\x1b[91mpermscan: {}: invalid type argument\x1b[0m",
-            type_arg
+            "{}permscan: {}: invalid type argument{}",
+            colors::RED,
+            type_arg,
+            colors::RESET
         );
         return Err("typeArgErr".into());
     }

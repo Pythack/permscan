@@ -2,6 +2,8 @@
 
 use structopt::StructOpt;
 
+#[path = "./colors.rs"]
+mod colors;
 #[path = "./get_results.rs"]
 mod get_results;
 #[path = "./ls.rs"]
@@ -108,7 +110,9 @@ fn permscan(opt: Opt) -> i32 {
         Ok(()) => exit::SUCCESS,
         Err(_) => {
             eprintln!(
-                "\x1b[91mpermscan: stdout: failed to print results\x1b[0m"
+                "{}permscan: stdout: failed to print results{}",
+                colors::RED,
+                colors::RESET
             );
             exit::IO_ERR
         }

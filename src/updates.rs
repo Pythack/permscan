@@ -9,12 +9,19 @@ mod types;
 
 use types::Result;
 
+use crate::colors;
+
 // get the current version from cargo.toml
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 // check for a newer version and if one exists, call ask_for_update()
 pub fn check_for_newer_version(build: &bool) -> Result<()> {
-    println!("\x1b[94mCurrent version: {}\x1b[0m", VERSION);
+    println!(
+        "{}Current version: {}{}",
+        colors::BLUE,
+        VERSION,
+        colors::RESET
+    );
     print!("Checking latest version on GitHub... ");
     let _flush = io::stdout().flush();
 
@@ -30,16 +37,24 @@ pub fn check_for_newer_version(build: &bool) -> Result<()> {
                 if misc::rem_first(latest[0]["tag_name"].as_str().unwrap())
                     != VERSION
                 {
-                    println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap()), latest[0]["html_url"].as_str().unwrap());
+                    println!(
+                        "\r{}Newer version available: {}! Visit this url: {}{}",
+                        colors::YELLOW,
+                        misc::rem_first(
+                            latest[0]["tag_name"].as_str().unwrap()
+                        ),
+                        latest[0]["html_url"].as_str().unwrap(),
+                        colors::RESET
+                    );
                     ask_for_update(build)?
                 } else {
-                    println!("\r\x1b[92mYou have the latest version! Thank you for using permscan!\x1b[0m");
+                    println!("\r{}You have the latest version! Thank you for using permscan!{}", colors::GREEN, colors::RESET);
                 }
             }
         }
 
         Err(_) => {
-            eprintln!("\n\x1b[91mpermscan: update: failed to connect to the github api. are you connected to the internet ?\x1b[0m");
+            eprintln!("\n{}permscan: update: failed to connect to the github api. are you connected to the internet ?{}", colors::RED, colors::RESET);
             return Err("connectionErr".into());
         }
     }
@@ -61,7 +76,11 @@ fn response_to_str(response: reqwest::blocking::Response) -> Result<String> {
     return match response.text() {
         Ok(str) => Ok(str),
         Err(_) => {
-            eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
+            eprintln!(
+                "\n{}permscan: update: failed to parse github api response{}",
+                colors::RED,
+                colors::RESET
+            );
             return Err("parsingErr".into());
         }
     };
@@ -73,7 +92,11 @@ fn str_to_json(str: String) -> Result<serde_json::Value> {
     let json: serde_json::Value = match serde_json::from_str(&str) {
         Ok(json) => json,
         Err(_) => {
-            eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
+            eprintln!(
+                "\n{}permscan: update: failed to parse github api response{}",
+                colors::RED,
+                colors::RESET
+            );
             return Err("parsingErr".into());
         }
     };
@@ -86,7 +109,11 @@ fn json_to_vec(json: serde_json::Value) -> Result<Vec<serde_json::Value>> {
     return match json.as_array() {
         Some(val) => Ok(val.to_vec()),
         None => {
-            eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
+            eprintln!(
+                "\n{}permscan: update: failed to parse github api response{}",
+                colors::RED,
+                colors::RESET
+            );
             Err("parsingErr".into())
         }
     };
@@ -99,7 +126,7 @@ fn ask_for_update(build: &bool) -> Result<()> {
     get_input(&mut answer)?;
     if answer.to_lowercase().trim() == "y" {
         if let Err(e) = update(*build) {
-            eprintln!("\x1b[91m{}\x1b[0m", e);
+            eprintln!("{}{}{}", colors::RED, e, colors::RESET);
             return Err("updateErr".into());
         }
     }
@@ -113,7 +140,7 @@ fn get_input(buffer: &mut String) -> Result<&str> {
         Ok(_) => Ok(buffer),
         Err(_) => {
             eprintln!(
-                "\n\x1b[91mpermscan: update: failed to read input. please retry: \x1b[0m\n"
+                "\n{}permscan: update: failed to read input. please retry: {}\n", colors::RED, colors::RESET
             );
             get_input(buffer)
         }
