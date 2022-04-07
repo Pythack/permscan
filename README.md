@@ -33,7 +33,7 @@ FLAGS:
     -V, --version      Prints version information
 
 OPTIONS:
-        --type <file-type>    Specify the type of the object
+        --type <item-type>    Specify the type of the item
         --group <group>       Specify permissions that the group who owns the file or directory needs to have on the
                               item in the format @rwx
         --other <other>       Specify permissions that users who does not own the file or directory needs to have on the

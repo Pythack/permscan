@@ -31,7 +31,7 @@ pub struct Opt {
     pub owner: Option<String>,
 
     #[structopt(long = "type", help = "Specify the type of the object")]
-    pub file_type: Option<String>,
+    pub item_type: Option<String>,
 
     #[structopt(
         short,
