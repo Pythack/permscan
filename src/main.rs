@@ -2,14 +2,14 @@
 
 use structopt::StructOpt;
 
-#[path = "./opt.rs"]
-mod arguments;
 #[path = "./get_results.rs"]
 mod get_results;
 #[path = "./ls.rs"]
 mod ls;
 #[path = "./misc.rs"]
 mod misc;
+#[path = "./opt.rs"]
+mod opt;
 #[path = "./print_results.rs"]
 mod print_results;
 #[path = "./types.rs"]
@@ -17,7 +17,7 @@ mod types;
 #[path = "./updates.rs"]
 mod updates;
 
-use crate::arguments::Opt;
+use crate::opt::Opt;
 use types::PermscanOutput;
 
 mod exit {
