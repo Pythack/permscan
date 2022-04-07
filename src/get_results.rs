@@ -163,7 +163,7 @@ fn get_based_on_owner<'a>(
     let mut temp_lines: Vec<&str> = Vec::new();
     let re = Regex::new(
         &(String::from(r"^[dlcbps\-][rwx\-]{9}[ 0-9]* *")
-            + &*owner
+            + owner
             + r" (.|\n)*$"),
     )
     .unwrap();
