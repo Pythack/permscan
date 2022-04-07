@@ -8,7 +8,9 @@ mod types;
 use crate::Opt;
 use crate::PermscanOutput;
 
-// Get files matching criteria
+// Get files matching criteria. As files as stored differently based on if
+// the merge flag is present or not, we use the enum PermscanOutput to be able
+// to deal with them the same way
 pub fn get_results<'a>(opt: &'a Opt, files: &'a str) -> PermscanOutput<'a> {
     if opt.merge {
         let mut lines: Vec<&str> = Vec::new();
