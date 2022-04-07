@@ -1,5 +1,7 @@
 use std::process::Command;
 
+#[path = "./colors.rs"]
+mod colors;
 #[path = "./types.rs"]
 mod types;
 
@@ -15,7 +17,11 @@ pub fn run_ls(path: &str, all: &bool, recursive: &bool) -> Result<String> {
         Ok(content) => output_to_str(content),
 
         Err(_) => {
-            eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
+            eprintln!(
+                "{} permscan: ls: failed to get files. is ls installed ?{}",
+                colors::RED,
+                colors::RESET
+            );
             Err("".into())
         }
     }
@@ -31,7 +37,7 @@ fn get_ls_options(all: &bool, recursive: &bool) -> String {
     let ls_options = ls_options
         + match recursive {
             true => {
-                println!("\x1b[94mPlease be patient, a recursive search can take time... \x1b[0m");
+                println!("{}Please be patient, a recursive search can take time... {}", colors::BLUE, colors::RESET);
                 "R"
             }
             false => "",

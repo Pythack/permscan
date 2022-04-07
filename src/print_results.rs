@@ -2,6 +2,8 @@ use array_tool::vec::*;
 use regex::Regex;
 use std::io::Write;
 
+#[path = "./colors.rs"]
+mod colors;
 #[path = "./types.rs"]
 mod types;
 
@@ -48,7 +50,7 @@ fn print_results_nomerge(
         }
         for line in &final_lines[final_lines.len() - 1] {
             if *recursive && sub_dir_text.is_match(line) {
-                writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
+                writeln!(lock, "{}{}{}", colors::GREEN, line, colors::RESET)?;
             } else {
                 writeln!(lock, "{}", line)?;
             }
@@ -74,7 +76,7 @@ fn print_results_merge(lines: Vec<&str>, recursive: &bool) -> Result<()> {
 
     for line in lines {
         if *recursive && sub_dir_text.is_match(line) {
-            writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
+            writeln!(lock, "{}{}{}", colors::GREEN, line, colors::RESET)?;
         } else {
             writeln!(lock, "{}", line)?;
         }
