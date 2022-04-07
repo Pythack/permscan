@@ -11,7 +11,7 @@ use crate::PermscanOutput;
 
 // wrapper around print_results_merge() and print_results_nomerge()
 // that call one of them based on the type of the output
-pub fn print_results(lines: PermscanOutput, recursive: bool) -> Result<()> {
+pub fn print_results(lines: PermscanOutput, recursive: &bool) -> Result<()> {
     match lines {
         PermscanOutput::Merge(lines) => print_results_merge(lines, recursive),
         PermscanOutput::NoMerge(lines) => {
@@ -21,7 +21,7 @@ pub fn print_results(lines: PermscanOutput, recursive: bool) -> Result<()> {
 }
 
 // print results. Called when opt.merge is true
-fn print_results_merge(lines: Vec<&str>, recursive: bool) -> Result<()> {
+fn print_results_merge(lines: Vec<&str>, recursive: &bool) -> Result<()> {
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to
     // print them in color
@@ -36,7 +36,7 @@ fn print_results_merge(lines: Vec<&str>, recursive: bool) -> Result<()> {
     let lines: Vec<&str> = lines.unique();
 
     for line in lines {
-        if recursive && sub_dir_text.is_match(line) {
+        if *recursive && sub_dir_text.is_match(line) {
             writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
         } else {
             writeln!(lock, "{}", line)?;
@@ -48,7 +48,7 @@ fn print_results_merge(lines: Vec<&str>, recursive: bool) -> Result<()> {
 // print results. Called when opt.merge is false
 fn print_results_nomerge(
     mut lines: Vec<Vec<&str>>,
-    recursive: bool,
+    recursive: &bool,
 ) -> Result<()> {
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to
@@ -72,7 +72,7 @@ fn print_results_nomerge(
             );
         }
         for line in &final_lines[final_lines.len() - 1] {
-            if recursive && sub_dir_text.is_match(line) {
+            if *recursive && sub_dir_text.is_match(line) {
                 writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
             } else {
                 writeln!(lock, "{}", line)?;

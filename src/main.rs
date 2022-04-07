@@ -78,7 +78,7 @@ fn permscan(opt: Opt) -> i32 {
     // Run the checks_for_newer_version function if the update flag is raised.
     // Returns exit code when done
     if opt.check_update {
-        if let Err(e) = updates::check_for_newer_version(opt.build) {
+        if let Err(e) = updates::check_for_newer_version(&opt.build) {
             match &*e.to_string() {
                 "updateErr" => return exit::UPDATE_ERR,
                 "connectionErr" => return exit::CONNECTION_ERR,
@@ -103,7 +103,7 @@ fn permscan(opt: Opt) -> i32 {
     let files_unwrapped = files.unwrap();
     let results = get_results::get_results(&opt, &files_unwrapped);
 
-    match print_results::print_results(results, opt.recursive) {
+    match print_results::print_results(results, &opt.recursive) {
         Ok(()) => exit::SUCCESS,
         Err(_) => {
             eprintln!(

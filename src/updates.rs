@@ -13,7 +13,7 @@ use types::Result;
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 // check for a newer version and if one exists, call ask_for_update()
-pub fn check_for_newer_version(build: bool) -> Result<()> {
+pub fn check_for_newer_version(build: &bool) -> Result<()> {
     println!("\x1b[94mCurrent version: {}\x1b[0m", VERSION);
     print!("Checking latest version on GitHub... ");
     let _flush = io::stdout().flush();
@@ -73,12 +73,12 @@ fn json_to_vec(json: serde_json::Value) -> Result<Vec<serde_json::Value>> {
 }
 
 // ask the user if he wants to update
-fn ask_for_update(build: bool) -> Result<()> {
+fn ask_for_update(build: &bool) -> Result<()> {
     print!("Do you want to update ? (y/*) ");
     let mut answer = String::new();
     get_input(&mut answer)?;
     if answer.to_lowercase().trim() == "y" {
-        if let Err(e) = update(build) {
+        if let Err(e) = update(*build) {
             eprintln!("\x1b[91m{}\x1b[0m", e);
             return Err("updateErr".into());
         }
