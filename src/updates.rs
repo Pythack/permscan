@@ -18,36 +18,22 @@ pub fn check_for_newer_version(build: &bool) -> Result<()> {
     print!("Checking latest version on GitHub... ");
     let _flush = io::stdout().flush();
 
-    // get the latest release from github api
-    let client = Client::new();
-    let body = client
-        .get("https://api.github.com/repos/Pythack/permscan/releases")
-        .header("User-Agent", "permscan update checker 1.0")
-        .send();
+    let api_response = request_latest_version();
 
-    match body {
+    match api_response {
         Ok(body) => {
-            if let Ok(response) = body.text() {
-                let json: serde_json::Value = match serde_json::from_str(
-                    &response,
-                ) {
-                    Ok(value) => value,
-                    Err(_) => {
-                        eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
-                        return Err("parsingErr".into());
-                    }
-                };
-                let latest = json_to_vec(json)?;
-                if !latest.is_empty() {
-                    // compare latest release to current version
-                    if misc::rem_first(latest[0]["tag_name"].as_str().unwrap())
-                        != VERSION
-                    {
-                        println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap()), latest[0]["html_url"].as_str().unwrap());
-                        ask_for_update(build)?
-                    } else {
-                        println!("\r\x1b[92mYou have the latest version! Thank you for using permscan!\x1b[0m");
-                    }
+            let response_str = response_to_str(body)?;
+            let json = str_to_json(response_str)?;
+            let latest = json_to_vec(json)?;
+            if !latest.is_empty() {
+                // compare latest release to current version
+                if misc::rem_first(latest[0]["tag_name"].as_str().unwrap())
+                    != VERSION
+                {
+                    println!("\r\x1b[93mNewer version available: {}! Visit this url: {}\x1b[0m", misc::rem_first(latest[0]["tag_name"].as_str().unwrap()), latest[0]["html_url"].as_str().unwrap());
+                    ask_for_update(build)?
+                } else {
+                    println!("\r\x1b[92mYou have the latest version! Thank you for using permscan!\x1b[0m");
                 }
             }
         }
@@ -58,6 +44,40 @@ pub fn check_for_newer_version(build: &bool) -> Result<()> {
         }
     }
     Ok(())
+}
+
+fn request_latest_version(
+) -> std::result::Result<reqwest::blocking::Response, reqwest::Error> {
+    let client = Client::new();
+    client
+        .get("https://api.github.com/repos/Pythack/permscan/releases")
+        .header("User-Agent", "permscan update checker 1.0")
+        .send()
+}
+
+// wrapper around reqwest::blocking::Response.text() that allows
+// to print a custom message when the Result is an error
+fn response_to_str(response: reqwest::blocking::Response) -> Result<String> {
+    return match response.text() {
+        Ok(str) => Ok(str),
+        Err(_) => {
+            eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
+            return Err("parsingErr".into());
+        }
+    };
+}
+
+// wrapper around serde_json::from_str() that allows to print a custom message
+// when the Result is an error
+fn str_to_json(str: String) -> Result<serde_json::Value> {
+    let json: serde_json::Value = match serde_json::from_str(&str) {
+        Ok(json) => json,
+        Err(_) => {
+            eprintln!("\n\x1b[91mpermscan: update: failed to parse github api response\x1b[0m");
+            return Err("parsingErr".into());
+        }
+    };
+    Ok(json)
 }
 
 // wrapper around json.as_array() that returns an error when the Option

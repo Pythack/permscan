@@ -12,13 +12,7 @@ pub fn run_ls(path: &str, all: &bool, recursive: &bool) -> Result<String> {
     let output = Command::new("ls").arg(args).arg(path).output();
 
     match output {
-        Ok(content) => {
-            let stdout = String::from_utf8(content.stdout);
-            match stdout {
-                Ok(out) => Ok(out),
-                Err(_) => Ok(String::from("")),
-            }
-        }
+        Ok(content) => output_to_str(content),
 
         Err(_) => {
             eprintln!("\x1b[91mpermscan: ls: failed to get files. is ls installed ?\x1b[0m");
@@ -43,4 +37,16 @@ fn get_ls_options(all: &bool, recursive: &bool) -> String {
             false => "",
         };
     ls_options
+}
+
+// convert a command output to a String
+fn output_to_str(output: std::process::Output) -> Result<String> {
+    let stdout = String::from_utf8(output.stdout);
+    match stdout {
+        Ok(string) => Ok(string),
+        Err(_) => {
+            eprintln!("permscan: ls: failed to parse ls output");
+            Err("".into())
+        }
+    }
 }

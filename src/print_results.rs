@@ -13,36 +13,11 @@ use crate::PermscanOutput;
 // that call one of them based on the type of the output
 pub fn print_results(lines: PermscanOutput, recursive: &bool) -> Result<()> {
     match lines {
-        PermscanOutput::Merge(lines) => print_results_merge(lines, recursive),
         PermscanOutput::NoMerge(lines) => {
             print_results_nomerge(lines, recursive)
         }
+        PermscanOutput::Merge(lines) => print_results_merge(lines, recursive),
     }
-}
-
-// print results. Called when opt.merge is true
-fn print_results_merge(lines: Vec<&str>, recursive: &bool) -> Result<()> {
-    // when using the recursive option, we have lines that tells us what
-    // folder we are into. We want to be able to match these lines to
-    // print them in color
-    let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
-
-    // lock stdout manually for better performances since we are going to print
-    // to it a lot
-    let stdout = std::io::stdout();
-    let mut lock = stdout.lock();
-
-    // remove items that appears multiple times
-    let lines: Vec<&str> = lines.unique();
-
-    for line in lines {
-        if *recursive && sub_dir_text.is_match(line) {
-            writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
-        } else {
-            writeln!(lock, "{}", line)?;
-        }
-    }
-    Ok(())
 }
 
 // print results. Called when opt.merge is false
@@ -77,6 +52,31 @@ fn print_results_nomerge(
             } else {
                 writeln!(lock, "{}", line)?;
             }
+        }
+    }
+    Ok(())
+}
+
+// print results. Called when opt.merge is true
+fn print_results_merge(lines: Vec<&str>, recursive: &bool) -> Result<()> {
+    // when using the recursive option, we have lines that tells us what
+    // folder we are into. We want to be able to match these lines to
+    // print them in color
+    let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
+    // lock stdout manually for better performances since we are going to print
+    // to it a lot
+    let stdout = std::io::stdout();
+    let mut lock = stdout.lock();
+
+    // remove items that appears multiple times
+    let lines: Vec<&str> = lines.unique();
+
+    for line in lines {
+        if *recursive && sub_dir_text.is_match(line) {
+            writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
+        } else {
+            writeln!(lock, "{}", line)?;
         }
     }
     Ok(())

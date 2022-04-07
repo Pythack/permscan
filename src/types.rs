@@ -1,4 +1,4 @@
-// Since all our results are under the form
+// Since all but one of our results are under the form
 // Result<T, Box<dyn std::error::Error>>, we create our
 // custom type for that
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;

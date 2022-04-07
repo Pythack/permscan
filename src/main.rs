@@ -40,6 +40,9 @@ mod exit {
     // exit code when an IO error occurs
     pub const IO_ERR: i32 = 5;
 
+    // exit code when an argument is invalid
+    pub const ARG_ERR: i32 = 22;
+
     // exit code when connection to the github api failed
     // (while checking for updates)
     pub const CONNECTION_ERR: i32 = 60;
@@ -57,20 +60,10 @@ fn main() {
         let exit_info: bool = opt.exit_info;
         exit_code = permscan(opt);
         if exit_info {
-            print_exit_info(exit_code)
+            misc::print_exit_info(exit_code)
         }
     }
     std::process::exit(exit_code)
-}
-
-fn print_exit_info(exit_code: i32) {
-    if exit_code != 0 {
-        println!("\x1b[91mpermscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes\x1b[0m", exit_code)
-    } else {
-        eprintln!(
-            "\x1b[92mpermscan: process successfully exited with exit code 0\x1b[0m"
-        )
-    }
 }
 
 // The true main function. Returns an exit code
@@ -94,6 +87,14 @@ fn permscan(opt: Opt) -> i32 {
         return exit::PATH_ERR;
     }
     let files = ls::run_ls(&opt.path, &opt.all, &opt.recursive);
+
+    // if the item_type argument is present, check
+    // wether or not it is a valid type
+    if opt.item_type != None
+        && misc::verify_type_argument(opt.item_type.as_ref().unwrap()).is_err()
+    {
+        return exit::ARG_ERR;
+    }
 
     // exit if we got an error while running ls
     if files.is_err() {

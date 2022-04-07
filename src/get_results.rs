@@ -8,145 +8,149 @@ mod types;
 use crate::Opt;
 use crate::PermscanOutput;
 
-// Get files matching criteria. As files as stored differently based on if
-// the merge flag is present or not, we use the enum PermscanOutput to be able
-// to deal with them the same way
-pub fn get_results<'a>(opt: &'a Opt, files: &'a str) -> PermscanOutput<'a> {
-    if opt.merge {
-        let mut lines: Vec<&str> = Vec::new();
+// Call get_results_nomerge() or get_results_merge() based on opt.merge.
+// As these to functions have two different return type we store the result
+// in the PermscanOutput enum
+pub fn get_results<'a>(opt: &Opt, files: &'a str) -> PermscanOutput<'a> {
+    match &opt.merge {
+        false => PermscanOutput::NoMerge(get_results_nomerge(opt, files)),
+        true => PermscanOutput::Merge(get_results_merge(opt, files)),
+    }
+}
 
-        if opt.owner.is_none()
-            && opt.user.is_none()
-            && opt.group.is_none()
-            && opt.other.is_none()
-            && opt.file_type.is_none()
-        {
-            lines.extend(get_all_files(files, &opt.invert))
-        }
+// Get files matching criteria. Called when opt.merge is false
+fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
+    let mut lines: Vec<Vec<&str>> = Vec::new();
 
-        if let Some(owner) = &opt.owner {
-            let owner = owner.replace(':', " *");
+    if opt.owner.is_none()
+        && opt.user.is_none()
+        && opt.group.is_none()
+        && opt.other.is_none()
+        && opt.item_type.is_none()
+    {
+        lines.push(get_all_files(files, &opt.invert))
+    }
 
-            lines.extend(
-                get_based_on_owner(files, &owner, &opt.invert, &opt.recursive)
-                    .iter()
-                    .copied(),
-            );
-        }
+    if let Some(owner) = &opt.owner {
+        let owner = owner.replace(':', " *");
 
-        if let Some(user) = &opt.user {
-            let user = misc::rem_first(user).replace('?', r"[rwx\-]");
+        lines.push(get_based_on_owner(
+            files,
+            &owner,
+            &opt.invert,
+            &opt.recursive,
+        ));
+    }
 
-            lines.extend(
-                get_based_on_user(files, &user, &opt.invert, &opt.recursive)
-                    .iter()
-                    .copied(),
-            );
-        }
+    if let Some(user) = &opt.user {
+        let user = misc::rem_first(user).replace('?', r"[rwx\-]");
 
-        if let Some(group) = &opt.group {
-            let group = misc::rem_first(group).replace('?', r"[rwx\-]");
+        lines.push(get_based_on_user(
+            files,
+            &user,
+            &opt.invert,
+            &opt.recursive,
+        ));
+    }
 
-            lines.extend(
-                get_based_on_group(files, &group, &opt.invert, &opt.recursive)
-                    .iter()
-                    .copied(),
-            );
-        }
+    if let Some(group) = &opt.group {
+        let group = misc::rem_first(group).replace('?', r"[rwx\-]");
 
-        if let Some(other) = &opt.other {
-            let other = misc::rem_first(other).replace('?', r"[rwx\-]");
+        lines.push(get_based_on_group(
+            files,
+            &group,
+            &opt.invert,
+            &opt.recursive,
+        ));
+    }
 
-            lines.extend(
-                get_based_on_other(files, &other, &opt.invert, &opt.recursive)
-                    .iter()
-                    .copied(),
-            );
-        }
+    if let Some(other) = &opt.other {
+        let other = misc::rem_first(other).replace('?', r"[rwx\-]");
 
-        if let Some(file_type) = &opt.file_type {
-            let file_type = file_type.replace('?', r"[rwx\-]");
+        lines.push(get_based_on_other(
+            files,
+            &other,
+            &opt.invert,
+            &opt.recursive,
+        ));
+    }
 
-            lines.extend(
-                get_based_on_type(
-                    files,
-                    &file_type,
-                    &opt.invert,
-                    &opt.recursive,
-                )
+    if let Some(file_type) = &opt.item_type {
+        let file_type = file_type.replace('?', r"[rwx\-]");
+
+        lines.push(get_based_on_type(
+            files,
+            &file_type,
+            &opt.invert,
+            &opt.recursive,
+        ));
+    }
+    lines
+}
+
+// Get files matching criteria. Called when opt.merge is true
+fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
+    let mut lines: Vec<&str> = Vec::new();
+
+    if opt.owner.is_none()
+        && opt.user.is_none()
+        && opt.group.is_none()
+        && opt.other.is_none()
+        && opt.item_type.is_none()
+    {
+        lines.extend(get_all_files(files, &opt.invert))
+    }
+
+    if let Some(owner) = &opt.owner {
+        let owner = owner.replace(':', " *");
+
+        lines.extend(
+            get_based_on_owner(files, &owner, &opt.invert, &opt.recursive)
                 .iter()
                 .copied(),
-            );
-        }
-        PermscanOutput::Merge(lines)
-    } else {
-        let mut lines: Vec<Vec<&str>> = Vec::new();
-
-        if opt.owner.is_none()
-            && opt.user.is_none()
-            && opt.group.is_none()
-            && opt.other.is_none()
-            && opt.file_type.is_none()
-        {
-            lines.push(get_all_files(files, &opt.invert))
-        }
-
-        if let Some(owner) = &opt.owner {
-            let owner = owner.replace(':', " *");
-
-            lines.push(get_based_on_owner(
-                files,
-                &owner,
-                &opt.invert,
-                &opt.recursive,
-            ));
-        }
-
-        if let Some(user) = &opt.user {
-            let user = misc::rem_first(user).replace('?', r"[rwx\-]");
-
-            lines.push(get_based_on_user(
-                files,
-                &user,
-                &opt.invert,
-                &opt.recursive,
-            ));
-        }
-
-        if let Some(group) = &opt.group {
-            let group = misc::rem_first(group).replace('?', r"[rwx\-]");
-
-            lines.push(get_based_on_group(
-                files,
-                &group,
-                &opt.invert,
-                &opt.recursive,
-            ));
-        }
-
-        if let Some(other) = &opt.other {
-            let other = misc::rem_first(other).replace('?', r"[rwx\-]");
-
-            lines.push(get_based_on_other(
-                files,
-                &other,
-                &opt.invert,
-                &opt.recursive,
-            ));
-        }
-
-        if let Some(file_type) = &opt.file_type {
-            let file_type = file_type.replace('?', r"[rwx\-]");
-
-            lines.push(get_based_on_type(
-                files,
-                &file_type,
-                &opt.invert,
-                &opt.recursive,
-            ));
-        }
-        PermscanOutput::NoMerge(lines)
+        );
     }
+
+    if let Some(user) = &opt.user {
+        let user = misc::rem_first(user).replace('?', r"[rwx\-]");
+
+        lines.extend(
+            get_based_on_user(files, &user, &opt.invert, &opt.recursive)
+                .iter()
+                .copied(),
+        );
+    }
+
+    if let Some(group) = &opt.group {
+        let group = misc::rem_first(group).replace('?', r"[rwx\-]");
+
+        lines.extend(
+            get_based_on_group(files, &group, &opt.invert, &opt.recursive)
+                .iter()
+                .copied(),
+        );
+    }
+
+    if let Some(other) = &opt.other {
+        let other = misc::rem_first(other).replace('?', r"[rwx\-]");
+
+        lines.extend(
+            get_based_on_other(files, &other, &opt.invert, &opt.recursive)
+                .iter()
+                .copied(),
+        );
+    }
+
+    if let Some(file_type) = &opt.item_type {
+        let file_type = file_type.replace('?', r"[rwx\-]");
+
+        lines.extend(
+            get_based_on_type(files, &file_type, &opt.invert, &opt.recursive)
+                .iter()
+                .copied(),
+        );
+    }
+    lines
 }
 
 fn get_based_on_owner<'a>(
