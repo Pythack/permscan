@@ -1,23 +1,24 @@
 #![allow(dead_code)]
 
-use array_tool::vec::*;
-use regex::Regex;
-use std::error::Error;
-use std::io::Write;
-
 use structopt::StructOpt;
 
-#[path = "./get_files.rs"]
-mod get_files;
+#[path = "./opt.rs"]
+mod arguments;
+#[path = "./get_results.rs"]
+mod get_results;
+#[path = "./ls.rs"]
+mod ls;
 #[path = "./misc.rs"]
 mod misc;
-#[path = "./opt.rs"]
-mod opt;
-
+#[path = "./print_results.rs"]
+mod print_results;
+#[path = "./types.rs"]
+mod types;
 #[path = "./updates.rs"]
 mod updates;
 
-use crate::opt::Opt;
+use crate::arguments::Opt;
+use types::PermscanOutput;
 
 mod exit {
 
@@ -92,250 +93,23 @@ fn permscan(opt: Opt) -> i32 {
     if misc::check_path_exists(&opt.path).is_err() {
         return exit::PATH_ERR;
     }
+    let files = ls::run_ls(&opt.path, &opt.all, &opt.recursive);
 
-    // We are going to use ls to get all the files before filtering them
-    // by permissions. Here we determine what flags we are going to run ls with
-    let ls_options = misc::get_ls_options(&opt.all, &opt.recursive);
-
-    // print the matching files if we ran ls successfully, return LS_ERR
-    // exit code otherwise
-    if let Ok(files) = misc::run_ls(ls_options, &opt.path) {
-        match get_results(&opt, &files) {
-            Ok(()) => exit::SUCCESS,
-            Err(_) => {
-                eprintln!(
-                    "\x1b[91mpermscan: stdout: failed to print results\x1b[0m"
-                );
-                exit::IO_ERR
-            }
-        };
-    }
-    exit::LS_ERR
-}
-
-// Get files matching criteria and call the print_result_nomerge function or
-// the print_result_merge function that prints those files
-fn get_results(opt: &Opt, files: &str) -> Result<(), Box<dyn Error>> {
-    if opt.merge {
-        let mut lines: Vec<&str> = Vec::new();
-
-        if opt.owner.is_none()
-            && opt.user.is_none()
-            && opt.group.is_none()
-            && opt.other.is_none()
-            && opt.file_type.is_none()
-        {
-            lines.extend(get_files::get_all_files(files, opt.invert))
-        }
-
-        if let Some(owner) = &opt.owner {
-            let owner = owner.replace(':', " *");
-
-            lines.extend(
-                get_files::get_based_on_owner(
-                    files,
-                    owner,
-                    opt.invert,
-                    opt.recursive,
-                )
-                .iter()
-                .copied(),
-            );
-        }
-
-        if let Some(user) = &opt.user {
-            let user = misc::rem_first(user).replace('?', r"[rwx\-]");
-
-            lines.extend(
-                get_files::get_based_on_user(
-                    files,
-                    user,
-                    opt.invert,
-                    opt.recursive,
-                )
-                .iter()
-                .copied(),
-            );
-        }
-
-        if let Some(group) = &opt.group {
-            let group = misc::rem_first(group).replace('?', r"[rwx\-]");
-
-            lines.extend(
-                get_files::get_based_on_group(
-                    files,
-                    group,
-                    opt.invert,
-                    opt.recursive,
-                )
-                .iter()
-                .copied(),
-            );
-        }
-
-        if let Some(other) = &opt.other {
-            let other = misc::rem_first(other).replace('?', r"[rwx\-]");
-
-            lines.extend(
-                get_files::get_based_on_other(
-                    files,
-                    other,
-                    opt.invert,
-                    opt.recursive,
-                )
-                .iter()
-                .copied(),
-            );
-        }
-
-        if let Some(file_type) = &opt.file_type {
-            let file_type = file_type.replace('?', r"[rwx\-]");
-
-            lines.extend(
-                get_files::get_based_on_type(
-                    files,
-                    file_type,
-                    opt.invert,
-                    opt.recursive,
-                )
-                .iter()
-                .copied(),
-            );
-        }
-        print_results_merge(lines, opt.recursive)?
-    } else {
-        let mut lines: Vec<Vec<&str>> = Vec::new();
-
-        if opt.owner.is_none()
-            && opt.user.is_none()
-            && opt.group.is_none()
-            && opt.other.is_none()
-            && opt.file_type.is_none()
-        {
-            lines.push(get_files::get_all_files(files, opt.invert))
-        }
-
-        if let Some(owner) = &opt.owner {
-            let owner = owner.replace(':', " *");
-
-            lines.push(get_files::get_based_on_owner(
-                files,
-                owner,
-                opt.invert,
-                opt.recursive,
-            ));
-        }
-
-        if let Some(user) = &opt.user {
-            let user = misc::rem_first(user).replace('?', r"[rwx\-]");
-
-            lines.push(get_files::get_based_on_user(
-                files,
-                user,
-                opt.invert,
-                opt.recursive,
-            ));
-        }
-
-        if let Some(group) = &opt.group {
-            let group = misc::rem_first(group).replace('?', r"[rwx\-]");
-
-            lines.push(get_files::get_based_on_group(
-                files,
-                group,
-                opt.invert,
-                opt.recursive,
-            ));
-        }
-
-        if let Some(other) = &opt.other {
-            let other = misc::rem_first(other).replace('?', r"[rwx\-]");
-
-            lines.push(get_files::get_based_on_other(
-                files,
-                other,
-                opt.invert,
-                opt.recursive,
-            ));
-        }
-
-        if let Some(file_type) = &opt.file_type {
-            let file_type = file_type.replace('?', r"[rwx\-]");
-
-            lines.push(get_files::get_based_on_type(
-                files,
-                file_type,
-                opt.invert,
-                opt.recursive,
-            ));
-        }
-        print_results_nomerge(lines, opt.recursive)?
+    // exit if we got an error while running ls
+    if files.is_err() {
+        return exit::LS_ERR;
     }
 
-    Ok(())
-}
+    let files_unwrapped = files.unwrap();
+    let results = get_results::get_results(&opt, &files_unwrapped);
 
-// print results. Called when opt.merge is false
-fn print_results_nomerge(
-    mut lines: Vec<Vec<&str>>,
-    recursive: bool,
-) -> Result<(), Box<dyn Error>> {
-    // when using the recursive option, we have lines that tells us what
-    // folder we are into. We want to be able to match these lines to
-    // print them in color
-    let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
-
-    // lock stdout manually for better performances since we are going to print
-    // to it a lot
-    let stdout = std::io::stdout();
-    let mut lock = stdout.lock();
-
-    // TODO: comment this
-    if !lines.is_empty() {
-        let reference_lines = lines[0].clone();
-        let mut final_lines: Vec<Vec<&str>> = vec![reference_lines];
-        lines.remove(0);
-        for lines_set in &lines {
-            final_lines.push(
-                final_lines[final_lines.len() - 1]
-                    .intersect(lines_set.to_vec()),
+    match print_results::print_results(results, opt.recursive) {
+        Ok(()) => exit::SUCCESS,
+        Err(_) => {
+            eprintln!(
+                "\x1b[91mpermscan: stdout: failed to print results\x1b[0m"
             );
-        }
-        for line in &final_lines[final_lines.len() - 1] {
-            if recursive && sub_dir_text.is_match(line) {
-                writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
-            } else {
-                writeln!(lock, "{}", line)?;
-            }
+            exit::IO_ERR
         }
     }
-    Ok(())
-}
-
-// print results. Called when opt.merge is true
-fn print_results_merge(
-    lines: Vec<&str>,
-    recursive: bool,
-) -> Result<(), Box<dyn Error>> {
-    // when using the recursive option, we have lines that tells us what
-    // folder we are into. We want to be able to match these lines to
-    // print them in color
-    let sub_dir_text = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
-
-    // lock stdout manually for better performances since we are going to print
-    // to it a lot
-    let stdout = std::io::stdout();
-    let mut lock = stdout.lock();
-
-    // remove items that appears multiple times
-    let lines: Vec<&str> = lines.unique();
-
-    for line in lines {
-        if recursive && sub_dir_text.is_match(line) {
-            writeln!(lock, "\x1b[92m{}\x1b[0m", line)?;
-        } else {
-            writeln!(lock, "{}", line)?;
-        }
-    }
-    Ok(())
 }

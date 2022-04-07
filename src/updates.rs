@@ -1,16 +1,19 @@
 use reqwest::blocking::Client;
-use std::error::Error;
 use std::io::{self, stdout, Write};
 use subprocess::Exec;
 
 #[path = "./misc.rs"]
 mod misc;
+#[path = "./types.rs"]
+mod types;
+
+use types::Result;
 
 // get the current version from cargo.toml
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 // check for a newer version and if one exists, call ask_for_update()
-pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
+pub fn check_for_newer_version(build: bool) -> Result<()> {
     println!("\x1b[94mCurrent version: {}\x1b[0m", VERSION);
     print!("Checking latest version on GitHub... ");
     let _flush = io::stdout().flush();
@@ -59,9 +62,7 @@ pub fn check_for_newer_version(build: bool) -> Result<(), Box<dyn Error>> {
 
 // wrapper around json.as_array() that returns an error when the Option
 // is None
-fn json_to_vec(
-    json: serde_json::Value,
-) -> Result<Vec<serde_json::Value>, Box<dyn Error>> {
+fn json_to_vec(json: serde_json::Value) -> Result<Vec<serde_json::Value>> {
     return match json.as_array() {
         Some(val) => Ok(val.to_vec()),
         None => {
@@ -72,7 +73,7 @@ fn json_to_vec(
 }
 
 // ask the user if he wants to update
-fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
+fn ask_for_update(build: bool) -> Result<()> {
     print!("Do you want to update ? (y/*) ");
     let mut answer = String::new();
     get_input(&mut answer)?;
@@ -86,7 +87,7 @@ fn ask_for_update(build: bool) -> Result<(), Box<dyn Error>> {
 }
 
 // a wrapper around io::stdin().read_line() that retry when failing
-fn get_input(buffer: &mut String) -> Result<&str, Box<dyn Error>> {
+fn get_input(buffer: &mut String) -> Result<&str> {
     let _flush = stdout().flush();
     match io::stdin().read_line(buffer) {
         Ok(_) => Ok(buffer),
@@ -101,7 +102,7 @@ fn get_input(buffer: &mut String) -> Result<&str, Box<dyn Error>> {
 
 // use permscan-installer to install the newest
 // version (overwrite the current version)
-fn update(build: bool) -> Result<(), Box<dyn Error>> {
+fn update(build: bool) -> Result<()> {
     Exec::shell("wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh").join()?;
     Exec::shell("chmod +x ./permscan-installer.sh").join()?;
     match build {
