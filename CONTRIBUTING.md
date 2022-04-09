@@ -10,9 +10,8 @@
 ### Markdown
 
 * Trim all trailing whitespace
-* One trailing newline  
+* One trailing newline
 
 ## Recommendations
 
-* Checking your code with clippy is recommended
-* Formatting documents using markdownlint is a good idea
+* Lint your code using clippy. If possible, no warnings should appear when doing so.
