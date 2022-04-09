@@ -18,7 +18,7 @@ pub fn run_ls(path: &str, all: &bool, recursive: &bool) -> Result<String> {
 
         Err(_) => {
             eprintln!(
-                "{} permscan: ls: failed to get files. is ls installed ?{}",
+                "{}permscan: ls: failed to get files. is ls installed ?{}",
                 colors::RED,
                 colors::RESET
             );
@@ -37,7 +37,7 @@ fn get_ls_options(all: &bool, recursive: &bool) -> String {
     let ls_options = ls_options
         + match recursive {
             true => {
-                println!("{}Please be patient, a recursive search can take time... {}", colors::BLUE, colors::RESET);
+                println!("{}Please be patient, a recursive search can take time...{}", colors::BLUE, colors::RESET);
                 "R"
             }
             false => "",
