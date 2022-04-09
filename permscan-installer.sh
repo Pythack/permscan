@@ -18,13 +18,13 @@ if [ "$BUILD" = "false" ]; then
             if [ "$VERSION" = "latest" ]; then
                 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
                 tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
+                sudo mv permscan-x86_64-unknown-linux-gnu/permscan usr/bin
                 rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
                 rm -rf permscan-x86_64-unknown-linux-gnu
             else
                 wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-x86_64-unknown-linux-gnu.tar.gz
                 tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-gnu/permscan /bin
+                sudo mv permscan-x86_64-unknown-linux-gnu/permscan usr/bin
                 rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
                 rm -rf permscan-x86_64-unknown-linux-gnu
             fi
@@ -32,13 +32,13 @@ if [ "$BUILD" = "false" ]; then
             if [ "$VERSION" = "latest" ]; then
                 wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
                 tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
+                sudo mv permscan-x86_64-unknown-linux-musl/permscan usr/bin
                 rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
                 rm -rf permscan-x86_64-unknown-linux-musl
             else
                 wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-x86_64-unknown-linux-musl.tar.gz
                 tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-musl/permscan /bin
+                sudo mv permscan-x86_64-unknown-linux-musl/permscan usr/bin
                 rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
                 rm -rf permscan-x86_64-unknown-linux-musl
             fi
