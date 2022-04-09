@@ -1,6 +1,6 @@
 use structopt::StructOpt;
 
-#[derive(Debug, StructOpt, Clone)]
+#[derive(Debug, StructOpt)]
 #[structopt(
     name = "Permission scanner",
     about = "Scan a directory for files that match permission criteria. \nVisit https://github.com/Pythack/permscan#readme for more information. "
