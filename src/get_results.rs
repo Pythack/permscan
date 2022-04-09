@@ -22,6 +22,7 @@ pub fn get_results<'a>(opt: &Opt, files: &'a str) -> PermscanOutput<'a> {
 fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
     let mut lines: Vec<Vec<&str>> = Vec::new();
 
+    // if no options are specified we just push all files
     if opt.owner.is_none()
         && opt.user.is_none()
         && opt.group.is_none()
@@ -102,6 +103,7 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
 fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
     let mut lines: Vec<&str> = Vec::new();
 
+    // if no options are specified we just push all files
     if opt.owner.is_none()
         && opt.user.is_none()
         && opt.group.is_none()
