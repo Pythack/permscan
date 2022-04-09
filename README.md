@@ -3,7 +3,7 @@
 # permscan
 
 [![GitHubRelease](https://img.shields.io/github/release/Pythack/permscan.svg?style=flat)]()
-[![Buildstatus](https://github.com/Pythack/permscan/workflows/Rust/badge.svg)](https://github.com/Pythack/permscan/actions)
+[![Buildstatus](https://github.com/Pythack/permscan/workflows/ci/badge.svg)](https://github.com/Pythack/permscan/actions)
 
 permscan is a linux and macOS binary to filter file system items based on
 permission criteria.
