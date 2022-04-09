@@ -31,9 +31,9 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
         lines.push(get_all_files(files, &opt.invert))
     }
 
-    if let Some(owner) = &opt.owner {
-        for i in owner {
-            let owner = i.replace(':', " *");
+    if let Some(owner_list) = &opt.owner {
+        for owner in owner_list {
+            let owner = owner.replace(':', " *");
 
             lines.push(get_based_on_owner(
                 files,
@@ -44,9 +44,9 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
         }
     }
 
-    if let Some(user) = &opt.user {
-        for i in user {
-            let user = misc::rem_first(i).replace('?', r"[rwx\-]");
+    if let Some(user_list) = &opt.user {
+        for user in user_list {
+            let user = misc::rem_first(user).replace('?', r"[rwx\-]");
 
             lines.push(get_based_on_user(
                 files,
@@ -57,9 +57,9 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
         }
     }
 
-    if let Some(group) = &opt.group {
-        for i in group {
-            let group = misc::rem_first(i).replace('?', r"[rwx\-]");
+    if let Some(group_list) = &opt.group {
+        for group in group_list {
+            let group = misc::rem_first(group).replace('?', r"[rwx\-]");
 
             lines.push(get_based_on_group(
                 files,
@@ -70,9 +70,9 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
         }
     }
 
-    if let Some(other) = &opt.other {
-        for i in other {
-            let other = misc::rem_first(i).replace('?', r"[rwx\-]");
+    if let Some(other_list) = &opt.other {
+        for other in other_list {
+            let other = misc::rem_first(other).replace('?', r"[rwx\-]");
 
             lines.push(get_based_on_other(
                 files,
@@ -83,9 +83,9 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
         }
     }
 
-    if let Some(item_type) = &opt.item_type {
-        for i in item_type {
-            let item_type = i.replace('?', r"[rwx\-]");
+    if let Some(item_type_list) = &opt.item_type {
+        for item_type in item_type_list {
+            let item_type = item_type.replace('?', r"[rwx\-]");
 
             lines.push(get_based_on_type(
                 files,
@@ -111,9 +111,9 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
         lines.extend(get_all_files(files, &opt.invert))
     }
 
-    if let Some(owner) = &opt.owner {
-        for i in owner {
-            let owner = i.replace(':', " *");
+    if let Some(owner_list) = &opt.owner {
+        for owner in owner_list {
+            let owner = owner.replace(':', " *");
 
             lines.extend(
                 get_based_on_owner(files, &owner, &opt.invert, &opt.recursive)
@@ -123,9 +123,9 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
         }
     }
 
-    if let Some(user) = &opt.user {
-        for i in user {
-            let user = misc::rem_first(i).replace('?', r"[rwx\-]");
+    if let Some(user_list) = &opt.user {
+        for user in user_list {
+            let user = misc::rem_first(user).replace('?', r"[rwx\-]");
 
             lines.extend(
                 get_based_on_user(files, &user, &opt.invert, &opt.recursive)
@@ -135,9 +135,9 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
         }
     }
 
-    if let Some(group) = &opt.group {
-        for i in group {
-            let group = misc::rem_first(i).replace('?', r"[rwx\-]");
+    if let Some(group_list) = &opt.group {
+        for group in group_list {
+            let group = misc::rem_first(group).replace('?', r"[rwx\-]");
 
             lines.extend(
                 get_based_on_group(files, &group, &opt.invert, &opt.recursive)
@@ -147,9 +147,9 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
         }
     }
 
-    if let Some(other) = &opt.other {
-        for i in other {
-            let other = misc::rem_first(i).replace('?', r"[rwx\-]");
+    if let Some(other_list) = &opt.other {
+        for other in other_list {
+            let other = misc::rem_first(other).replace('?', r"[rwx\-]");
 
             lines.extend(
                 get_based_on_other(files, &other, &opt.invert, &opt.recursive)
@@ -159,9 +159,9 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
         }
     }
 
-    if let Some(item_type) = &opt.item_type {
-        for i in item_type {
-            let item_type = i.replace('?', r"[rwx\-]");
+    if let Some(item_type_list) = &opt.item_type {
+        for item_type in item_type_list {
+            let item_type = item_type.replace('?', r"[rwx\-]");
 
             lines.extend(
                 get_based_on_type(

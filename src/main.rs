@@ -93,8 +93,8 @@ fn permscan(opt: Opt) -> i32 {
     // if the item_type argument is present, check
     // wether or not it is a valid type
     if opt.item_type != None {
-        for i in opt.item_type.as_ref().unwrap() {
-            if misc::verify_type_argument(i).is_err() {
+        for item_type in opt.item_type.as_ref().unwrap() {
+            if misc::verify_type_argument(item_type).is_err() {
                 return exit::ARG_ERR;
             }
         }
