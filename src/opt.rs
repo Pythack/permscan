@@ -1,6 +1,6 @@
 use structopt::StructOpt;
 
-#[derive(Debug, StructOpt)]
+#[derive(Debug, StructOpt, Clone)]
 #[structopt(
     name = "Permission scanner",
     about = "Scan a directory for files that match permission criteria. \nVisit https://github.com/Pythack/permscan#readme for more information. "
@@ -10,28 +10,28 @@ pub struct Opt {
         long,
         help = "Specify permissions that the user who owns the file or directory needs to have on the item in the format @rwx"
     )]
-    pub user: Option<String>,
+    pub user: Option<Vec<String>>,
 
     #[structopt(
         long,
         help = "Specify permissions that the group who owns the file or directory needs to have on the item in the format @rwx"
     )]
-    pub group: Option<String>,
+    pub group: Option<Vec<String>>,
 
     #[structopt(
         long,
         help = "Specify permissions that users who does not own the file or directory needs to have on the item in the format @rwx"
     )]
-    pub other: Option<String>,
+    pub other: Option<Vec<String>>,
 
     #[structopt(
         long,
         help = "Specify the owner of the file in the format user:group"
     )]
-    pub owner: Option<String>,
+    pub owner: Option<Vec<String>>,
 
     #[structopt(long = "type", help = "Specify the type of the object")]
-    pub item_type: Option<String>,
+    pub item_type: Option<Vec<String>>,
 
     #[structopt(
         short,

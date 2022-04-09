@@ -32,58 +32,68 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
     }
 
     if let Some(owner) = &opt.owner {
-        let owner = owner.replace(':', " *");
+        for i in owner {
+            let owner = i.replace(':', " *");
 
-        lines.push(get_based_on_owner(
-            files,
-            &owner,
-            &opt.invert,
-            &opt.recursive,
-        ));
+            lines.push(get_based_on_owner(
+                files,
+                &owner,
+                &opt.invert,
+                &opt.recursive,
+            ));
+        }
     }
 
     if let Some(user) = &opt.user {
-        let user = misc::rem_first(user).replace('?', r"[rwx\-]");
+        for i in user {
+            let user = misc::rem_first(i).replace('?', r"[rwx\-]");
 
-        lines.push(get_based_on_user(
-            files,
-            &user,
-            &opt.invert,
-            &opt.recursive,
-        ));
+            lines.push(get_based_on_user(
+                files,
+                &user,
+                &opt.invert,
+                &opt.recursive,
+            ));
+        }
     }
 
     if let Some(group) = &opt.group {
-        let group = misc::rem_first(group).replace('?', r"[rwx\-]");
+        for i in group {
+            let group = misc::rem_first(i).replace('?', r"[rwx\-]");
 
-        lines.push(get_based_on_group(
-            files,
-            &group,
-            &opt.invert,
-            &opt.recursive,
-        ));
+            lines.push(get_based_on_group(
+                files,
+                &group,
+                &opt.invert,
+                &opt.recursive,
+            ));
+        }
     }
 
     if let Some(other) = &opt.other {
-        let other = misc::rem_first(other).replace('?', r"[rwx\-]");
+        for i in other {
+            let other = misc::rem_first(i).replace('?', r"[rwx\-]");
 
-        lines.push(get_based_on_other(
-            files,
-            &other,
-            &opt.invert,
-            &opt.recursive,
-        ));
+            lines.push(get_based_on_other(
+                files,
+                &other,
+                &opt.invert,
+                &opt.recursive,
+            ));
+        }
     }
 
-    if let Some(file_type) = &opt.item_type {
-        let file_type = file_type.replace('?', r"[rwx\-]");
+    if let Some(item_type) = &opt.item_type {
+        for i in item_type {
+            let item_type = i.replace('?', r"[rwx\-]");
 
-        lines.push(get_based_on_type(
-            files,
-            &file_type,
-            &opt.invert,
-            &opt.recursive,
-        ));
+            lines.push(get_based_on_type(
+                files,
+                &item_type,
+                &opt.invert,
+                &opt.recursive,
+            ));
+        }
     }
     lines
 }
@@ -102,53 +112,68 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
     }
 
     if let Some(owner) = &opt.owner {
-        let owner = owner.replace(':', " *");
+        for i in owner {
+            let owner = i.replace(':', " *");
 
-        lines.extend(
-            get_based_on_owner(files, &owner, &opt.invert, &opt.recursive)
-                .iter()
-                .copied(),
-        );
+            lines.extend(
+                get_based_on_owner(files, &owner, &opt.invert, &opt.recursive)
+                    .iter()
+                    .copied(),
+            );
+        }
     }
 
     if let Some(user) = &opt.user {
-        let user = misc::rem_first(user).replace('?', r"[rwx\-]");
+        for i in user {
+            let user = misc::rem_first(i).replace('?', r"[rwx\-]");
 
-        lines.extend(
-            get_based_on_user(files, &user, &opt.invert, &opt.recursive)
-                .iter()
-                .copied(),
-        );
+            lines.extend(
+                get_based_on_user(files, &user, &opt.invert, &opt.recursive)
+                    .iter()
+                    .copied(),
+            );
+        }
     }
 
     if let Some(group) = &opt.group {
-        let group = misc::rem_first(group).replace('?', r"[rwx\-]");
+        for i in group {
+            let group = misc::rem_first(i).replace('?', r"[rwx\-]");
 
-        lines.extend(
-            get_based_on_group(files, &group, &opt.invert, &opt.recursive)
-                .iter()
-                .copied(),
-        );
+            lines.extend(
+                get_based_on_group(files, &group, &opt.invert, &opt.recursive)
+                    .iter()
+                    .copied(),
+            );
+        }
     }
 
     if let Some(other) = &opt.other {
-        let other = misc::rem_first(other).replace('?', r"[rwx\-]");
+        for i in other {
+            let other = misc::rem_first(i).replace('?', r"[rwx\-]");
 
-        lines.extend(
-            get_based_on_other(files, &other, &opt.invert, &opt.recursive)
-                .iter()
-                .copied(),
-        );
+            lines.extend(
+                get_based_on_other(files, &other, &opt.invert, &opt.recursive)
+                    .iter()
+                    .copied(),
+            );
+        }
     }
 
-    if let Some(file_type) = &opt.item_type {
-        let file_type = file_type.replace('?', r"[rwx\-]");
+    if let Some(item_type) = &opt.item_type {
+        for i in item_type {
+            let item_type = i.replace('?', r"[rwx\-]");
 
-        lines.extend(
-            get_based_on_type(files, &file_type, &opt.invert, &opt.recursive)
+            lines.extend(
+                get_based_on_type(
+                    files,
+                    &item_type,
+                    &opt.invert,
+                    &opt.recursive,
+                )
                 .iter()
                 .copied(),
-        );
+            );
+        }
     }
     lines
 }
