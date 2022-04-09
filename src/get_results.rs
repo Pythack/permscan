@@ -180,6 +180,17 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
     lines
 }
 
+fn get_all_files<'a>(files: &'a str, invert: &bool) -> Vec<&'a str> {
+    let lines = files.split('\n');
+    let mut results: Vec<&str> = Vec::new();
+    if !invert {
+        for line in lines.skip(1) {
+            results.push(line)
+        }
+    }
+    results
+}
+
 fn get_based_on_owner<'a>(
     files: &'a str,
     owner: &str,
@@ -187,23 +198,24 @@ fn get_based_on_owner<'a>(
     recursive: &bool,
 ) -> Vec<&'a str> {
     let lines = files.split('\n');
-    let mut temp_lines: Vec<&str> = Vec::new();
-    let re = Regex::new(
+    let mut results: Vec<&str> = Vec::new();
+    let owner_regex = Regex::new(
         &(String::from(r"^[dlcbps\-][rwx\-]{9}[ 0-9]* *")
             + owner
             + r" (.|\n)*$"),
     )
     .unwrap();
-    let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+    let sub_dir_regex =
+        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
     for line in lines.skip(1) {
-        if (!invert && re.is_match(line))
-            || (*invert && !re.is_match(line))
-            || (*recursive && sub_dir.is_match(line))
+        if (!invert && owner_regex.is_match(line))
+            || (*invert && !owner_regex.is_match(line))
+            || (*recursive && sub_dir_regex.is_match(line))
         {
-            temp_lines.push(line);
+            results.push(line);
         }
     }
-    temp_lines
+    results
 }
 
 fn get_based_on_user<'a>(
@@ -214,15 +226,16 @@ fn get_based_on_user<'a>(
 ) -> Vec<&'a str> {
     let lines = files.split('\n');
     let mut temp_lines: Vec<&str> = Vec::new();
-    let re = Regex::new(
+    let user_regex = Regex::new(
         &(String::from(r"^[dlcbps\-]") + user + r"[rwx\-]{6}(.|\n)*$"),
     )
     .unwrap();
-    let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+    let sub_dir_regex =
+        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
     for line in lines.skip(1) {
-        if (!invert && re.is_match(line))
-            || (*invert && !re.is_match(line))
-            || (*recursive && sub_dir.is_match(line))
+        if (!invert && user_regex.is_match(line))
+            || (*invert && !user_regex.is_match(line))
+            || (*recursive && sub_dir_regex.is_match(line))
         {
             temp_lines.push(line);
         }
@@ -237,23 +250,24 @@ fn get_based_on_group<'a>(
     recursive: &bool,
 ) -> Vec<&'a str> {
     let lines = files.split('\n');
-    let mut temp_lines: Vec<&str> = Vec::new();
-    let re = Regex::new(
+    let mut results: Vec<&str> = Vec::new();
+    let group_regex = Regex::new(
         &(String::from(r"^[dlcbps\-][rwx\-]{3}")
             + group
             + r"[rwx\-]{3}(.|\n)*$"),
     )
     .unwrap();
-    let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+    let sub_dir_regex =
+        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
     for line in lines.skip(1) {
-        if (!invert && re.is_match(line))
-            || (*invert && !re.is_match(line))
-            || (*recursive && sub_dir.is_match(line))
+        if (!invert && group_regex.is_match(line))
+            || (*invert && !group_regex.is_match(line))
+            || (*recursive && sub_dir_regex.is_match(line))
         {
-            temp_lines.push(line);
+            results.push(line);
         }
     }
-    temp_lines
+    results
 }
 
 fn get_based_on_other<'a>(
@@ -263,22 +277,23 @@ fn get_based_on_other<'a>(
     recursive: &bool,
 ) -> Vec<&'a str> {
     let lines = files.split('\n');
-    let mut temp_lines: Vec<&str> = Vec::new();
+    let mut results: Vec<&str> = Vec::new();
 
-    let re = Regex::new(
+    let other_regex = Regex::new(
         &(String::from(r"^[dlcbps\-][rwx\-]{6}") + other + r"(.|\n)*$"),
     )
     .unwrap();
-    let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+    let sub_dir_regex =
+        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
     for line in lines.skip(1) {
-        if (!invert && re.is_match(line))
-            || (*invert && !re.is_match(line))
-            || (*recursive && sub_dir.is_match(line))
+        if (!invert && other_regex.is_match(line))
+            || (*invert && !other_regex.is_match(line))
+            || (*recursive && sub_dir_regex.is_match(line))
         {
-            temp_lines.push(line);
+            results.push(line);
         }
     }
-    temp_lines
+    results
 }
 
 fn get_based_on_type<'a>(
@@ -288,29 +303,19 @@ fn get_based_on_type<'a>(
     recursive: &bool,
 ) -> Vec<&'a str> {
     let lines = files.split('\n');
-    let mut temp_lines: Vec<&str> = Vec::new();
-    let re =
+    let mut results: Vec<&str> = Vec::new();
+    let type_regex =
         Regex::new(&(String::from(r"^") + file_type + r"[rwx\-]{9}(.|\n)*$"))
             .unwrap();
-    let sub_dir = Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+    let sub_dir_regex =
+        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
     for line in lines.skip(1) {
-        if (!invert && re.is_match(line))
-            || (*invert && !re.is_match(line))
-            || (*recursive && sub_dir.is_match(line))
+        if (!invert && type_regex.is_match(line))
+            || (*invert && !type_regex.is_match(line))
+            || (*recursive && sub_dir_regex.is_match(line))
         {
-            temp_lines.push(line);
+            results.push(line);
         }
     }
-    temp_lines
-}
-
-fn get_all_files<'a>(files: &'a str, invert: &bool) -> Vec<&'a str> {
-    let lines = files.split('\n');
-    let mut temp_lines: Vec<&str> = Vec::new();
-    if !invert {
-        for line in lines.skip(1) {
-            temp_lines.push(line)
-        }
-    }
-    temp_lines
+    results
 }

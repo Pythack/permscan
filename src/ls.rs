@@ -29,19 +29,22 @@ pub fn run_ls(path: &str, all: &bool, recursive: &bool) -> Result<String> {
 
 // determine ls options based on permscan options.
 fn get_ls_options(all: &bool, recursive: &bool) -> String {
-    let ls_options = String::from("-lh")
+    let mut ls_options = String::from("-lh")
         + match all {
             true => "a",
             false => "",
         };
-    let ls_options = ls_options
-        + match recursive {
-            true => {
-                println!("{}Please be patient, a recursive search can take time...{}", colors::BLUE, colors::RESET);
-                "R"
-            }
-            false => "",
-        };
+    ls_options += match recursive {
+        true => {
+            println!(
+                "{}Please be patient, a recursive search can take time...{}",
+                colors::BLUE,
+                colors::RESET
+            );
+            "R"
+        }
+        false => "",
+    };
     ls_options
 }
 
