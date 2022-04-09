@@ -53,7 +53,7 @@ mod exit {
     pub const UNKNOWN_ERR: i32 = -1;
 }
 
-fn main() -> Result<(), i32> {
+fn main() {
     let exit_code;
     // this scope ensures all destructors are ran
     // before using std::process::exit
