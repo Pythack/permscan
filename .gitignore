@@ -21,3 +21,4 @@ permscan-aarch64-apple-darwin.zip
 settings.json
 *.deb
 targets
+.history
