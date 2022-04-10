@@ -28,7 +28,6 @@ FLAGS:
     -b, --build        If the update flag is also present and the user decide to update, the update will be built from
                        source
     -u, --update       Check for a newer version of permscan
-    -e, --exit-info    Show exit code
     -h, --help         Prints help information
     -i                 Return the list of files that don't match with the criteria
     -m                 Return files that match at least one criteria, instead of those that match all criteria
@@ -51,7 +50,7 @@ ARGS:
 
 ## Wiki
 
-For a precise guide on the different arguments, options, flags and errors, see the [wiki](https://github.com/Pythack/permscan/wiki)
+To know more about the different arguments, options, and flags see the [wiki](https://github.com/Pythack/permscan/wiki)
 
 ## Run in Docker
 
