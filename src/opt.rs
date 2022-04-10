@@ -55,7 +55,7 @@ pub struct Opt {
     pub all: bool,
 
     #[structopt(
-        short = "U",
+        short = "u",
         long = "update",
         help = "Check for a newer version of permscan"
     )]

@@ -205,10 +205,12 @@ fn get_based_on_owner<'a>(
             + r" (.|\n)*$"),
     )
     .unwrap();
+
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to print them.
     let location_text =
         Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
     for line in lines.skip(1) {
         if (!invert && owner_regex.is_match(line))
             || (*invert && !owner_regex.is_match(line))
@@ -232,10 +234,12 @@ fn get_based_on_user<'a>(
         &(String::from(r"^[dlcbps\-]") + user + r"[rwx\-]{6}(.|\n)*$"),
     )
     .unwrap();
+
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to print them.
     let location_text =
         Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
     for line in lines.skip(1) {
         if (!invert && user_regex.is_match(line))
             || (*invert && !user_regex.is_match(line))
@@ -261,10 +265,12 @@ fn get_based_on_group<'a>(
             + r"[rwx\-]{3}(.|\n)*$"),
     )
     .unwrap();
+
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to print them.
     let location_text =
         Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
     for line in lines.skip(1) {
         if (!invert && group_regex.is_match(line))
             || (*invert && !group_regex.is_match(line))
@@ -289,10 +295,12 @@ fn get_based_on_other<'a>(
         &(String::from(r"^[dlcbps\-][rwx\-]{6}") + other + r"(.|\n)*$"),
     )
     .unwrap();
+
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to print them.
     let location_text =
         Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
     for line in lines.skip(1) {
         if (!invert && other_regex.is_match(line))
             || (*invert && !other_regex.is_match(line))
@@ -315,10 +323,12 @@ fn get_based_on_type<'a>(
     let type_regex =
         Regex::new(&(String::from(r"^") + file_type + r"[rwx\-]{9}(.|\n)*$"))
             .unwrap();
+
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to print them.
     let location_text =
         Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
+
     for line in lines.skip(1) {
         if (!invert && type_regex.is_match(line))
             || (*invert && !type_regex.is_match(line))

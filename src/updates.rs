@@ -2,14 +2,14 @@ use reqwest::blocking::Client;
 use std::io::{self, stdout, Write};
 use subprocess::Exec;
 
+#[path = "./colors.rs"]
+mod colors;
 #[path = "./misc.rs"]
 mod misc;
 #[path = "./types.rs"]
 mod types;
 
 use types::Result;
-
-use crate::colors;
 
 // get the current version from cargo.toml
 const VERSION: &str = env!("CARGO_PKG_VERSION");
