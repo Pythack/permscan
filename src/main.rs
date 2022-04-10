@@ -54,18 +54,13 @@ mod exit {
 }
 
 fn main() {
-    let exit_code;
-    // this scope ensures all destructors are ran
-    // before using std::process::exit
-    {
-        let opt = Opt::from_args();
-        exit_code = permscan(opt);
-    }
+    let exit_code = permscan();
     std::process::exit(exit_code)
 }
 
 // The true main function. Returns an exit code
-fn permscan(opt: Opt) -> i32 {
+fn permscan() -> i32 {
+    let opt = Opt::from_args();
     // Run the checks_for_newer_version function if the update flag is raised.
     // Returns exit code when done
     if opt.check_update {
