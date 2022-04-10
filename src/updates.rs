@@ -6,10 +6,8 @@ use subprocess::Exec;
 mod colors;
 #[path = "./misc.rs"]
 mod misc;
-#[path = "./types.rs"]
-mod types;
 
-use types::Result;
+use crate::types::Result;
 
 // get the current version from cargo.toml
 const VERSION: &str = env!("CARGO_PKG_VERSION");

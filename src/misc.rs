@@ -2,10 +2,8 @@ use std::path::Path;
 
 #[path = "./colors.rs"]
 mod colors;
-#[path = "./types.rs"]
-mod types;
 
-use types::Result;
+use crate::types::Result;
 
 // remove first character from string
 pub fn rem_first(string: &str) -> &str {

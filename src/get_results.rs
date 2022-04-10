@@ -2,11 +2,9 @@ use regex::Regex;
 
 #[path = "./misc.rs"]
 mod misc;
-#[path = "./types.rs"]
-mod types;
 
-use crate::Opt;
-use crate::PermscanOutput;
+use crate::opt::Opt;
+use crate::types::PermscanOutput;
 
 // Call get_results_nomerge() or get_results_merge() based on opt.merge.
 // As these to functions have two different return type we store the result

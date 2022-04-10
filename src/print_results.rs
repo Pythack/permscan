@@ -4,10 +4,8 @@ use std::io::Write;
 
 #[path = "./colors.rs"]
 mod colors;
-#[path = "./types.rs"]
-mod types;
 
-use types::Result;
+use crate::types::Result;
 
 use crate::PermscanOutput;
 

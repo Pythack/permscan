@@ -2,10 +2,8 @@ use std::process::Command;
 
 #[path = "./colors.rs"]
 mod colors;
-#[path = "./types.rs"]
-mod types;
 
-use types::Result;
+use crate::types::Result;
 
 // run ls to get files
 pub fn run_ls(path: &str, all: &bool, recursive: &bool) -> Result<String> {

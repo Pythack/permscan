@@ -20,7 +20,7 @@ mod types;
 mod updates;
 
 use crate::opt::Opt;
-use types::PermscanOutput;
+use crate::types::PermscanOutput;
 
 mod exit {
 
