@@ -29,7 +29,7 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
         && opt.other.is_none()
         && opt.item_type.is_none()
     {
-        lines.push(get_all_files(files, &opt.invert))
+        lines.push(get_all_files(files, &opt.invert, &opt.recursive))
     }
 
     if let Some(owner_list) = &opt.owner {
@@ -110,7 +110,7 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
         && opt.other.is_none()
         && opt.item_type.is_none()
     {
-        lines.extend(get_all_files(files, &opt.invert))
+        lines.extend(get_all_files(files, &opt.invert, &opt.recursive))
     }
 
     if let Some(owner_list) = &opt.owner {
@@ -180,14 +180,21 @@ fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
     lines
 }
 
-fn get_all_files<'a>(files: &'a str, invert: &bool) -> Vec<&'a str> {
+fn get_all_files<'a>(
+    files: &'a str,
+    invert: &bool,
+    recursive: &bool,
+) -> Vec<&'a str> {
     let lines = files.split('\n');
     let mut results: Vec<&str> = Vec::new();
-    if !invert {
-        for line in lines.skip(1) {
+    let all_regex = Regex::new(&(String::from(r"."))).unwrap();
+
+    for line in lines.skip(1) {
+        if should_push(line, &all_regex, invert, recursive) {
             results.push(line)
         }
     }
+
     results
 }
 
@@ -206,16 +213,8 @@ fn get_based_on_owner<'a>(
     )
     .unwrap();
 
-    // when using the recursive option, we have lines that tells us what
-    // folder we are into. We want to be able to match these lines to print them.
-    let location_text =
-        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
-
     for line in lines.skip(1) {
-        if (!invert && owner_regex.is_match(line))
-            || (*invert && !owner_regex.is_match(line))
-            || (*recursive && location_text.is_match(line))
-        {
+        if should_push(line, &owner_regex, invert, recursive) {
             results.push(line);
         }
     }
@@ -229,26 +228,18 @@ fn get_based_on_user<'a>(
     recursive: &bool,
 ) -> Vec<&'a str> {
     let lines = files.split('\n');
-    let mut temp_lines: Vec<&str> = Vec::new();
+    let mut results: Vec<&str> = Vec::new();
     let user_regex = Regex::new(
         &(String::from(r"^[dlcbps\-]") + user + r"[rwx\-]{6}(.|\n)*$"),
     )
     .unwrap();
 
-    // when using the recursive option, we have lines that tells us what
-    // folder we are into. We want to be able to match these lines to print them.
-    let location_text =
-        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
-
     for line in lines.skip(1) {
-        if (!invert && user_regex.is_match(line))
-            || (*invert && !user_regex.is_match(line))
-            || (*recursive && location_text.is_match(line))
-        {
-            temp_lines.push(line);
+        if should_push(line, &user_regex, invert, recursive) {
+            results.push(line)
         }
     }
-    temp_lines
+    results
 }
 
 fn get_based_on_group<'a>(
@@ -266,17 +257,9 @@ fn get_based_on_group<'a>(
     )
     .unwrap();
 
-    // when using the recursive option, we have lines that tells us what
-    // folder we are into. We want to be able to match these lines to print them.
-    let location_text =
-        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
-
     for line in lines.skip(1) {
-        if (!invert && group_regex.is_match(line))
-            || (*invert && !group_regex.is_match(line))
-            || (*recursive && location_text.is_match(line))
-        {
-            results.push(line);
+        if should_push(line, &group_regex, invert, recursive) {
+            results.push(line)
         }
     }
     results
@@ -296,17 +279,9 @@ fn get_based_on_other<'a>(
     )
     .unwrap();
 
-    // when using the recursive option, we have lines that tells us what
-    // folder we are into. We want to be able to match these lines to print them.
-    let location_text =
-        Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
-
     for line in lines.skip(1) {
-        if (!invert && other_regex.is_match(line))
-            || (*invert && !other_regex.is_match(line))
-            || (*recursive && location_text.is_match(line))
-        {
-            results.push(line);
+        if should_push(line, &other_regex, invert, recursive) {
+            results.push(line)
         }
     }
     results
@@ -324,18 +299,32 @@ fn get_based_on_type<'a>(
         Regex::new(&(String::from(r"^") + file_type + r"[rwx\-]{9}(.|\n)*$"))
             .unwrap();
 
+    for line in lines.skip(1) {
+        if should_push(line, &type_regex, invert, recursive) {
+            results.push(line);
+        }
+    }
+    results
+}
+
+// determine if we should push a line to the results based on a pattern and the
+// invert and recursive flags
+fn should_push(
+    line: &str,
+    pattern: &Regex,
+    invert: &bool,
+    recursive: &bool,
+) -> bool {
     // when using the recursive option, we have lines that tells us what
     // folder we are into. We want to be able to match these lines to print them.
     let location_text =
         Regex::new(&String::from(r"^(.+)/*([^/]+)*:$")).unwrap();
 
-    for line in lines.skip(1) {
-        if (!invert && type_regex.is_match(line))
-            || (*invert && !type_regex.is_match(line))
-            || (*recursive && location_text.is_match(line))
-        {
-            results.push(line);
-        }
+    if (!invert && pattern.is_match(line))
+        || (*invert && !pattern.is_match(line))
+        || (*recursive && location_text.is_match(line))
+    {
+        return true;
     }
-    results
+    false
 }
