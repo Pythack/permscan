@@ -30,18 +30,6 @@ pub fn check_path_exists(path: &str) -> Result<()> {
     Ok(())
 }
 
-pub fn print_exit_info(exit_code: i32) {
-    if exit_code != 0 {
-        println!("{}permscan: process exited with exit code {}. to know more about error codes, visit https://github.com/Pythack/permscan/wiki/Error-codes{}", colors::RED, exit_code, colors::RESET)
-    } else {
-        eprintln!(
-            "{}permscan: process successfully exited with exit code 0{}",
-            colors::GREEN,
-            colors::RESET
-        )
-    }
-}
-
 pub fn verify_type_argument(type_arg: &str) -> Result<()> {
     let possible_types = ["-", "d", "b", "c", "p", "l", "s"];
 
