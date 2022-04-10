@@ -14,38 +14,6 @@ if [ "$BUILD" = "false" ]; then
     OS=$(uname)
     if [ "$OS" = "Linux" ]; then
         OSTYPE=$(uname -o)
-        if [ "$OSTYPE" = "GNU/Linux" ]; then
-            if [ "$VERSION" = "latest" ]; then
-                wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-gnu.tar.gz
-                tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-gnu/permscan usr/bin
-                rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
-                rm -rf permscan-x86_64-unknown-linux-gnu
-            else
-                wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-x86_64-unknown-linux-gnu.tar.gz
-                tar -xzvf permscan-x86_64-unknown-linux-gnu.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-gnu/permscan usr/bin
-                rm -rf permscan-x86_64-unknown-linux-gnu.tar.gz
-                rm -rf permscan-x86_64-unknown-linux-gnu
-            fi
-        elif [ "$OSTYPE" = "Linux" ]; then
-            if [ "$VERSION" = "latest" ]; then
-                wget https://github.com/Pythack/permscan/releases/latest/download/permscan-x86_64-unknown-linux-musl.tar.gz
-                tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-musl/permscan usr/bin
-                rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
-                rm -rf permscan-x86_64-unknown-linux-musl
-            else
-                wget https://github.com/Pythack/permscan/releases/download/v"${VERSION}"/permscan-x86_64-unknown-linux-musl.tar.gz
-                tar -xzvf permscan-x86_64-unknown-linux-musl.tar.gz
-                sudo mv permscan-x86_64-unknown-linux-musl/permscan usr/bin
-                rm -rf permscan-x86_64-unknown-linux-musl.tar.gz
-                rm -rf permscan-x86_64-unknown-linux-musl
-            fi
-        else
-            echo "permscan: installer: os not supported. try building it (run this installer with the -b flag if installing permscan or run permscan -ub if updating)"
-            exit 1
-        fi
     elif [ "$OS" = "Darwin" ]; then
         OSTYPE=$(uname -m)
         if [ "$OSTYPE" = "arm64" ]; then
