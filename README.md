@@ -21,28 +21,28 @@ Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan#readme for more information.
 
 USAGE:
-    permscan [FLAGS] [OPTIONS] [path]
+    permscan [FLAGS] [OPTIONS] [--] [path]
 
 FLAGS:
-    -a                 Parse hidden files as well
-    -b, --build        If the update flag is also present and the user decide to update, the update will be built from
-                       source
-    -u, --update       Check for a newer version of permscan
-    -h, --help         Prints help information
-    -i                 Return the list of files that don't match with the criteria
-    -m                 Return files that match at least one criteria, instead of those that match all criteria
-    -r                 If present, permscan will recursively traverse the folder
-    -V, --version      Prints version information
+    -a               Parse hidden files as well
+    -b, --build      If the update flag is also present and the user decide to update, the update will be built from
+                     source
+    -u, --update     Check for a newer version of permscan
+    -h, --help       Prints help information
+    -i               Return the list of files that don't match with the criteria
+    -m               Return files that match at least one criteria, instead of those that match all criteria
+    -r               If present, permscan will recursively traverse the folder
+    -V, --version    Prints version information
 
 OPTIONS:
-        --type <item-type>    Specify the type of the item
-        --group <group>       Specify permissions that the group who owns the file or directory needs to have on the
-                              item in the format @rwx
-        --other <other>       Specify permissions that users who does not own the file or directory needs to have on the
-                              item in the format @rwx
-        --owner <owner>       Specify the owner of the file in the format user:group
-        --user <user>         Specify permissions that the user who owns the file or directory needs to have on the item
-                              in the format @rwx
+        --group <group>...       Specify permissions that the group who owns the file or directory needs to have on the
+                                 item in the format @rwx
+        --type <item-type>...    Specify the type of the object
+        --other <other>...       Specify permissions that users who does not own the file or directory needs to have on
+                                 the item in the format @rwx
+        --owner <owner>...       Specify the owner of the file in the format user:group
+        --user <user>...         Specify permissions that the user who owns the file or directory needs to have on the
+                                 item in the format @rwx
 
 ARGS:
     <path>    The path of the directory your want to look into. [default: ./]
