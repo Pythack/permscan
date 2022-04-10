@@ -4,10 +4,10 @@ use structopt::StructOpt;
 
 #[path = "./colors.rs"]
 mod colors;
+#[path = "./exa.rs"]
+mod exa;
 #[path = "./get_results.rs"]
 mod get_results;
-#[path = "./ls.rs"]
-mod ls;
 #[path = "./misc.rs"]
 mod misc;
 #[path = "./opt.rs"]
@@ -79,7 +79,7 @@ fn permscan() -> i32 {
     if misc::check_path_exists(&opt.path).is_err() {
         return exit::PATH_ERR;
     }
-    let files = ls::run_ls(&opt.path, &opt.all, &opt.recursive);
+    let files = exa::run_exa(&opt.path, &opt.all, &opt.recursive, &opt.ignore);
 
     // if the item_type argument is present, check
     // wether or not it is a valid type

@@ -33,6 +33,9 @@ pub struct Opt {
     #[structopt(long = "type", help = "Specify the type of the object")]
     pub item_type: Option<Vec<String>>,
 
+    #[structopt(short = "I", help = "Ignore pattern")]
+    pub ignore: Option<Vec<String>>,
+
     #[structopt(
         short,
         help = "If present, permscan will recursively traverse the folder"
