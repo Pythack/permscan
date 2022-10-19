@@ -13,7 +13,7 @@ permission criteria.
 ## Usage
 
 ```
-Permission scanner 2.2.11
+Permission scanner {version}
 Scan a directory for files that match permission criteria.
 Visit https://github.com/Pythack/permscan#readme for more information.
 
