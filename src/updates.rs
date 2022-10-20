@@ -55,8 +55,8 @@ pub fn check_for_newer_version(build: &bool) -> Result<()> {
             }
         }
 
-        Err(_) => {
-            eprintln!("\n{}permscan: update: failed to connect to the github api. are you connected to the internet ?{}", colors::RED, colors::RESET);
+        Err(e) => {
+            eprintln!("\n{}permscan: update: failed to connect to the github api: {}. are you connected to the internet ?{}", colors::RED, e, colors::RESET);
             return Err("connectionErr".into());
         }
     }
@@ -78,10 +78,11 @@ fn request_latest_version(
 fn response_to_str(response: reqwest::blocking::Response) -> Result<String> {
     return match response.text() {
         Ok(str) => Ok(str),
-        Err(_) => {
+        Err(e) => {
             eprintln!(
-                "\n{}permscan: update: failed to parse github api response{}",
+                "\n{}permscan: update: failed to parse github api response: {}{}",
                 colors::RED,
+                e,
                 colors::RESET
             );
             return Err("parsingErr".into());
@@ -94,10 +95,11 @@ fn response_to_str(response: reqwest::blocking::Response) -> Result<String> {
 fn str_to_json(str: String) -> Result<serde_json::Value> {
     let json: serde_json::Value = match serde_json::from_str(&str) {
         Ok(json) => json,
-        Err(_) => {
+        Err(e) => {
             eprintln!(
-                "\n{}permscan: update: failed to parse github api response{}",
+                "\n{}permscan: update: failed to parse github api response: {}{}",
                 colors::RED,
+                e,
                 colors::RESET
             );
             return Err("parsingErr".into());
@@ -141,9 +143,9 @@ fn get_input(buffer: &mut String) -> Result<&str> {
     let _flush = stdout().flush();
     match io::stdin().read_line(buffer) {
         Ok(_) => Ok(buffer),
-        Err(_) => {
+        Err(e) => {
             eprintln!(
-                "\n{}permscan: update: failed to read input. please retry: {}\n", colors::RED, colors::RESET
+                "\n{}permscan: update: failed to read input: {}. please retry: {}\n", colors::RED, e, colors::RESET
             );
             get_input(buffer)
         }

@@ -71,10 +71,11 @@ fn permscan(opt: Opt) -> i32 {
 
     match output::print_results(results, &opt.recursive) {
         Ok(()) => exit::SUCCESS,
-        Err(_) => {
+        Err(e) => {
             eprintln!(
-                "{}permscan: stdout: failed to print results{}",
+                "{}permscan: stdout: failed to print results: {}{}",
                 colors::RED,
+                e,
                 colors::RESET
             );
             exit::ERR

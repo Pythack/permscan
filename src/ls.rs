@@ -18,10 +18,11 @@ pub fn run_ls(path: &str, all: &bool, recursive: &bool) -> Result<String> {
     match output {
         Ok(content) => output_to_str(content),
 
-        Err(_) => {
+        Err(e) => {
             eprintln!(
-                "{} permscan: ls: failed to get files. is ls installed ?{}",
+                "{} permscan: ls: failed to get files: {}. is ls installed ?{}",
                 colors::RED,
+                e,
                 colors::RESET
             );
             Err("".into())
@@ -52,8 +53,8 @@ fn output_to_str(output: std::process::Output) -> Result<String> {
     let stdout = String::from_utf8(output.stdout);
     match stdout {
         Ok(string) => Ok(string),
-        Err(_) => {
-            eprintln!("permscan: ls: failed to parse ls output");
+        Err(e) => {
+            eprintln!("permscan: ls: failed to parse ls output: {}", e);
             Err("".into())
         }
     }
