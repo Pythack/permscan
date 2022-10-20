@@ -1,3 +1,5 @@
+//! Function to update permscan
+
 use reqwest::blocking::Client;
 use std::io::{self, stdout, Write};
 use subprocess::Exec;
@@ -11,10 +13,10 @@ use types::Result;
 
 use crate::colors;
 
-// get the current version from cargo.toml
+// Get the current version from cargo.toml
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-// check for a newer version and if one exists, call ask_for_update()
+// Check for a newer version and if one exists, call ask_for_update()
 pub fn check_for_newer_version(build: &bool) -> Result<()> {
     println!(
         "{}Current version: {}{}",
@@ -61,6 +63,7 @@ pub fn check_for_newer_version(build: &bool) -> Result<()> {
     Ok(())
 }
 
+// Send a get request for the latest version of permscan to github
 fn request_latest_version(
 ) -> std::result::Result<reqwest::blocking::Response, reqwest::Error> {
     let client = Client::new();
@@ -70,7 +73,7 @@ fn request_latest_version(
         .send()
 }
 
-// wrapper around reqwest::blocking::Response.text() that allows
+// Wrapper around reqwest::blocking::Response.text() that allows
 // to print a custom message when the Result is an error
 fn response_to_str(response: reqwest::blocking::Response) -> Result<String> {
     return match response.text() {
@@ -86,7 +89,7 @@ fn response_to_str(response: reqwest::blocking::Response) -> Result<String> {
     };
 }
 
-// wrapper around serde_json::from_str() that allows to print a custom message
+// Wrapper around serde_json::from_str() that allows to print a custom message
 // when the Result is an error
 fn str_to_json(str: String) -> Result<serde_json::Value> {
     let json: serde_json::Value = match serde_json::from_str(&str) {
@@ -103,7 +106,7 @@ fn str_to_json(str: String) -> Result<serde_json::Value> {
     Ok(json)
 }
 
-// wrapper around json.as_array() that returns an error when the Option
+// Wrapper around json.as_array() that returns an error when the Option
 // is None
 fn json_to_vec(json: serde_json::Value) -> Result<Vec<serde_json::Value>> {
     return match json.as_array() {
@@ -119,7 +122,7 @@ fn json_to_vec(json: serde_json::Value) -> Result<Vec<serde_json::Value>> {
     };
 }
 
-// ask the user if he wants to update
+// Asks the user if he wants to update
 fn ask_for_update(build: &bool) -> Result<()> {
     print!("Do you want to update ? (y/*) ");
     let mut answer = String::new();
@@ -133,7 +136,7 @@ fn ask_for_update(build: &bool) -> Result<()> {
     Ok(())
 }
 
-// a wrapper around io::stdin().read_line() that retry when failing
+// Wrapper around io::stdin().read_line() that retry when failing
 fn get_input(buffer: &mut String) -> Result<&str> {
     let _flush = stdout().flush();
     match io::stdin().read_line(buffer) {
@@ -147,7 +150,7 @@ fn get_input(buffer: &mut String) -> Result<&str> {
     }
 }
 
-// use permscan-installer to install the newest
+// Use permscan-installer to install the newest
 // version (overwrite the current version)
 fn update(build: bool) -> Result<()> {
     Exec::shell("wget https://raw.githubusercontent.com/Pythack/permscan/master/permscan-installer.sh").join()?;
@@ -160,6 +163,5 @@ fn update(build: bool) -> Result<()> {
             Exec::shell("./permscan-installer.sh").join()?;
         }
     }
-
     Ok(())
 }

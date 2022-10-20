@@ -1,3 +1,5 @@
+//! permscan command line arguments
+
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -67,9 +69,6 @@ pub struct Opt {
         help = "If the update flag is also present and the user decide to update, the update will be built from source"
     )]
     pub build: bool,
-
-    #[structopt(short = "e", long = "exit-info", help = "Show exit code")]
-    pub exit_info: bool,
 
     #[structopt(
         default_value = "./",

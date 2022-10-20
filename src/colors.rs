@@ -1,4 +1,5 @@
-// colors constants when printing to stdout
+//! Color constants
+
 pub const RED: &str = "\x1b[91m";
 pub const GREEN: &str = "\x1b[92m";
 pub const YELLOW: &str = "\x1b[93m";

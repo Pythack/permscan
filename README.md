@@ -25,7 +25,6 @@ FLAGS:
     -b, --build        If the update flag is also present and the user decide to update, the update will be built from
                        source
     -u, --update       Check for a newer version of permscan
-    -e, --exit-info    Show exit code
     -h, --help         Prints help information
     -i                 Return the list of files that don't match with the criteria
     -m                 Return files that match at least one criteria, instead of those that match all criteria

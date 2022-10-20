@@ -1,3 +1,5 @@
+//! Functions to get permscan results based on command line arguments
+
 use regex::Regex;
 
 #[path = "./misc.rs"]
@@ -8,7 +10,7 @@ mod types;
 use crate::Opt;
 use crate::PermscanOutput;
 
-// Call get_results_nomerge() or get_results_merge() based on opt.merge.
+// Calls get_results_nomerge() or get_results_merge() based on opt.merge.
 // As these to functions have two different return type we store the result
 // in the PermscanOutput enum
 pub fn get_results<'a>(opt: &Opt, files: &'a str) -> PermscanOutput<'a> {
@@ -18,7 +20,7 @@ pub fn get_results<'a>(opt: &Opt, files: &'a str) -> PermscanOutput<'a> {
     }
 }
 
-// Get files matching criteria. Called when opt.merge is false
+// Gets files matching criteria. Called when opt.merge is false
 fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
     let mut lines: Vec<Vec<&str>> = Vec::new();
 
@@ -88,7 +90,7 @@ fn get_results_nomerge<'a>(opt: &Opt, files: &'a str) -> Vec<Vec<&'a str>> {
     lines
 }
 
-// Get files matching criteria. Called when opt.merge is true
+// Gets files matching criteria. Called when opt.merge is true
 fn get_results_merge<'a>(opt: &Opt, files: &'a str) -> Vec<&'a str> {
     let mut lines: Vec<&str> = Vec::new();
 
