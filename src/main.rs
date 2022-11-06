@@ -1,13 +1,14 @@
-#![allow(dead_code)]
-
+use std::process::exit;
 use structopt::StructOpt;
-use std::path::Path;
 use types::Result;
 
-#[path = "./colors.rs"]
-mod colors;
+#[macro_use]
+extern crate log;
+
 #[path = "./get_results.rs"]
 mod get_results;
+#[path = "./logger.rs"]
+mod logger;
 #[path = "./ls.rs"]
 mod ls;
 #[path = "./misc.rs"]
@@ -24,77 +25,39 @@ mod updates;
 use crate::opt::Opt;
 use types::PermscanOutput;
 
-/// Exit codes
-mod exit {
-    pub const SUCCESS: i32 = 0;
-    pub const ERR: i32 = 1;
-}
-
 fn main() {
+    logger::new_logger();
     let opt = Opt::from_args();
-    let exit_code = permscan(opt);
-    std::process::exit(exit_code)
+    if let Err(e) = permscan(opt) {
+        error!("permscan: {}", e);
+        exit(1);
+    }
+    exit(0);
 }
 
-// The true main function. Returns an exit code
-fn permscan(opt: Opt) -> i32 {
-    // Run the checks_for_newer_version function if the update flag is raised.
-    // Returns exit code when done
+fn permscan(opt: Opt) -> Result<()> {
     if opt.check_update {
-        if updates::check_for_newer_version(&opt.build).is_err() {
-            return exit::ERR
-        }
-        return exit::SUCCESS;
+        updates::check_for_newer_version(opt.build)?;
+        return Ok(());
     }
 
-    // Check if the path entered by the user exists
-    if check_path_exists(&opt.path).is_err() {
-        return exit::ERR;
-    }
-    let files = ls::run_ls(&opt.path, &opt.all, &opt.recursive);
+    misc::check_path_exists(&opt.path)?;
 
-    // if the item_type argument is present, check
-    // wether or not it is a valid type
-    if opt.item_type != None
-        && misc::verify_type_argument(opt.item_type.as_ref().unwrap()).is_err()
-    {
-        return exit::ERR;
+    let files = ls::run_ls(&opt.path, opt.all, opt.recursive);
+
+    if opt.item_type != None {
+        misc::verify_type_argument(opt.item_type.as_ref().unwrap())?
     }
 
-    // exit if we got an error while running ls
-    if files.is_err() {
-        return exit::ERR;
+    if let Err(e) = files {
+        return Err(e);
     }
 
-    let files_unwrapped = files.unwrap();
-    let results = get_results::get_results(&opt, &files_unwrapped);
+    let binding = files.unwrap();
+    let mut results = get_results::get_results(&opt, &binding);
 
-    match output::print_results(results, &opt.recursive) {
-        Ok(()) => exit::SUCCESS,
-        Err(e) => {
-            eprintln!(
-                "{}permscan: stdout: failed to print results: {}{}",
-                colors::RED,
-                e,
-                colors::RESET
-            );
-            exit::ERR
-        }
+    if let Err(e) = output::print_results(&mut results, opt.recursive) {
+        return Err(format!("stdout: failed to print results: {}", e).into());
     }
-}
-
-// Checks if the path entered by the user exists and return
-// an error if it doesn't
-pub fn check_path_exists(path: &str) -> Result<()> {
-    let path_exists = Path::new(&path).exists();
-    if !path_exists {
-        eprintln!(
-            "{}permscan: {}: No such file or directory\x1b[0m{}",
-            colors::RED,
-            &path,
-            colors::RESET
-        );
-        return Err("".into());
-    }
-    Ok(())
+    return Ok(());
 }
