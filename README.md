@@ -5,7 +5,7 @@
 permscan is a linux and macOS binary to filter file system items based on
 permission criteria.
 
-**Contents:** [Usage](#usage) — [Wiki](#wiki) — [Run in docker](#run-in-docker) —
+**Contents:** [Usage](#usage) — [Wiki](#wiki) —
 [Installation](#installation) — [Building](#building) — [License](#license)
 
 </div>
@@ -49,14 +49,6 @@ ARGS:
 
 For a precise guide on the different arguments, options, flags and errors, see the [wiki](https://github.com/Pythack/permscan/wiki)
 
-## Run in Docker
-
-Run this on a machine with Docker installed and running :
-
-```console
-docker run -it --rm --name permscan ghcr.io/pythack/permscan-gnu:latest
-```
-
 ## Installation
 
 ```
@@ -71,7 +63,7 @@ chmod +x ./permscan-installer.sh
 ./permscan-installer.sh
 ```
 
-This will install the latest version but you can also specify a version using
+This will install the latest version, but you can also specify a version using
 the -v flag followed by the version number.
 Ex :
 
@@ -96,7 +88,7 @@ chmod +x ./permscan-installer.sh
 ./permscan-installer.sh -b
 ```
 
-This will build from the master branch but you can also specify a version using
+This will build from the master branch, but you can also specify a version using
 the -v flag followed by the version number. Ex :
 
 ```
