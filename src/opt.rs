@@ -1,5 +1,3 @@
-//! permscan command line arguments
-
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -26,19 +24,13 @@ pub struct Opt {
     )]
     pub other: Option<String>,
 
-    #[structopt(
-        long,
-        help = "Specify the owner of the file in the format user:group"
-    )]
+    #[structopt(long, help = "Specify the owner of the file in the format user:group")]
     pub owner: Option<String>,
 
     #[structopt(long = "type", help = "Specify the type of the object")]
     pub item_type: Option<String>,
 
-    #[structopt(
-        short,
-        help = "If present, permscan will recursively traverse the folder"
-    )]
+    #[structopt(short, help = "If present, permscan will recursively traverse the folder")]
     pub recursive: bool,
 
     #[structopt(
@@ -47,20 +39,13 @@ pub struct Opt {
     )]
     pub merge: bool,
 
-    #[structopt(
-        short,
-        help = "Return the list of files that don't match with the criteria"
-    )]
+    #[structopt(short, help = "Return the list of files that don't match with the criteria")]
     pub invert: bool,
 
     #[structopt(short, help = "Parse hidden files as well")]
     pub all: bool,
 
-    #[structopt(
-        short = "u",
-        long = "update",
-        help = "Check for a newer version of permscan"
-    )]
+    #[structopt(short = "u", long = "update", help = "Check for a newer version of permscan")]
     pub check_update: bool,
 
     #[structopt(
@@ -70,9 +55,6 @@ pub struct Opt {
     )]
     pub build: bool,
 
-    #[structopt(
-        default_value = "./",
-        help = "The path of the directory your want to look into."
-    )]
+    #[structopt(default_value = "./", help = "The path of the directory your want to look into.")]
     pub path: String,
 }
